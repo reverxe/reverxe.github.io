@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luca Carabelli — reverxe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-primary:#07070C;--bg-secondary:#0E0E16;--bg-card:#14141E;
+      --crimson:#DC143C;--crimson-light:#FF2D55;--crimson-mid:#B8112F;--crimson-dark:#8A0D22;--crimson-deep:#5C0816;
+      --crimson-glow:rgba(220,20,60,.15);--crimson-glow-strong:rgba(220,20,60,.3);
+      --text-primary:#EAEAF0;--text-muted:#7A7A8E;--text-dim:#4A4A5C;
+      --border:#1E1E2A;--border-hover:#2E2E3E;
+      --navbar-bg:rgba(7,7,12,.85);--mobile-nav-bg:rgba(7,7,12,.95);
+      --font-display:'Sora',sans-serif;--font-mono:'Space Mono',monospace;
+      --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
+    }
+    [data-theme="light"]{
+      --bg-primary:#E8E5DF;--bg-secondary:#DEDBD5;--bg-card:#F0EDE7;
+      --crimson:#C01234;--crimson-light:#E8264A;--crimson-mid:#9A0F2A;--crimson-dark:#740B1F;--crimson-deep:#500715;
+      --crimson-glow:rgba(192,18,52,.08);--crimson-glow-strong:rgba(192,18,52,.15);
+      --text-primary:#1A1A2E;--text-muted:#5C5C6E;--text-dim:#8A8A98;
+      --border:#C8C5BF;--border-hover:#B0ADA7;
+      --navbar-bg:rgba(232,229,223,.85);--mobile-nav-bg:rgba(232,229,223,.95);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-display);background:var(--bg-primary);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s}
+    a{color:inherit;text-decoration:none}
+
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;transition:opacity .4s}
+    [data-theme="light"] body::before{opacity:.4}
+
+    .glow{position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:pulse 8s ease-in-out infinite}
+    .glow--1{width:600px;height:600px;background:radial-gradient(circle,var(--crimson-glow) 0%,transparent 70%);top:-200px;right:-200px}
+    .glow--2{width:400px;height:400px;background:radial-gradient(circle,rgba(220,20,60,.06) 0%,transparent 70%);bottom:-100px;left:-100px;animation-duration:12s;animation-direction:reverse}
+    @keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+
+    /* === SCROLL PROGRESS BAR === */
+    .scroll-progress{position:fixed;top:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--crimson),var(--crimson-light),#FF6B81);z-index:200;transition:width .05s linear;border-radius:0 1px 1px 0}
+    [data-theme="light"] .scroll-progress{background:linear-gradient(90deg,var(--crimson-deep),var(--crimson-dark),var(--crimson))}
+
+    /* === NAVBAR === */
+    .navbar{position:fixed;top:2px;left:0;width:100%;z-index:100;padding:0 clamp(16px,4vw,48px);transition:background .4s,backdrop-filter .4s,border-color .4s;border-bottom:1px solid transparent}
+    .navbar.scrolled{background:var(--navbar-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom-color:var(--border)}
+    .navbar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
+
+    .nav-left{display:flex;align-items:center}
+    .hamburger{display:flex;flex-direction:column;gap:4px;cursor:pointer;background:none;border:none;padding:6px}
+    .hamburger span{width:20px;height:2px;background:var(--text-primary);border-radius:2px;transition:transform .3s,opacity .3s,width .3s}
+    .hamburger span:nth-child(2){width:14px}
+    .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px);width:20px}
+    .hamburger.open span:nth-child(2){opacity:0}
+    .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px);width:20px}
+
+    .nav-center{display:flex;align-items:center;gap:28px}
+    .nav-center a{font-size:12px;font-weight:400;color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase;transition:color .3s;position:relative}
+    .nav-center a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--crimson);transition:width .3s;border-radius:1px}
+    .nav-center a:hover{color:var(--text-primary)}
+    .nav-center a:hover::after{width:100%}
+    .nav-center a.active{color:var(--crimson)}
+    .nav-center a.active::after{width:100%}
+
+    .nav-right{display:flex;align-items:center;gap:4px}
+    .nav-socials{display:flex;align-items:center;gap:2px;margin-right:6px;padding-right:8px;border-right:1px solid var(--border)}
+    .nav-social-icon{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:6px;color:var(--text-dim);transition:color .3s,background .3s}
+    .nav-social-icon:hover{color:var(--crimson);background:var(--crimson-glow)}
+    .nav-social-icon svg{width:15px;height:15px;fill:currentColor}
+
+    .nav-btn{display:flex;align-items:center;justify-content:center;height:30px;border-radius:6px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--text-dim);transition:color .3s,border-color .3s,background .3s;padding:0}
+    .nav-btn:hover{color:var(--crimson);border-color:var(--crimson);background:var(--crimson-glow)}
+    .nav-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .4s}
+    .nav-btn:hover svg{transform:rotate(20deg)}
+    .nav-btn .icon-sun{display:none}
+    .nav-btn .icon-moon{display:block}
+    [data-theme="light"] .nav-btn .icon-sun{display:block}
+    [data-theme="light"] .nav-btn .icon-moon{display:none}
+    .theme-btn{width:30px}
+    .lang-toggle{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.5px;overflow:hidden;width:auto;gap:0;padding:0}
+    .lang-toggle span{display:inline-flex;align-items:center;justify-content:center;padding:0 8px;height:100%;transition:background .3s,color .3s}
+    .lang-toggle .lang-active{background:var(--crimson);color:#fff}
+    .lang-toggle .lang-inactive{color:var(--text-dim)}
+
+    .slide-menu{position:fixed;top:58px;left:0;width:260px;height:calc(100vh - 58px);background:var(--mobile-nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-right:1px solid var(--border);padding:24px 20px;z-index:99;display:flex;flex-direction:column;gap:6px;transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+    .slide-menu.open{transform:translateX(0)}
+    .slide-menu a{font-size:14px;color:var(--text-muted);padding:10px 0;transition:color .3s;border-bottom:1px solid var(--border)}
+    .slide-menu a:last-of-type{border-bottom:none}
+    .slide-menu a:hover,.slide-menu a.active{color:var(--crimson)}
+    .slide-menu-socials{display:flex;gap:8px;margin-top:auto;padding-top:14px;border-top:1px solid var(--border)}
+    .menu-overlay{position:fixed;inset:0;top:58px;background:rgba(0,0,0,.4);z-index:98;opacity:0;pointer-events:none;transition:opacity .35s}
+    .menu-overlay.open{opacity:1;pointer-events:auto}
+
+    /* === HERO === */
+    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:58px clamp(20px,4vw,60px) 0;position:relative;z-index:1}
+    .hero-inner{max-width:720px;width:100%;text-align:center}
+    .hero-text{opacity:1}
+    .hero-title{font-size:clamp(32px,5vw,52px);font-weight:700;line-height:1.15;letter-spacing:-1.5px;margin-bottom:16px;white-space:nowrap;min-height:1.2em}
+    .hero-title .sep{color:var(--text-dim);font-weight:300;margin:0 4px}
+    .hero-title .cursor{display:inline-block;width:3px;height:.9em;background:var(--crimson);margin-left:2px;vertical-align:text-bottom;animation:blink .8s step-end infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .hero-desc{font-size:15px;line-height:1.7;color:var(--text-muted);max-width:500px;margin:0 auto;opacity:0;transform:translateY(10px);transition:opacity .6s ease .2s,transform .6s ease .2s}
+    .hero-desc.visible{opacity:1;transform:translateY(0)}
+    .hero-desc .accent{color:var(--crimson);font-weight:500}
+
+    /* === NOW PLAYING === */
+    .now-playing{position:fixed;bottom:20px;left:20px;z-index:90;display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;max-width:280px;transition:transform .3s,opacity .3s;opacity:.85}
+    .now-playing:hover{opacity:1;transform:translateY(-2px)}
+    .np-art{width:36px;height:36px;border-radius:6px;background:var(--crimson-glow);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+    .np-art img{width:100%;height:100%;object-fit:cover}
+    .np-bars{display:flex;align-items:flex-end;gap:2px;height:16px}
+    .np-bars span{width:3px;background:var(--crimson);border-radius:1px;animation:eqBar 1s ease-in-out infinite}
+    .np-bars span:nth-child(1){height:8px;animation-delay:0s}
+    .np-bars span:nth-child(2){height:14px;animation-delay:.15s}
+    .np-bars span:nth-child(3){height:6px;animation-delay:.3s}
+    .np-bars span:nth-child(4){height:12px;animation-delay:.45s}
+    @keyframes eqBar{0%,100%{height:4px}50%{height:16px}}
+    .np-info{min-width:0}
+    .np-label{font-size:9px;color:var(--crimson);text-transform:uppercase;letter-spacing:1px;font-family:var(--font-mono);margin-bottom:2px}
+    .np-track{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .np-artist{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    /* === TEASER === */
+    .sections-teaser{padding:24px clamp(20px,4vw,60px) 64px;position:relative;z-index:1}
+    .sections-inner{max-width:1000px;margin:0 auto}
+    .teaser-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .teaser-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 20px;transition:border-color .3s,transform .3s,box-shadow .3s;cursor:pointer;position:relative;overflow:hidden}
+    .teaser-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--crimson-dark),var(--crimson),var(--crimson-light));transform:scaleX(0);transform-origin:left;transition:transform .4s}
+    .teaser-card:hover::before{transform:scaleX(1)}
+    .teaser-card:hover{border-color:var(--border-hover);transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.3)}
+    [data-theme="light"] .teaser-card{box-shadow:0 1px 3px rgba(0,0,0,.04)}
+    [data-theme="light"] .teaser-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.08)}
+    .teaser-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--crimson-deep),var(--crimson-dark));border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:14px;color:var(--crimson-light)}
+    .teaser-title{font-size:16px;font-weight:600;margin-bottom:6px}
+    .teaser-desc{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:14px}
+    .teaser-link{font-size:12px;color:var(--crimson);font-weight:500;display:inline-flex;align-items:center;gap:6px;transition:gap .3s,color .3s}
+    .teaser-card:hover .teaser-link{gap:10px;color:var(--crimson-light)}
+
+    /* === FOOTER === */
+    .footer{padding:20px clamp(20px,4vw,60px);border-top:1px solid var(--border);position:relative;z-index:1}
+    .footer-inner{max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+    .footer-text{font-size:11px;color:var(--text-dim)}
+    .footer-text span{color:var(--crimson)}
+    .footer-links{display:flex;gap:16px}
+    .footer-links a{font-size:11px;color:var(--text-dim);transition:color .3s}
+    .footer-links a:hover{color:var(--crimson)}
+
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-track{background:var(--bg-primary)}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+    ::-webkit-scrollbar-thumb:hover{background:var(--crimson)}
+
+    @media(max-width:900px){
+      .nav-center{display:none}
+      .nav-socials{display:none}
+      .teaser-grid{grid-template-columns:1fr}
+      .footer-inner{flex-direction:column;gap:10px;text-align:center}
+      .hero-title{white-space:normal;font-size:clamp(28px,7vw,44px)}
+      .now-playing{left:10px;bottom:10px;max-width:240px}
+    }
+    @media(min-width:901px){.menu-overlay{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="glow glow--1"></div>
+  <div class="glow glow--2"></div>
+
+  <!-- SCROLL PROGRESS -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <div class="nav-left">
+        <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+      <div class="nav-center">
+        <a href="index.html" class="active" data-i18n="nav.home">Home</a>
+        <a href="about.html" data-i18n="nav.about">Chi sono</a>
+        <a href="projects.html" data-i18n="nav.projects">Progetti</a>
+        <a href="blog.html">Blog</a>
+        <a href="social.html">Social</a>
+      </div>
+      <div class="nav-right">
+        <div class="nav-socials">
+          <a href="#" class="nav-social-icon" target="_blank" title="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></a>
+          <a href="#" class="nav-social-icon" target="_blank" title="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+          <a href="#" class="nav-social-icon" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></a>
+          <a href="#" class="nav-social-icon" target="_blank" title="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></a>
+          <a href="#" class="nav-social-icon" target="_blank" title="X"><svg viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
+        </div>
+        <button class="nav-btn lang-toggle" id="langToggle" aria-label="Cambia lingua">
+          <span class="lang-active" data-lang="it">IT</span><span class="lang-inactive" data-lang="en">EN</span>
+        </button>
+        <button class="nav-btn theme-btn" id="themeToggle" aria-label="Cambia tema">
+          <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <div class="slide-menu" id="slideMenu">
+    <a href="index.html" class="active" data-i18n="nav.home">Home</a>
+    <a href="about.html" data-i18n="nav.about">Chi sono</a>
+    <a href="projects.html" data-i18n="nav.projects">Progetti</a>
+    <a href="blog.html">Blog</a>
+    <a href="social.html">Social</a>
+    <div class="slide-menu-socials">
+      <a href="#" class="nav-social-icon" target="_blank" title="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></a>
+      <a href="#" class="nav-social-icon" target="_blank" title="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+      <a href="#" class="nav-social-icon" target="_blank" title="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></a>
+      <a href="#" class="nav-social-icon" target="_blank" title="X"><svg viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <h1 class="hero-title" id="typingTitle"></h1>
+        <p class="hero-desc" id="heroDesc" data-i18n="hero.desc">Developer in formazione, aspirante <span class="accent">game designer</span> e <span class="accent">modellatore 3D</span>. Appassionato di anime e manga, streamer e creatore di contenuti e storie originali.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEASER CARDS -->
+  <section class="sections-teaser reveal">
+    <div class="sections-inner">
+      <div class="teaser-grid">
+        <a href="about.html" class="teaser-card">
+          <div class="teaser-icon">⟡</div>
+          <div class="teaser-title" data-i18n="teaser.about.title">Chi sono</div>
+          <div class="teaser-desc" data-i18n="teaser.about.desc">Il mio percorso, le competenze tecniche, le lingue che parlo e la timeline della mia formazione.</div>
+          <div class="teaser-link" data-i18n="teaser.more">Scopri di più <span>→</span></div>
+        </a>
+        <a href="projects.html" class="teaser-card">
+          <div class="teaser-icon">◈</div>
+          <div class="teaser-title" data-i18n="teaser.projects.title">Progetti</div>
+          <div class="teaser-desc" data-i18n="teaser.projects.desc">Dai character design originali ai progetti di sviluppo. Il mio portfolio creativo e tecnico.</div>
+          <div class="teaser-link" data-i18n="teaser.all">Vedi tutto <span>→</span></div>
+        </a>
+        <a href="blog.html" class="teaser-card">
+          <div class="teaser-icon">✦</div>
+          <div class="teaser-title">Blog</div>
+          <div class="teaser-desc" data-i18n="teaser.blog.desc">Recensioni anime, pensieri sulle serie che guardo e capitoli del mio romanzo in corso.</div>
+          <div class="teaser-link" data-i18n="teaser.read">Leggi ora <span>→</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOW PLAYING -->
+  <a class="now-playing" id="nowPlaying" href="#" target="_blank" style="text-decoration:none">
+    <div class="np-art" id="npArt">
+      <div class="np-bars"><span></span><span></span><span></span><span></span></div>
+    </div>
+    <div class="np-info">
+      <div class="np-label" id="npLabel">Now playing</div>
+      <div class="np-track" id="npTrack">—</div>
+      <div class="np-artist" id="npArtist">Non in riproduzione</div>
+    </div>
+  </a>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="footer-text">© 2026 Luca Carabelli. Built with <span>♥</span> and code.</p>
+      <div class="footer-links">
+        <a href="about.html" data-i18n="nav.about">Chi sono</a>
+        <a href="projects.html" data-i18n="nav.projects">Progetti</a>
+        <a href="blog.html">Blog</a>
+        <a href="social.html">Social</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // === TRANSLATIONS ===
+    const T={
+      it:{
+        'nav.home':'Home','nav.about':'Chi sono','nav.projects':'Progetti',
+        'hero.desc':'Developer in formazione, aspirante <span class="accent">game designer</span> e <span class="accent">modellatore 3D</span>. Appassionato di anime e manga, streamer e creatore di contenuti e storie originali.',
+        'teaser.about.title':'Chi sono','teaser.about.desc':'Il mio percorso, le competenze tecniche, le lingue che parlo e la timeline della mia formazione.',
+        'teaser.projects.title':'Progetti','teaser.projects.desc':'Dai character design originali ai progetti di sviluppo. Il mio portfolio creativo e tecnico.',
+        'teaser.blog.desc':'Recensioni anime, pensieri sulle serie che guardo e capitoli del mio romanzo in corso.',
+        'teaser.more':'Scopri di più <span>→</span>','teaser.all':'Vedi tutto <span>→</span>','teaser.read':'Leggi ora <span>→</span>',
+      },
+      en:{
+        'nav.home':'Home','nav.about':'About','nav.projects':'Projects',
+        'hero.desc':'Developer in training, aspiring <span class="accent">game designer</span> and <span class="accent">3D modeler</span>. Anime and manga enthusiast, streamer, and creator of original content and stories.',
+        'teaser.about.title':'About me','teaser.about.desc':'My journey, technical skills, the languages I speak, and the timeline of my education.',
+        'teaser.projects.title':'Projects','teaser.projects.desc':'From original character designs to development projects. My creative and technical portfolio.',
+        'teaser.blog.desc':'Anime reviews, thoughts on the series I watch, and chapters of my ongoing novel.',
+        'teaser.more':'Learn more <span>→</span>','teaser.all':'See all <span>→</span>','teaser.read':'Read now <span>→</span>',
+      }
+    };
+    let lang=localStorage.getItem('lang')||'it';
+    function setLang(l){
+      lang=l;document.documentElement.lang=l;localStorage.setItem('lang',l);
+      document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(T[l][k])el.innerHTML=T[l][k]});
+      document.querySelectorAll('.lang-toggle span').forEach(s=>{s.classList.toggle('lang-active',s.dataset.lang===l);s.classList.toggle('lang-inactive',s.dataset.lang!==l)});
+    }
+    setLang(lang);
+    document.getElementById('langToggle').addEventListener('click',()=>setLang(lang==='it'?'en':'it'));
+
+    // === THEME ===
+    if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeToggle').addEventListener('click',()=>{
+      const l=document.documentElement.getAttribute('data-theme')==='light';
+      if(l){document.documentElement.removeAttribute('data-theme');localStorage.setItem('theme','dark')}
+      else{document.documentElement.setAttribute('data-theme','light');localStorage.setItem('theme','light')}
+    });
+
+    // === SCROLL PROGRESS ===
+    window.addEventListener('scroll',()=>{
+      const h=document.documentElement.scrollHeight-window.innerHeight;
+      const p=h>0?(window.scrollY/h)*100:0;
+      document.getElementById('scrollProgress').style.width=p+'%';
+      document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>30);
+    });
+
+    // === HAMBURGER ===
+    const ham=document.getElementById('hamburger'),menu=document.getElementById('slideMenu'),ov=document.getElementById('menuOverlay');
+    function tog(){ham.classList.toggle('open');menu.classList.toggle('open');ov.classList.toggle('open')}
+    ham.addEventListener('click',tog);ov.addEventListener('click',tog);
+
+    // === TYPING EFFECT ===
+    (function(){
+      const el=document.getElementById('typingTitle');
+      const text='Luca Carabelli / reverxe';
+      const sepIdx=text.indexOf('/');
+      let i=0;
+      el.innerHTML='<span class="cursor"></span>';
+      function type(){
+        if(i<=text.length){
+          let html='';
+          const typed=text.slice(0,i);
+          if(i<=sepIdx){
+            html=typed+'<span class="cursor"></span>';
+          }else{
+            const before=text.slice(0,sepIdx);
+            const after=typed.slice(sepIdx);
+            html=before+after+'<span class="cursor"></span>';
+          }
+          html=html.replace(' / ','<span class="sep"> / </span>');
+          el.innerHTML=html;
+          i++;
+          setTimeout(type,i===sepIdx+1?300:70);
+        }else{
+          setTimeout(()=>{
+            const c=el.querySelector('.cursor');
+            if(c)c.remove();
+            document.getElementById('heroDesc').classList.add('visible');
+          },600);
+        }
+      }
+      setTimeout(type,500);
+    })();
+
+    // === REVEAL ===
+    const obs=new IntersectionObserver(e=>e.forEach((en,i)=>{if(en.isIntersecting){setTimeout(()=>en.target.classList.add('visible'),i*100);obs.unobserve(en.target)}}),{threshold:.1});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+    document.querySelectorAll('.teaser-card').forEach((c,i)=>c.style.transitionDelay=`${i*.1}s`);
+
+    // === SPOTIFY NOW PLAYING ===
+    // HOW TO SET UP:
+    // 1. Go to https://developer.spotify.com/dashboard → Create App
+    //    - Set Redirect URI to your site URL (e.g. https://lucacarabelli.github.io)
+    // 2. Copy your Client ID below
+    // 3. Visit your site with ?spotify=auth in the URL to authenticate
+    // 4. After auth, the token is saved and auto-refreshes
+    //
+    // For a permanent solution (no re-auth every hour), you'll need a small
+    // backend to handle the refresh token. For now, this works great for demos.
+
+    const SPOTIFY_CLIENT_ID = ''; // ← PUT YOUR CLIENT ID HERE
+    const SPOTIFY_REDIRECT = window.location.origin + window.location.pathname;
+    const SPOTIFY_SCOPES = 'user-read-currently-playing user-read-playback-state';
+
+    // Demo playlist fallback when Spotify is not connected
+    const demoPlaylist = [
+      {track:'Unravel',artist:'TK from Ling Tosite Sigure'},
+      {track:'Gurenge',artist:'LiSA'},
+      {track:'Again',artist:'YUI'},
+      {track:'Shinzou wo Sasageyo!',artist:'Linked Horizon'},
+      {track:'Blue Bird',artist:'Ikimono Gakari'},
+    ];
+    let demoIdx = 0;
+
+    function updateNP(track, artist, imgUrl, spotifyUrl, isPlaying) {
+      document.getElementById('npTrack').textContent = track;
+      document.getElementById('npArtist').textContent = artist;
+      const art = document.getElementById('npArt');
+      const np = document.getElementById('nowPlaying');
+      const label = document.getElementById('npLabel');
+      if (imgUrl) {
+        art.innerHTML = '<img src="'+imgUrl+'" alt="Album art">';
+      } else {
+        art.innerHTML = '<div class="np-bars"><span></span><span></span><span></span><span></span></div>';
+      }
+      if (spotifyUrl) np.href = spotifyUrl;
+      else np.removeAttribute('href');
+      label.textContent = isPlaying ? 'Now playing' : 'Last played';
+      // Pause/resume bars animation
+      art.querySelectorAll('.np-bars span').forEach(s => {
+        s.style.animationPlayState = isPlaying ? 'running' : 'paused';
+      });
+    }
+
+    // Check for Spotify auth callback
+    if (window.location.hash.includes('access_token')) {
+      const params = new URLSearchParams(window.location.hash.substring(1));
+      const token = params.get('access_token');
+      const expires = Date.now() + parseInt(params.get('expires_in') || '3600') * 1000;
+      localStorage.setItem('spotify_token', token);
+      localStorage.setItem('spotify_expires', expires);
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+
+    // Trigger auth flow
+    if (window.location.search.includes('spotify=auth') && SPOTIFY_CLIENT_ID) {
+      const authUrl = 'https://accounts.spotify.com/authorize?client_id=' + SPOTIFY_CLIENT_ID
+        + '&response_type=token&redirect_uri=' + encodeURIComponent(SPOTIFY_REDIRECT)
+        + '&scope=' + encodeURIComponent(SPOTIFY_SCOPES);
+      window.location.href = authUrl;
+    }
+
+    async function fetchSpotifyNP() {
+      const token = localStorage.getItem('spotify_token');
+      const expires = parseInt(localStorage.getItem('spotify_expires') || '0');
+      if (!token || Date.now() > expires) return false;
+
+      try {
+        const res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.status === 204) {
+          // Nothing playing — try recently played
+          const recent = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=1', {
+            headers: { 'Authorization': 'Bearer ' + token }
+          });
+          if (recent.ok) {
+            const data = await recent.json();
+            if (data.items && data.items.length > 0) {
+              const t = data.items[0].track;
+              updateNP(t.name, t.artists.map(a=>a.name).join(', '),
+                t.album.images[2]?.url || t.album.images[0]?.url,
+                t.external_urls.spotify, false);
+              return true;
+            }
+          }
+          return false;
+        }
+        if (!res.ok) return false;
+        const data = await res.json();
+        if (data.item) {
+          updateNP(data.item.name, data.item.artists.map(a=>a.name).join(', '),
+            data.item.album.images[2]?.url || data.item.album.images[0]?.url,
+            data.item.external_urls.spotify, data.is_playing);
+          return true;
+        }
+      } catch(e) { console.log('Spotify fetch error:', e); }
+      return false;
+    }
+
+    // Poll Spotify every 15s, fallback to demo if not connected
+    let spotifyConnected = false;
+    async function pollNP() {
+      spotifyConnected = await fetchSpotifyNP();
+      if (!spotifyConnected) {
+        // Demo mode
+        const s = demoPlaylist[demoIdx];
+        updateNP(s.track, s.artist, null, null, true);
+        demoIdx = (demoIdx + 1) % demoPlaylist.length;
+      }
+    }
+    pollNP();
+    setInterval(pollNP, spotifyConnected ? 15000 : 8000);
+  </script>
+</body>
+</html>
