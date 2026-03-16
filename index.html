@@ -409,22 +409,11 @@
     document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
     document.querySelectorAll('.teaser-card').forEach((c,i)=>c.style.transitionDelay=`${i*.1}s`);
 
-    // === SPOTIFY NOW PLAYING ===
-    // HOW TO SET UP:
-    // 1. Go to https://developer.spotify.com/dashboard → Create App
-    //    - Set Redirect URI to your site URL (e.g. https://lucacarabelli.github.io)
-    // 2. Copy your Client ID below
-    // 3. Visit your site with ?spotify=auth in the URL to authenticate
-    // 4. After auth, the token is saved and auto-refreshes
-    //
-    // For a permanent solution (no re-auth every hour), you'll need a small
-    // backend to handle the refresh token. For now, this works great for demos.
-
-    const SPOTIFY_CLIENT_ID = '87445dfb688d44c7bcff6f1ea54d6752'; // ← PUT YOUR CLIENT ID HERE
+    // === SPOTIFY NOW PLAYING (PKCE Auth Flow) ===
+    const SPOTIFY_CLIENT_ID = '87445dfb688d44c7bcff6f1ea54d6752';
     const SPOTIFY_REDIRECT = window.location.origin + window.location.pathname;
-    const SPOTIFY_SCOPES = 'user-read-currently-playing user-read-playback-state';
+    const SPOTIFY_SCOPES = 'user-read-currently-playing user-read-playback-state user-read-recently-played';
 
-    // Demo playlist fallback when Spotify is not connected
     const demoPlaylist = [
       {track:'Unravel',artist:'TK from Ling Tosite Sigure'},
       {track:'Gurenge',artist:'LiSA'},
@@ -448,41 +437,122 @@
       if (spotifyUrl) np.href = spotifyUrl;
       else np.removeAttribute('href');
       label.textContent = isPlaying ? 'Now playing' : 'Last played';
-      // Pause/resume bars animation
       art.querySelectorAll('.np-bars span').forEach(s => {
         s.style.animationPlayState = isPlaying ? 'running' : 'paused';
       });
     }
 
-    // Check for Spotify auth callback
-    if (window.location.hash.includes('access_token')) {
-      const params = new URLSearchParams(window.location.hash.substring(1));
-      const token = params.get('access_token');
-      const expires = Date.now() + parseInt(params.get('expires_in') || '3600') * 1000;
-      localStorage.setItem('spotify_token', token);
-      localStorage.setItem('spotify_expires', expires);
-      window.history.replaceState({}, '', window.location.pathname);
+    // PKCE helpers
+    function generateRandom(len) {
+      const arr = new Uint8Array(len);
+      crypto.getRandomValues(arr);
+      return Array.from(arr, b => b.toString(16).padStart(2, '0')).join('');
+    }
+    async function sha256(plain) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(plain);
+      return await crypto.subtle.digest('SHA-256', data);
+    }
+    function base64url(buffer) {
+      let str = '';
+      const bytes = new Uint8Array(buffer);
+      for (let i = 0; i < bytes.byteLength; i++) str += String.fromCharCode(bytes[i]);
+      return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
     }
 
-    // Trigger auth flow
+    // Start PKCE auth
+    async function startSpotifyAuth() {
+      const verifier = generateRandom(64);
+      const challenge = base64url(await sha256(verifier));
+      localStorage.setItem('spotify_verifier', verifier);
+      const url = 'https://accounts.spotify.com/authorize?client_id=' + SPOTIFY_CLIENT_ID
+        + '&response_type=code&redirect_uri=' + encodeURIComponent(SPOTIFY_REDIRECT)
+        + '&scope=' + encodeURIComponent(SPOTIFY_SCOPES)
+        + '&code_challenge_method=S256&code_challenge=' + challenge;
+      window.location.href = url;
+    }
+
+    // Exchange code for tokens
+    async function exchangeCode(code) {
+      const verifier = localStorage.getItem('spotify_verifier');
+      if (!verifier) return;
+      const res = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          client_id: SPOTIFY_CLIENT_ID,
+          grant_type: 'authorization_code',
+          code: code,
+          redirect_uri: SPOTIFY_REDIRECT,
+          code_verifier: verifier,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        localStorage.setItem('spotify_token', data.access_token);
+        localStorage.setItem('spotify_refresh', data.refresh_token);
+        localStorage.setItem('spotify_expires', Date.now() + data.expires_in * 1000);
+        localStorage.removeItem('spotify_verifier');
+        return true;
+      }
+      return false;
+    }
+
+    // Refresh token
+    async function refreshToken() {
+      const refresh = localStorage.getItem('spotify_refresh');
+      if (!refresh) return false;
+      const res = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          client_id: SPOTIFY_CLIENT_ID,
+          grant_type: 'refresh_token',
+          refresh_token: refresh,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        localStorage.setItem('spotify_token', data.access_token);
+        if (data.refresh_token) localStorage.setItem('spotify_refresh', data.refresh_token);
+        localStorage.setItem('spotify_expires', Date.now() + data.expires_in * 1000);
+        return true;
+      }
+      return false;
+    }
+
+    // Check for callback code in URL
+    (async function handleCallback() {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      if (code) {
+        await exchangeCode(code);
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+    })();
+
+    // Trigger auth
     if (window.location.search.includes('spotify=auth') && SPOTIFY_CLIENT_ID) {
-      const authUrl = 'https://accounts.spotify.com/authorize?client_id=' + SPOTIFY_CLIENT_ID
-        + '&response_type=token&redirect_uri=' + encodeURIComponent(SPOTIFY_REDIRECT)
-        + '&scope=' + encodeURIComponent(SPOTIFY_SCOPES);
-      window.location.href = authUrl;
+      startSpotifyAuth();
+    }
+
+    async function getValidToken() {
+      const token = localStorage.getItem('spotify_token');
+      const expires = parseInt(localStorage.getItem('spotify_expires') || '0');
+      if (token && Date.now() < expires) return token;
+      // Try refresh
+      if (await refreshToken()) return localStorage.getItem('spotify_token');
+      return null;
     }
 
     async function fetchSpotifyNP() {
-      const token = localStorage.getItem('spotify_token');
-      const expires = parseInt(localStorage.getItem('spotify_expires') || '0');
-      if (!token || Date.now() > expires) return false;
-
+      const token = await getValidToken();
+      if (!token) return false;
       try {
         const res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         if (res.status === 204) {
-          // Nothing playing — try recently played
           const recent = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=1', {
             headers: { 'Authorization': 'Bearer ' + token }
           });
@@ -506,23 +576,21 @@
             data.item.external_urls.spotify, data.is_playing);
           return true;
         }
-      } catch(e) { console.log('Spotify fetch error:', e); }
+      } catch(e) { console.log('Spotify error:', e); }
       return false;
     }
 
-    // Poll Spotify every 15s, fallback to demo if not connected
     let spotifyConnected = false;
     async function pollNP() {
       spotifyConnected = await fetchSpotifyNP();
       if (!spotifyConnected) {
-        // Demo mode
         const s = demoPlaylist[demoIdx];
         updateNP(s.track, s.artist, null, null, true);
         demoIdx = (demoIdx + 1) % demoPlaylist.length;
       }
     }
     pollNP();
-    setInterval(pollNP, spotifyConnected ? 15000 : 8000);
+    setInterval(pollNP, 15000);
   </script>
 </body>
 </html>
