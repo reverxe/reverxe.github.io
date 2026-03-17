@@ -68,7 +68,7 @@
     }
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{font-family:var(--font-display);background:var(--bg-primary);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s}
+    body{font-family:var(--font-display);background:var(--bg-primary);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s;min-height:100vh;display:flex;flex-direction:column}
     a{color:inherit;text-decoration:none}
 
     body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;transition:opacity .4s}
@@ -180,6 +180,8 @@
     [data-theme="light"] .teaser-card{box-shadow:0 1px 3px rgba(0,0,0,.04)}
     [data-theme="light"] .teaser-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.08)}
     .teaser-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--crimson-deep),var(--crimson-dark));border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:14px;color:var(--crimson-light)}
+    .teaser-icon svg{width:20px;height:20px;fill:none;stroke:var(--crimson-light);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    [data-theme="light"] .teaser-icon svg{stroke:#fff}
     [data-theme="light"] .teaser-icon{background:linear-gradient(135deg,var(--crimson),var(--crimson-light));color:#fff}
     .teaser-title{font-size:16px;font-weight:600;margin-bottom:6px}
     .teaser-desc{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:14px}
@@ -187,7 +189,7 @@
     .teaser-card:hover .teaser-link{gap:10px;color:var(--crimson-light)}
 
     /* === FOOTER === */
-    .footer{padding:24px clamp(20px,4vw,60px);border-top:1px solid var(--border);position:relative;z-index:1}
+    .footer{padding:24px clamp(20px,4vw,60px);border-top:1px solid var(--border);position:relative;z-index:1;margin-top:auto}
     .footer-inner{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
     .footer-top{display:flex;justify-content:space-between;align-items:flex-start}
     .footer-contact{display:flex;flex-direction:column;gap:4px}
@@ -296,19 +298,19 @@
     <div class="sections-inner">
       <div class="teaser-grid">
         <a href="about.html" class="teaser-card">
-          <div class="teaser-icon">⟡</div>
+          <div class="teaser-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
           <div class="teaser-title" data-i18n="teaser.about.title">Chi sono</div>
           <div class="teaser-desc" data-i18n="teaser.about.desc">Il mio percorso, le competenze tecniche, le lingue che parlo e la timeline della mia formazione.</div>
           <div class="teaser-link" data-i18n="teaser.more">Scopri di più <span>→</span></div>
         </a>
         <a href="projects.html" class="teaser-card">
-          <div class="teaser-icon">◈</div>
+          <div class="teaser-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
           <div class="teaser-title" data-i18n="teaser.projects.title">Progetti</div>
           <div class="teaser-desc" data-i18n="teaser.projects.desc">Dai character design originali ai progetti di sviluppo. Il mio portfolio creativo e tecnico.</div>
           <div class="teaser-link" data-i18n="teaser.all">Vedi tutto <span>→</span></div>
         </a>
         <a href="blog.html" class="teaser-card">
-          <div class="teaser-icon">✦</div>
+          <div class="teaser-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
           <div class="teaser-title">Blog</div>
           <div class="teaser-desc" data-i18n="teaser.blog.desc">Recensioni anime, pensieri sulle serie che guardo e capitoli del mio romanzo in corso.</div>
           <div class="teaser-link" data-i18n="teaser.read">Leggi ora <span>→</span></div>
