@@ -81,7 +81,6 @@
 
     /* === SCROLL PROGRESS BAR === */
     .scroll-progress{position:fixed;top:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--crimson),var(--crimson-light),#FF6B81);z-index:200;transition:width .05s linear;border-radius:0 1px 1px 0}
-    [data-theme="light"] .scroll-progress{background:linear-gradient(90deg,var(--crimson-deep),var(--crimson-dark),var(--crimson))}
 
     /* === NAVBAR === */
     .navbar{position:fixed;top:2px;left:0;width:100%;z-index:100;padding:0 clamp(16px,4vw,48px);transition:background .4s,backdrop-filter .4s,border-color .4s;border-bottom:1px solid transparent}
@@ -134,7 +133,7 @@
     .menu-overlay.open{opacity:1;pointer-events:auto}
 
     /* === HERO === */
-    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:58px clamp(20px,4vw,60px) 0;position:relative;z-index:1}
+    .hero{min-height:auto;display:flex;align-items:flex-start;justify-content:center;padding:160px clamp(20px,4vw,60px) 60px;position:relative;z-index:1}
     .hero-inner{max-width:720px;width:100%;text-align:center}
     .hero-text{opacity:1}
     .hero-title{font-size:clamp(32px,5vw,52px);font-weight:700;line-height:1.15;letter-spacing:-1.5px;margin-bottom:16px;white-space:nowrap;min-height:1.2em}
@@ -171,7 +170,7 @@
     .np-artist{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
     /* === TEASER === */
-    .sections-teaser{padding:24px clamp(20px,4vw,60px) 64px;position:relative;z-index:1}
+    .sections-teaser{padding:32px clamp(20px,4vw,60px) 64px;position:relative;z-index:1}
     .sections-inner{max-width:1000px;margin:0 auto}
     .teaser-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
     .teaser-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 20px;transition:border-color .3s,transform .3s,box-shadow .3s;cursor:pointer;position:relative;overflow:hidden}
