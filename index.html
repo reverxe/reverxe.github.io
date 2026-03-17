@@ -57,6 +57,7 @@
       --navbar-bg:rgba(7,7,12,.85);--mobile-nav-bg:rgba(7,7,12,.95);
       --font-display:'Sora',sans-serif;--font-mono:'Space Mono',monospace;
       --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
+      --page-pad:clamp(14px,2.7vw,40px);
     }
     [data-theme="light"]{
       --bg-primary:#E8E5DF;--bg-secondary:#DEDBD5;--bg-card:#F0EDE7;
@@ -83,9 +84,9 @@
     .scroll-progress{position:fixed;top:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--text-dim),var(--text-muted),var(--text-primary));z-index:200;transition:width .05s linear;border-radius:0 1px 1px 0;opacity:.4}
 
     /* === NAVBAR === */
-    .navbar{position:fixed;top:2px;left:0;width:100%;z-index:100;padding:0 clamp(16px,4vw,48px);transition:background .4s,backdrop-filter .4s,border-color .4s;border-bottom:1px solid transparent}
+    .navbar{position:fixed;top:2px;left:0;width:100%;z-index:100;padding:0 var(--page-pad);transition:background .4s,backdrop-filter .4s,border-color .4s;border-bottom:1px solid transparent}
     .navbar.scrolled{background:var(--navbar-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom-color:var(--border)}
-    .navbar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
+    .navbar-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
 
     .nav-left{display:flex;align-items:center;flex:1}
     .hamburger{display:flex;flex-direction:column;gap:4px;cursor:pointer;background:none;border:none;padding:6px}
@@ -137,7 +138,7 @@
     .menu-overlay.open{opacity:1;pointer-events:auto}
 
     /* === HERO === */
-    .hero{min-height:auto;display:flex;align-items:flex-start;justify-content:center;padding:160px clamp(12px,2vw,24px) 60px;position:relative;z-index:1}
+    .hero{min-height:auto;display:flex;align-items:flex-start;justify-content:center;padding:160px var(--page-pad) 60px;position:relative;z-index:1}
     .hero-inner{max-width:720px;width:100%;text-align:center}
     .hero-text{opacity:1}
     .hero-title{font-size:clamp(32px,5vw,52px);font-weight:700;line-height:1.15;letter-spacing:-1.5px;margin-bottom:16px;white-space:nowrap;min-height:1.2em}
@@ -174,8 +175,8 @@
     .np-artist{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
     /* === TEASER === */
-    .sections-teaser{padding:32px clamp(12px,2vw,24px) 64px;position:relative;z-index:1}
-    .sections-inner{max-width:1000px;margin:0 auto}
+    .sections-teaser{padding:32px var(--page-pad) 64px;position:relative;z-index:1}
+    .sections-inner{max-width:1100px;margin:0 auto}
     .teaser-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
     .teaser-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 20px;transition:border-color .3s,transform .3s,box-shadow .3s;cursor:pointer;position:relative;overflow:hidden}
     .teaser-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,#8A0D22,#DC143C,#FF2D55);transform:scaleX(0);transform-origin:left;transition:transform .4s}
@@ -193,8 +194,8 @@
     .teaser-card:hover .teaser-link{gap:10px;color:var(--crimson-light)}
 
     /* === FOOTER === */
-    .footer{padding:24px clamp(12px,2vw,24px);border-top:1px solid var(--border);position:relative;z-index:1;margin-top:auto}
-    .footer-inner{margin:0 auto;display:flex;flex-direction:column;gap:16px}
+    .footer{padding:24px var(--page-pad);border-top:1px solid var(--border);position:relative;z-index:1;margin-top:auto}
+    .footer-inner{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
     .footer-top{display:flex;justify-content:space-between;align-items:flex-start}
     .footer-contact{display:flex;flex-direction:column;gap:4px}
     .footer-contact-label{font-size:10px;color:var(--crimson);text-transform:uppercase;letter-spacing:1px;font-family:var(--font-mono);margin-bottom:2px}
@@ -286,7 +287,7 @@
     <div class="hero-inner">
       <div class="hero-text">
         <h1 class="hero-title" id="typingTitle"></h1>
-        <p class="hero-desc" id="heroDesc" data-i18n="hero.desc">Developer in formazione, aspirante <span class="accent">game designer</span> e <span class="accent">modellatore 3D</span>. Appassionato di anime e manga, streamer e creatore di contenuti e storie originali.</p>
+        <p class="hero-desc" id="heroDesc" data-i18n="hero.desc">Developer in formazione, aspirante <span class="accent">3D artist</span> e <span class="accent">game designer</span>. Appassionato di anime e manga psicologici, streamer e autore di storie originali tra manga e light novel.</p>
         <div class="wip-banner" id="wipBanner" data-i18n="hero.wip"><span class="wip-dot"></span>Sito in costruzione — alcune pagine potrebbero non funzionare</div>
       </div>
     </div>
@@ -353,7 +354,7 @@
     const T={
       it:{
         'nav.home':'Home','nav.about':'Chi sono','nav.projects':'Progetti',
-        'hero.desc':'Developer in formazione, aspirante <span class="accent">game designer</span> e <span class="accent">modellatore 3D</span>. Appassionato di anime e manga, streamer e creatore di contenuti e storie originali.',
+        'hero.desc':'Developer in formazione, aspirante <span class="accent">3D artist</span> e <span class="accent">game designer</span>. Appassionato di anime e manga psicologici, streamer e autore di storie originali tra manga e light novel.',
         'teaser.about.title':'Chi sono','teaser.about.desc':'Il mio percorso, le competenze tecniche, le lingue che parlo e la timeline della mia formazione.',
         'teaser.projects.title':'Progetti','teaser.projects.desc':'Dai character design originali ai progetti di sviluppo. Il mio portfolio creativo e tecnico.',
         'teaser.blog.desc':'Recensioni anime, pensieri sulle serie che guardo e capitoli del mio romanzo in corso.',
@@ -363,7 +364,7 @@
       },
       en:{
         'nav.home':'Home','nav.about':'About','nav.projects':'Projects',
-        'hero.desc':'Developer in training, aspiring <span class="accent">game designer</span> and <span class="accent">3D modeler</span>. Anime and manga enthusiast, streamer, and creator of original content and stories.',
+        'hero.desc':'Developer in training, aspiring <span class="accent">3D artist</span> and <span class="accent">game designer</span>. Passionate about psychological anime and manga, streamer and author of original stories across manga and light novels.',
         'teaser.about.title':'About me','teaser.about.desc':'My journey, technical skills, the languages I speak, and the timeline of my education.',
         'teaser.projects.title':'Projects','teaser.projects.desc':'From original character designs to development projects. My creative and technical portfolio.',
         'teaser.blog.desc':'Anime reviews, thoughts on the series I watch, and chapters of my ongoing novel.',
