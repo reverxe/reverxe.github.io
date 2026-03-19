@@ -246,10 +246,12 @@
 
       <div class="anime-filters" id="animeFilters">
         <button class="filter-btn active" data-filter="all" data-i18n="anime.all">Tutti</button>
-        <button class="filter-btn" data-filter="10" data-i18n="anime.masterpiece">Capolavori (10)</button>
-        <button class="filter-btn" data-filter="9">9+</button>
-        <button class="filter-btn" data-filter="8">8+</button>
-        <button class="filter-btn" data-filter="7">7+</button>
+        <button class="filter-btn" data-filter="10">Capolavori</button>
+        <button class="filter-btn" data-filter="9">Bellissimi</button>
+        <button class="filter-btn" data-filter="8">Molto belli</button>
+        <button class="filter-btn" data-filter="7">Carini</button>
+        <button class="filter-btn" data-filter="6">Nella media</button>
+        <button class="filter-btn" data-filter="low">Non mi sono piaciuti</button>
       </div>
 
       <div id="animeList">
@@ -282,12 +284,12 @@
       it:{'nav.home':'Home','nav.about':'Chi sono','nav.projects':'Progetti','footer.contact':'Contatti',
         'anime.title':'Le mie recensioni anime','anime.sub':'Sincronizzato da <a href="https://myanimelist.net/profile/reverxe" target="_blank">MyAnimeList</a> — voti e lista aggiornati automaticamente',
         'anime.total':'Completati','anime.avg':'Media voto','anime.top':'Voto massimo',
-        'anime.all':'Tutti','anime.masterpiece':'Capolavori (10)','anime.loading':'Caricamento dalla lista MAL...',
+        'anime.all':'Tutti','anime.loading':'Caricamento dalla lista MAL...',
         'anime.error':'Errore nel caricamento. <a href="https://myanimelist.net/animelist/reverxe" target="_blank">Vedi su MAL →</a>'},
       en:{'nav.home':'Home','nav.about':'About','nav.projects':'Projects','footer.contact':'Contact',
         'anime.title':'My anime reviews','anime.sub':'Synced from <a href="https://myanimelist.net/profile/reverxe" target="_blank">MyAnimeList</a> — ratings and list updated automatically',
         'anime.total':'Completed','anime.avg':'Avg score','anime.top':'Top score',
-        'anime.all':'All','anime.masterpiece':'Masterpieces (10)','anime.loading':'Loading from MAL list...',
+        'anime.all':'All','anime.loading':'Loading from MAL list...',
         'anime.error':'Loading error. <a href="https://myanimelist.net/animelist/reverxe" target="_blank">View on MAL →</a>'}
     };
     let lang=localStorage.getItem('lang')||'it';
@@ -388,24 +390,31 @@
     }
 
     async function loadCovers(){
-      // Load covers from Jikan in batches
       for(let i=0;i<allAnime.length;i++){
         const anime=allAnime[i];
-        if(anime.image)continue; // already has image
-        try{
-          const res=await fetch(`${JIKAN_BASE}/anime/${anime.mal_id}`);
-          if(res.ok){
-            const data=(await res.json()).data;
-            anime.image=data.images?.jpg?.large_image_url||data.images?.jpg?.image_url||'';
-            anime.genres=(data.genres||[]).map(g=>g.name);
-            anime.year=data.year||data.aired?.prop?.from?.year||'';
-            // Update the card in DOM
-            const card=document.querySelector(`[data-mal-id="${anime.mal_id}"] .anime-cover`);
-            if(card&&anime.image)card.innerHTML=`<img src="${anime.image}" alt="${anime.title}" loading="lazy">`;
-          }
-        }catch(e){console.warn(`Cover ${anime.mal_id}:`,e)}
-        // Rate limit: 3 req/sec for Jikan
-        await new Promise(r=>setTimeout(r,350));
+        if(anime.image)continue;
+        let success=false;
+        for(let attempt=0;attempt<3&&!success;attempt++){
+          try{
+            const res=await fetch(`${JIKAN_BASE}/anime/${anime.mal_id}`);
+            if(res.status===429){
+              // Rate limited — wait longer and retry
+              await new Promise(r=>setTimeout(r,2000+(attempt*1000)));
+              continue;
+            }
+            if(res.ok){
+              const data=(await res.json()).data;
+              anime.image=data.images?.jpg?.large_image_url||data.images?.jpg?.image_url||'';
+              anime.genres=(data.genres||[]).map(g=>g.name);
+              anime.year=data.year||data.aired?.prop?.from?.year||'';
+              const card=document.querySelector(`[data-mal-id="${anime.mal_id}"] .anime-cover`);
+              if(card&&anime.image)card.innerHTML=`<img src="${anime.image}" alt="${anime.title}" loading="lazy">`;
+              success=true;
+            }
+          }catch(e){console.warn(`Cover ${anime.mal_id}:`,e)}
+        }
+        // 1 second between requests to stay under Jikan's rate limit
+        await new Promise(r=>setTimeout(r,1000));
       }
     }
 
@@ -445,15 +454,28 @@
     }
 
     // === FILTERS ===
+    let currentFilter='all';
     document.getElementById('animeFilters').addEventListener('click',e=>{
       const btn=e.target.closest('.filter-btn');
       if(!btn)return;
       document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
-      const f=btn.dataset.filter;
-      if(f==='all')renderAnime(allAnime);
-      else{const min=parseInt(f);renderAnime(allAnime.filter(a=>a.score>=min));}
+      currentFilter=btn.dataset.filter;
+      applyFilter();
     });
+
+    function applyFilter(){
+      let filtered;
+      if(currentFilter==='all'){
+        filtered=allAnime;
+      }else if(currentFilter==='low'){
+        filtered=allAnime.filter(a=>a.score<=5);
+      }else{
+        const exact=parseInt(currentFilter);
+        filtered=allAnime.filter(a=>a.score===exact);
+      }
+      renderAnime(filtered);
+    }
 
     loadAnimeList();
   </script>
