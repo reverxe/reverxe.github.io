@@ -246,12 +246,12 @@
 
       <div class="anime-filters" id="animeFilters">
         <button class="filter-btn active" data-filter="all" data-i18n="anime.all">Tutti</button>
-        <button class="filter-btn" data-filter="10">Capolavori</button>
-        <button class="filter-btn" data-filter="9">Bellissimi</button>
-        <button class="filter-btn" data-filter="8">Molto belli</button>
-        <button class="filter-btn" data-filter="7">Carini</button>
-        <button class="filter-btn" data-filter="6">Nella media</button>
-        <button class="filter-btn" data-filter="low">Non mi sono piaciuti</button>
+        <button class="filter-btn" data-filter="10" data-i18n="anime.f10">Capolavori 10</button>
+        <button class="filter-btn" data-filter="9" data-i18n="anime.f9">Eccellenti 9</button>
+        <button class="filter-btn" data-filter="8" data-i18n="anime.f8">Ottimi 8</button>
+        <button class="filter-btn" data-filter="7" data-i18n="anime.f7">Gradevoli 7</button>
+        <button class="filter-btn" data-filter="6" data-i18n="anime.f6">Discreti 6</button>
+        <button class="filter-btn" data-filter="low" data-i18n="anime.flow">Deludenti ≤5</button>
       </div>
 
       <div id="animeList">
@@ -284,12 +284,14 @@
       it:{'nav.home':'Home','nav.about':'Chi sono','nav.projects':'Progetti','footer.contact':'Contatti',
         'anime.title':'Le mie recensioni anime','anime.sub':'Sincronizzato da <a href="https://myanimelist.net/profile/reverxe" target="_blank">MyAnimeList</a> — voti e lista aggiornati automaticamente',
         'anime.total':'Completati','anime.avg':'Media voto','anime.top':'Voto massimo',
-        'anime.all':'Tutti','anime.loading':'Caricamento dalla lista MAL...',
+        'anime.all':'Tutti','anime.f10':'Capolavori 10','anime.f9':'Eccellenti 9','anime.f8':'Ottimi 8','anime.f7':'Gradevoli 7','anime.f6':'Discreti 6','anime.flow':'Deludenti ≤5',
+        'anime.loading':'Caricamento dalla lista MAL...',
         'anime.error':'Errore nel caricamento. <a href="https://myanimelist.net/animelist/reverxe" target="_blank">Vedi su MAL →</a>'},
       en:{'nav.home':'Home','nav.about':'About','nav.projects':'Projects','footer.contact':'Contact',
         'anime.title':'My anime reviews','anime.sub':'Synced from <a href="https://myanimelist.net/profile/reverxe" target="_blank">MyAnimeList</a> — ratings and list updated automatically',
         'anime.total':'Completed','anime.avg':'Avg score','anime.top':'Top score',
-        'anime.all':'All','anime.loading':'Loading from MAL list...',
+        'anime.all':'All','anime.f10':'Masterpieces 10','anime.f9':'Excellent 9','anime.f8':'Great 8','anime.f7':'Enjoyable 7','anime.f6':'Decent 6','anime.flow':'Disappointing ≤5',
+        'anime.loading':'Loading from MAL list...',
         'anime.error':'Loading error. <a href="https://myanimelist.net/animelist/reverxe" target="_blank">View on MAL →</a>'}
     };
     let lang=localStorage.getItem('lang')||'it';
