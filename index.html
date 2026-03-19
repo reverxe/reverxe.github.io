@@ -23,189 +23,374 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#111111;--bg-card:#1A1A1A;--bg-elevated:#222222;--red:#B91C1C;--red-light:#DC2626;--red-dark:#7F1D1D;--red-deep:#450A0A;--red-glow:rgba(185,28,28,.12);--red-glow-strong:rgba(185,28,28,.25);--text:#E5E5E5;--text-muted:#888888;--text-dim:#555555;--border:#252525;--border-hover:#333333;--navbar-bg:rgba(17,17,17,.88);--mobile-nav-bg:rgba(17,17,17,.96);--font:'Geist Sans','Space Mono',system-ui,sans-serif;--mono:'Geist Mono','Space Mono','Courier New',monospace;--pad:clamp(14px,2.7vw,40px);--max-w:1100px;--radius:12px;--radius-sm:8px}
-    [data-theme="light"]{--bg:#F2F2F2;--bg-card:#FFFFFF;--bg-elevated:#E8E8E8;--red-glow:rgba(185,28,28,.07);--red-glow-strong:rgba(185,28,28,.14);--text:#1A1A1A;--text-muted:#666666;--text-dim:#999999;--border:#DCDCDC;--border-hover:#CCCCCC;--navbar-bg:rgba(242,242,242,.88);--mobile-nav-bg:rgba(242,242,242,.96)}
+    :root{
+      --bg:#111111;--bg-card:#1A1A1A;--bg-elevated:#222222;
+      --red:#C0152A;--red-light:#E8203B;--red-mid:#991B28;--red-dark:#7A1220;--red-deep:#450A0A;
+      --red-berry:#E8334A;--red-rose:#F05068;
+      --red-glow:rgba(192,21,42,.13);--red-glow-strong:rgba(192,21,42,.28);
+      --text:#E5E5E5;--text-muted:#888888;--text-dim:#555555;
+      --border:#252525;--border-hover:#333333;
+      --navbar-bg:rgba(17,17,17,.88);--mobile-nav-bg:rgba(17,17,17,.96);
+      --font:'Geist Sans',system-ui,sans-serif;
+      --font-heading:'Syne','Geist Sans',system-ui,sans-serif;
+      --mono:'Geist Mono','Courier New',monospace;
+      --pad:clamp(14px,2.7vw,40px);--max-w:1100px;--radius:12px;--radius-sm:8px
+    }
+    [data-theme="light"]{
+      --bg:#F2F2F2;--bg-card:#FFFFFF;--bg-elevated:#E8E8E8;
+      --red-glow:rgba(192,21,42,.07);--red-glow-strong:rgba(192,21,42,.15);
+      --text:#1A1A1A;--text-muted:#666666;--text-dim:#999999;
+      --border:#DCDCDC;--border-hover:#CCCCCC;
+      --navbar-bg:rgba(242,242,242,.88);--mobile-nav-bg:rgba(242,242,242,.96)
+    }
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .35s,color .35s;min-height:100vh;display:flex;flex-direction:column;line-height:1.6}
     a{color:inherit;text-decoration:none}
     .glow{position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:gp 8s ease-in-out infinite}
     .glow--1{width:600px;height:600px;background:radial-gradient(circle,var(--red-glow) 0%,transparent 70%);top:-200px;right:-200px}
-    .glow--2{width:400px;height:400px;background:radial-gradient(circle,rgba(185,28,28,.06) 0%,transparent 70%);bottom:-100px;left:-100px;animation-duration:12s;animation-direction:reverse}
+    .glow--2{width:400px;height:400px;background:radial-gradient(circle,rgba(192,21,42,.06) 0%,transparent 70%);bottom:-100px;left:-100px;animation-duration:12s;animation-direction:reverse}
     @keyframes gp{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
-    .scroll-progress{position:fixed;top:0;left:0;width:0;height:2px;background:var(--red);z-index:10001;transition:width .05s linear}
+    .scroll-progress{position:fixed;top:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--red-dark),var(--red-berry));z-index:10001;transition:width .05s linear}
 
-    .navbar{position:fixed;top:0;left:0;right:0;z-index:10000;padding:0 var(--pad);transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
-    .navbar.scrolled{background:var(--navbar-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom-color:var(--border)}
-    .navbar-inner{max-width:var(--max-w);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
-    .nav-left{display:flex;align-items:center;gap:4px;flex:1}
-    .hamburger{display:flex;flex-direction:column;gap:4px;cursor:pointer;background:none;border:none;padding:6px}
-    .hamburger span{width:20px;height:2px;background:var(--text);border-radius:2px;transition:transform .3s,opacity .3s,width .3s}
-    .hamburger span:nth-child(2){width:14px}
-    .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px);width:20px}
-    .hamburger.open span:nth-child(2){opacity:0}
-    .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px);width:20px}
-    .nav-socials{display:flex;align-items:center;gap:2px;margin-left:10px;padding-left:10px;border-left:1px solid var(--border)}
-    .nav-social-icon{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:6px;color:var(--text-dim);transition:color .2s,background .2s}
-    .nav-social-icon:hover{color:var(--red);background:var(--red-glow)}
-    .nav-social-icon svg{width:15px;height:15px;fill:currentColor}
-    .nav-center{display:flex;align-items:center;gap:28px}
-    .nav-center a{font-size:12px;font-weight:500;color:var(--text-muted);letter-spacing:.04em;transition:color .2s;position:relative}
-    .nav-center a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--red);transform:scaleX(0);transition:transform .2s;border-radius:1px}
-    .nav-center a:hover{color:var(--text)}.nav-center a:hover::after{transform:scaleX(1)}
-    .nav-center a.active{color:var(--red)}.nav-center a.active::after{transform:scaleX(1)}
-    .nav-right{display:flex;align-items:center;gap:4px;flex:1;justify-content:flex-end}
-    .nav-btn{display:flex;align-items:center;justify-content:center;height:30px;border-radius:6px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--text-dim);transition:color .2s,border-color .2s,background .2s;padding:0}
-    .nav-btn:hover{color:var(--red);border-color:var(--red);background:var(--red-glow)}
-    .nav-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s}
-    .nav-btn:hover svg{transform:rotate(20deg)}
-    .nav-btn .icon-sun{display:none}.nav-btn .icon-moon{display:block}
-    [data-theme="light"] .nav-btn .icon-sun{display:block}[data-theme="light"] .nav-btn .icon-moon{display:none}
-    .theme-btn{width:30px}
-    .lang-toggle{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.5px;overflow:hidden;width:auto;gap:0;padding:0}
-    .lang-toggle span{display:inline-flex;align-items:center;justify-content:center;padding:0 8px;height:100%;transition:background .2s,color .2s}
-    .lang-toggle .lang-active{background:var(--red);color:#fff}.lang-toggle .lang-inactive{color:var(--text-dim)}
-    .slide-menu{position:fixed;top:56px;left:0;width:260px;height:calc(100vh - 56px);background:var(--mobile-nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-right:1px solid var(--border);padding:24px 20px;z-index:9999;display:flex;flex-direction:column;gap:6px;transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
-    .slide-menu.open{transform:translateX(0)}
-    .slide-menu a{font-size:14px;color:var(--text-muted);padding:10px 0;transition:color .2s;border-bottom:1px solid var(--border)}
-    .slide-menu a:last-of-type{border-bottom:none}
-    .slide-menu a:hover,.slide-menu a.active{color:var(--red)}
-    .menu-overlay{position:fixed;inset:0;top:56px;background:rgba(0,0,0,.4);z-index:9998;opacity:0;pointer-events:none;transition:opacity .35s}
-    .menu-overlay.open{opacity:1;pointer-events:auto}
-    .page-transition{animation:pageIn .5s ease forwards}
-    @keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    /* === NAVBAR V1 STYLE === */
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:10000;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:var(--navbar-bg);border-bottom:1px solid var(--border)}
+    .navbar-inner{max-width:var(--max-w);margin:0 auto;padding:0 var(--pad);height:56px;display:flex;align-items:center;justify-content:space-between}
+    .nav-socials{display:flex;align-items:center;gap:12px}
+    .nav-socials a{display:flex;align-items:center;color:var(--text-muted);transition:color .2s}
+    .nav-socials a:hover{color:var(--red-berry)}
+    .nav-socials svg{width:18px;height:18px;fill:currentColor}
+    .nav-links{display:flex;gap:28px;font-size:13px;font-weight:500;letter-spacing:.02em}
+    .nav-links a{color:var(--text-muted);transition:color .2s;position:relative}
+    .nav-links a:hover,.nav-links a.active{color:var(--text)}
+    .nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--red-berry);border-radius:1px}
+    .nav-controls{display:flex;align-items:center;gap:8px}
+    .toggle-btn{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:5px 10px;font-family:var(--mono);font-size:11px;color:var(--text-muted);cursor:pointer;transition:border-color .2s,color .2s;display:flex;align-items:center;gap:4px}
+    .toggle-btn:hover{border-color:var(--border-hover);color:var(--text)}
+    .toggle-btn .active-opt{color:var(--red-berry);font-weight:700}
+    .toggle-btn .sep{color:var(--text-dim);margin:0 2px}
+    @media(max-width:768px){
+      .nav-links,.nav-socials{display:none}
+    }
 
-    .hero{min-height:auto;display:flex;align-items:flex-start;justify-content:center;padding:120px var(--pad) 40px;position:relative;z-index:1}
-    .hero-inner{max-width:var(--max-w);width:100%}
-    .hero-title{font-size:clamp(28px,5vw,48px);font-weight:700;line-height:1.15;letter-spacing:-.02em;margin-bottom:12px;min-height:1.2em}
-    .hero-title .sep{color:var(--text-dim);font-weight:300;margin:0 4px}
-    .hero-title .cursor{display:inline-block;width:2px;height:.85em;background:var(--red);margin-left:2px;vertical-align:text-bottom;animation:blink .8s step-end infinite}
+    /* === MAIN === */
+    .main{max-width:var(--max-w);margin:0 auto;padding:88px var(--pad) 40px;position:relative;z-index:1}
+
+    /* === HERO === */
+    .hero{margin-bottom:12px}
+    .hero-title{font-family:var(--font-heading);font-size:clamp(28px,5vw,48px);font-weight:700;letter-spacing:-.02em;line-height:1.15;min-height:1.2em}
+    .hero-title .cursor{display:inline-block;width:2px;height:.85em;background:var(--red-berry);margin-left:2px;vertical-align:text-bottom;animation:blink .8s step-end infinite}
     @keyframes blink{50%{opacity:0}}
-    .hero-desc{font-size:15px;line-height:1.7;color:var(--text-muted);max-width:600px;opacity:0;transform:translateY(10px);transition:opacity .6s ease .2s,transform .6s ease .2s}
-    .hero-desc.visible{opacity:1;transform:translateY(0)}
-    .hero-desc .accent{color:var(--red);font-weight:500}
-    .wip-banner{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:10px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text-muted);font-family:var(--mono);opacity:0;transform:translateY(10px);transition:opacity .6s ease .5s,transform .6s ease .5s}
-    .wip-banner.visible{opacity:1;transform:translateY(0)}
-    .wip-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:dp 2s ease-in-out infinite}
-    @keyframes dp{50%{opacity:.3}}
+    .hero-bio{font-size:15px;color:var(--text-muted);line-height:1.7;max-width:600px;margin-top:10px}
+    .hero-bio strong{color:var(--text);font-weight:500}
 
-    .bento-section{padding:16px var(--pad) 64px;position:relative;z-index:1}
-    .bento-inner{max-width:var(--max-w);margin:0 auto}
-    .bento{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:14px}
-    .bento-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;transition:border-color .25s,transform .2s,box-shadow .25s;cursor:pointer;position:relative;overflow:hidden;display:block}
-    .bento-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--red-dark),var(--red),var(--red-light));transform:scaleX(0);transform-origin:left;transition:transform .3s}
+    /* === WIP BANNER === */
+    .wip-banner{display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 16px;margin:20px 0 32px;font-family:var(--mono);font-size:12px;color:var(--text-muted);max-width:fit-content}
+    .wip-dot{width:8px;height:8px;background:var(--red-berry);border-radius:50%;animation:pulse-dot 2s ease-in-out infinite;flex-shrink:0}
+    @keyframes pulse-dot{0%,100%{opacity:1;box-shadow:0 0 0 0 var(--red-glow-strong)}50%{opacity:.6;box-shadow:0 0 0 6px transparent}}
+
+    /* === BENTO GRID === */
+    .bento{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:16px}
+    .bento-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:border-color .25s,box-shadow .25s,transform .2s;display:flex;flex-direction:column;cursor:pointer;position:relative;overflow:hidden}
+    .bento-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--red-dark),var(--red),var(--red-berry));transform:scaleX(0);transform-origin:left;transition:transform .3s}
     .bento-card:hover::before{transform:scaleX(1)}
     .bento-card:hover{border-color:var(--border-hover);transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.2)}
     [data-theme="light"] .bento-card{box-shadow:0 1px 3px rgba(0,0,0,.04)}
     [data-theme="light"] .bento-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.08)}
-    .bento-about{grid-row:1/3;display:flex;flex-direction:column;justify-content:space-between}
-    .card-label{font-family:var(--mono);font-size:11px;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
-    .card-title{font-size:18px;font-weight:600;margin-bottom:8px;letter-spacing:-.01em}
-    .card-desc{font-size:13px;color:var(--text-muted);line-height:1.65}
-    .card-arrow{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--red);margin-top:18px;transition:gap .2s}
+    .bento-about{grid-row:1/3;justify-content:space-between}
+    .card-label{font-family:var(--mono);font-size:11px;color:var(--red-berry);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+    .card-title{font-family:var(--font-heading);font-size:20px;font-weight:700;margin-bottom:10px;letter-spacing:-.01em;color:var(--text)}
+    .card-desc{font-size:14px;color:var(--text-muted);line-height:1.65;flex:1}
+    .card-arrow{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--red-berry);margin-top:20px;transition:gap .2s}
     .bento-card:hover .card-arrow{gap:10px}
-    .skill-tags{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0}
-    .skill-tag{font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:4px;background:var(--red-glow);color:var(--red-light);border:1px solid rgba(185,28,28,.15)}
+    .skills-grid{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0}
+    .skill-tag{font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:4px;background:var(--red-glow);color:var(--red-rose);border:1px solid rgba(192,21,42,.18)}
+    .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+    .about-stat{padding:12px;background:var(--bg-elevated);border-radius:var(--radius-sm)}
+    .about-stat-value{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--red-berry)}
+    .about-stat-label{font-size:11px;color:var(--text-dim);margin-top:2px}
+    @media(max-width:768px){.bento{grid-template-columns:1fr;grid-template-rows:auto}.bento-about{grid-row:auto}}
 
-    .now-playing{position:fixed;bottom:20px;right:20px;z-index:90;display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;max-width:280px;transition:transform .3s,opacity .3s;opacity:.85}
+    /* === MUSIC PLAYER (left fixed) === */
+    .now-playing{position:fixed;bottom:20px;left:20px;z-index:90;display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px 10px 10px;max-width:280px;transition:transform .3s,opacity .3s;opacity:.85}
     .now-playing:hover{opacity:1;transform:translateY(-2px)}
     .now-playing.hidden{transform:translateY(100px);opacity:0;pointer-events:none}
     .np-close{position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:var(--bg-elevated);border:1px solid var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);font-size:11px;line-height:1;transition:all .2s;padding:0;font-family:var(--font);font-weight:500}
-    .np-close:hover{color:#fff;border-color:var(--red);background:var(--red)}
+    .np-close:hover{color:#fff;border-color:var(--red-berry);background:var(--red-berry)}
     .np-art{width:36px;height:36px;border-radius:6px;background:var(--red-glow);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
     .np-art img{width:100%;height:100%;object-fit:cover}
     .np-bars{display:flex;align-items:flex-end;gap:2px;height:16px}
-    .np-bars span{width:3px;background:var(--red);border-radius:1px;animation:eq 1s ease-in-out infinite}
+    .np-bars span{width:3px;background:var(--red-berry);border-radius:1px;animation:eq 1s ease-in-out infinite}
     .np-bars span:nth-child(1){height:8px;animation-delay:0s}.np-bars span:nth-child(2){height:14px;animation-delay:.15s}.np-bars span:nth-child(3){height:6px;animation-delay:.3s}.np-bars span:nth-child(4){height:12px;animation-delay:.45s}
     @keyframes eq{0%,100%{height:4px}50%{height:16px}}
     .np-info{min-width:0}
-    .np-label{font-size:9px;color:var(--red);text-transform:uppercase;letter-spacing:1px;font-family:var(--mono);margin-bottom:2px}
+    .np-label{font-size:9px;color:var(--red-berry);text-transform:uppercase;letter-spacing:1px;font-family:var(--mono);margin-bottom:2px}
     .np-track{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .np-artist{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    @media(max-width:520px){.now-playing{bottom:12px;left:12px;right:12px;max-width:none}}
 
+    /* === FOOTER === */
     .footer{padding:24px var(--pad);border-top:1px solid var(--border);position:relative;z-index:1;margin-top:auto}
     .footer-inner{max-width:var(--max-w);margin:0 auto;display:flex;flex-direction:column;gap:16px}
     .footer-top{display:flex;justify-content:space-between;align-items:flex-start}
     .footer-contact{display:flex;flex-direction:column;gap:4px}
-    .footer-contact-label{font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:1px;font-family:var(--mono);margin-bottom:2px}
+    .footer-contact-label{font-size:10px;color:var(--red-berry);text-transform:uppercase;letter-spacing:1px;font-family:var(--mono);margin-bottom:2px}
     .footer-email{font-size:12px;color:var(--text-muted);transition:color .2s;display:inline-flex;align-items:center;gap:6px}
-    .footer-email:hover{color:var(--red)}
+    .footer-email:hover{color:var(--red-berry)}
     .footer-email-tag{font-size:9px;color:var(--text-dim);background:var(--bg-card);border:1px solid var(--border);padding:1px 6px;border-radius:4px;font-family:var(--mono)}
     .footer-bottom{display:flex;justify-content:center}
-    .footer-text{font-size:11px;color:var(--text-dim)}.footer-text span{color:var(--red)}
-    .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:translateY(0)}
-    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--red)}
-    @media(max-width:1000px){.nav-socials{display:none}}
-    @media(max-width:900px){.nav-center{display:none}.bento{grid-template-columns:1fr}.bento-about{grid-row:auto}.footer-inner{text-align:center}.footer-top{flex-direction:column;align-items:center;gap:16px}.footer-contact{align-items:center}.hero-title{font-size:clamp(24px,7vw,40px)}.now-playing{right:10px;bottom:10px;max-width:240px}}
-    @media(min-width:901px){.menu-overlay{display:none!important}}
+    .footer-text{font-size:11px;color:var(--text-dim);text-align:center}.footer-text span{color:var(--red-berry)}
+    @media(max-width:768px){.footer-top{flex-direction:column;align-items:center;gap:16px}.footer-contact{align-items:center}}
+
+    /* === FADE-IN === */
+    .fade-in{opacity:0;transform:translateY(12px);animation:fadeUp .5s ease forwards}
+    @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+    .fade-in:nth-child(1){animation-delay:.05s}.fade-in:nth-child(2){animation-delay:.1s}.fade-in:nth-child(3){animation-delay:.15s}.fade-in:nth-child(4){animation-delay:.2s}.fade-in:nth-child(5){animation-delay:.25s}
+
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--red-berry)}
   </style>
 </head>
 <body>
   <div class="glow glow--1"></div><div class="glow glow--2"></div>
   <div class="scroll-progress" id="scrollProgress"></div>
-  <nav class="navbar" id="navbar"><div class="navbar-inner">
-    <div class="nav-left">
-      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
       <div class="nav-socials">
-        <a href="https://steamcommunity.com/id/reverxe/" class="nav-social-icon" target="_blank" title="Steam"><svg viewBox="0 0 24 24"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg></a>
-        <a href="https://www.twitch.tv/reverxe__" class="nav-social-icon" target="_blank" title="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></a>
-        <a href="https://www.instagram.com/luca.carabelli/" class="nav-social-icon" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></a>
-        <a href="https://www.tiktok.com/@reverxe" class="nav-social-icon" target="_blank" title="TikTok"><svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
-        <a href="https://github.com/reverxe" class="nav-social-icon" target="_blank" title="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+        <a href="https://github.com/reverxe" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg></a>
+        <a href="https://www.twitch.tv/reverxe__" target="_blank" rel="noopener" aria-label="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 2L3.429 4.714v14.572h4.285V22l2.572-2.714h2.143L19.714 12V2zm12 9.143l-2.571 2.571h-2.572l-2.285 2.286v-2.286H7.714V3.714H18z"/></svg></a>
+        <a href="https://www.instagram.com/luca.carabelli/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+        <a href="https://steamcommunity.com/id/reverxe/" target="_blank" rel="noopener" aria-label="Steam"><svg viewBox="0 0 24 24"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658a3.387 3.387 0 011.912-.587c.064 0 .128.002.191.006l2.861-4.142V8.91a4.528 4.528 0 014.524-4.524c2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396a3.406 3.406 0 01-3.324-2.751l-4.612-1.906C2.614 20.7 6.906 24 11.979 24 18.627 24 24 18.627 24 11.979S18.627 0 11.979 0zM7.54 18.21l-1.473-.61a2.541 2.541 0 004.578.456 2.542 2.542 0 00-1.376-3.322 2.546 2.546 0 00-1.87-.04l1.523.63a1.874 1.874 0 01-1.382 3.487v-.001zm8.402-5.684a3.016 3.016 0 003.015-3.015 3.018 3.018 0 00-3.015-3.016 3.018 3.018 0 00-3.015 3.016 3.016 3.016 0 003.015 3.015zm-.004-4.533a1.52 1.52 0 011.518 1.518 1.52 1.52 0 01-1.518 1.518 1.52 1.52 0 01-1.517-1.518 1.52 1.52 0 011.517-1.518z"/></svg></a>
+      </div>
+
+      <div class="nav-links">
+        <a href="index.html" class="active" data-i18n="nav_home">Home</a>
+        <a href="about.html" data-i18n="nav_about">Chi sono</a>
+        <a href="projects.html" data-i18n="nav_projects">Progetti</a>
+        <a href="blog.html">Blog</a>
+        <a href="social.html">Social</a>
+      </div>
+
+      <div class="nav-controls">
+        <button class="toggle-btn" id="langToggle" aria-label="Cambia lingua">
+          <span class="active-opt" id="langIT">IT</span>
+          <span class="sep">|</span>
+          <span id="langEN">EN</span>
+        </button>
+        <button class="toggle-btn" id="themeToggle" aria-label="Cambia tema">
+          <span id="themeIcon">☾</span>
+        </button>
       </div>
     </div>
-    <div class="nav-center">
-      <a href="index.html" class="active" data-i18n="nav.home">Home</a>
-      <a href="about.html" data-i18n="nav.about">Chi sono</a>
-      <a href="projects.html" data-i18n="nav.projects">Progetti</a>
-      <a href="blog.html">Blog</a>
-      <a href="social.html">Social</a>
-    </div>
-    <div class="nav-right">
-      <button class="nav-btn lang-toggle" id="langToggle" aria-label="Cambia lingua"><span class="lang-active" data-lang="it">IT</span><span class="lang-inactive" data-lang="en">EN</span></button>
-      <button class="nav-btn theme-btn" id="themeToggle" aria-label="Cambia tema"><svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
-    </div>
-  </div></nav>
-  <div class="menu-overlay" id="menuOverlay"></div>
-  <div class="slide-menu" id="slideMenu"><a href="index.html" class="active" data-i18n="nav.home">Home</a><a href="about.html" data-i18n="nav.about">Chi sono</a><a href="projects.html" data-i18n="nav.projects">Progetti</a><a href="blog.html">Blog</a><a href="social.html">Social</a></div>
+  </nav>
 
-  <section class="hero page-transition"><div class="hero-inner">
-    <h1 class="hero-title" id="typingTitle"></h1>
-    <p class="hero-desc" id="heroDesc" data-i18n="hero.desc">Developer in formazione, aspirante <span class="accent">3D artist</span> e <span class="accent">game designer</span>. Appassionato di anime e manga psicologici, streamer e autore di storie originali tra manga e light novel.</p>
-    <div class="wip-banner" id="wipBanner" data-i18n="hero.wip"><span class="wip-dot"></span>Sito in costruzione — alcune pagine potrebbero non funzionare</div>
-  </div></section>
+  <main class="main">
+    <section class="hero fade-in">
+      <h1 class="hero-title" id="heroTitle"><span class="cursor"></span></h1>
+      <p class="hero-bio" data-i18n="hero_bio">
+        Developer in formazione, aspirante <strong>3D artist</strong> e <strong>game designer</strong>. Appassionato di anime e manga psicologici, streamer e autore di storie originali tra manga e light novel.
+      </p>
+    </section>
 
-  <section class="bento-section reveal"><div class="bento-inner"><div class="bento">
-    <a href="about.html" class="bento-card bento-about">
-      <div><div class="card-label">Chi sono</div><div class="card-title" data-i18n="teaser.about.title">Il mio percorso</div><div class="card-desc" data-i18n="teaser.about.desc">Competenze tecniche, lingue, formazione e la timeline del mio percorso tra sviluppo, 3D e game design.</div>
-      <div class="skill-tags"><span class="skill-tag">Unity</span><span class="skill-tag">Blender</span><span class="skill-tag">C#</span><span class="skill-tag">Python</span><span class="skill-tag">C++</span></div></div>
-      <div class="card-arrow">Scopri di più →</div>
+    <div class="wip-banner fade-in" data-i18n="wip">
+      <div class="wip-dot"></div>
+      Sito in costruzione — alcune pagine potrebbero non funzionare
+    </div>
+
+    <div class="bento">
+      <a href="about.html" class="bento-card bento-about fade-in">
+        <div>
+          <div class="card-label" data-i18n="card_about_label">Chi sono</div>
+          <div class="card-title" data-i18n="card_about_title">Il mio percorso</div>
+          <div class="card-desc" data-i18n="card_about_desc">Competenze tecniche, lingue, formazione e la timeline del mio percorso tra sviluppo, 3D e game design.</div>
+          <div class="skills-grid">
+            <span class="skill-tag">Unity</span>
+            <span class="skill-tag">Blender</span>
+            <span class="skill-tag">C#</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">C++</span>
+          </div>
+        </div>
+        <div>
+          <div class="about-stats">
+            <div class="about-stat">
+              <div class="about-stat-value">ITS</div>
+              <div class="about-stat-label" data-i18n="stat_formation">Formazione</div>
+            </div>
+            <div class="about-stat">
+              <div class="about-stat-value">3</div>
+              <div class="about-stat-label" data-i18n="stat_langs">Lingue</div>
+            </div>
+          </div>
+          <div class="card-arrow" data-i18n="card_cta_discover">Scopri di più →</div>
+        </div>
+      </a>
+
+      <a href="projects.html" class="bento-card fade-in">
+        <div class="card-label" data-i18n="card_projects_label">Progetti</div>
+        <div class="card-title" data-i18n="card_projects_title">Portfolio creativo e tecnico</div>
+        <div class="card-desc" data-i18n="card_projects_desc">Dai character design originali ai progetti di sviluppo. Manga, modelli 3D e codice.</div>
+        <div class="card-arrow" data-i18n="card_cta_all">Vedi tutto →</div>
+      </a>
+
+      <a href="blog.html" class="bento-card fade-in">
+        <div class="card-label" data-i18n="card_blog_label">Blog</div>
+        <div class="card-title" data-i18n="card_blog_title">Recensioni e storie</div>
+        <div class="card-desc" data-i18n="card_blog_desc">Recensioni anime, pensieri sulle serie che guardo e capitoli del mio romanzo in corso.</div>
+        <div class="card-arrow" data-i18n="card_cta_read">Leggi ora →</div>
+      </a>
+    </div>
+  </main>
+
+  <!-- NOW PLAYING — fixed LEFT -->
+  <div class="now-playing" id="nowPlayingWrapper">
+    <button class="np-close" id="npClose" aria-label="Chiudi player">&#x2715;</button>
+    <a id="nowPlaying" href="#" target="_blank" style="text-decoration:none;display:flex;align-items:center;gap:10px;color:inherit">
+      <div class="np-art" id="npArt"><div class="np-bars"><span></span><span></span><span></span><span></span></div></div>
+      <div class="np-info">
+        <div class="np-label" id="npLabel">Now playing</div>
+        <div class="np-track" id="npTrack">—</div>
+        <div class="np-artist" id="npArtist">Non in riproduzione</div>
+      </div>
     </a>
-    <a href="projects.html" class="bento-card"><div class="card-label">Progetti</div><div class="card-title" data-i18n="teaser.projects.title">Portfolio creativo e tecnico</div><div class="card-desc" data-i18n="teaser.projects.desc">Dai character design originali ai progetti di sviluppo. Manga, modelli 3D e codice.</div><div class="card-arrow">Vedi tutto →</div></a>
-    <a href="blog.html" class="bento-card"><div class="card-label">Blog</div><div class="card-title">Recensioni e storie</div><div class="card-desc" data-i18n="teaser.blog.desc">Recensioni anime, pensieri sulle serie che guardo e capitoli del mio romanzo in corso.</div><div class="card-arrow">Leggi ora →</div></a>
-  </div></div></section>
+  </div>
 
-  <div class="now-playing" id="nowPlayingWrapper"><button class="np-close" id="npClose" aria-label="Chiudi player">&#x2715;</button><a id="nowPlaying" href="#" target="_blank" style="text-decoration:none;display:flex;align-items:center;gap:10px;color:inherit"><div class="np-art" id="npArt"><div class="np-bars"><span></span><span></span><span></span><span></span></div></div><div class="np-info"><div class="np-label" id="npLabel">Now playing</div><div class="np-track" id="npTrack">—</div><div class="np-artist" id="npArtist">Non in riproduzione</div></div></a></div>
-
-  <footer class="footer"><div class="footer-inner"><div class="footer-top"><div class="footer-contact"><div class="footer-contact-label" data-i18n="footer.contact">Contatti</div><a href="mailto:luca.carabelli@outlook.it" class="footer-email">luca.carabelli@outlook.it <span class="footer-email-tag">main</span></a><a href="mailto:rev3yt@gmail.com" class="footer-email">rev3yt@gmail.com <span class="footer-email-tag">creative</span></a></div></div><div class="footer-bottom"><p class="footer-text">© 2026 Luca Carabelli — built with <span>♥</span>, code, and a little help from Claude AI.</p></div></div></footer>
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-contact">
+          <div class="footer-contact-label" data-i18n="footer_contacts">Contatti</div>
+          <a href="mailto:luca.carabelli@outlook.it" class="footer-email">luca.carabelli@outlook.it <span class="footer-email-tag">main</span></a>
+          <a href="mailto:rev3yt@gmail.com" class="footer-email">rev3yt@gmail.com <span class="footer-email-tag">creative</span></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-text">© 2026 Luca Carabelli — built with <span>♥</span>, code, and a little help from Claude AI.</p>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    const T={it:{'nav.home':'Home','nav.about':'Chi sono','nav.projects':'Progetti','hero.desc':'Developer in formazione, aspirante <span class="accent">3D artist</span> e <span class="accent">game designer</span>. Appassionato di anime e manga psicologici, streamer e autore di storie originali tra manga e light novel.','teaser.about.title':'Il mio percorso','teaser.about.desc':'Competenze tecniche, lingue, formazione e la timeline del mio percorso tra sviluppo, 3D e game design.','teaser.projects.title':'Portfolio creativo e tecnico','teaser.projects.desc':'Dai character design originali ai progetti di sviluppo. Manga, modelli 3D e codice.','teaser.blog.desc':'Recensioni anime, pensieri sulle serie che guardo e capitoli del mio romanzo in corso.','footer.contact':'Contatti','hero.wip':'<span class="wip-dot"></span>Sito in costruzione — alcune pagine potrebbero non funzionare'},en:{'nav.home':'Home','nav.about':'About','nav.projects':'Projects','hero.desc':'Developer in training, aspiring <span class="accent">3D artist</span> and <span class="accent">game designer</span>. Passionate about psychological anime and manga, streamer and author of original stories across manga and light novels.','teaser.about.title':'My journey','teaser.about.desc':'Technical skills, languages, education and the timeline of my path through development, 3D and game design.','teaser.projects.title':'Creative & technical portfolio','teaser.projects.desc':'From original character designs to development projects. Manga, 3D models and code.','teaser.blog.desc':'Anime reviews, thoughts on the series I watch, and chapters of my ongoing novel.','footer.contact':'Contact','hero.wip':'<span class="wip-dot"></span>Site under construction — some pages may not work'}};
-    let lang=localStorage.getItem('lang')||'it';
-    function setLang(l){lang=l;document.documentElement.lang=l;localStorage.setItem('lang',l);document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(T[l][k])el.innerHTML=T[l][k]});document.querySelectorAll('.lang-toggle span').forEach(s=>{s.classList.toggle('lang-active',s.dataset.lang===l);s.classList.toggle('lang-inactive',s.dataset.lang!==l)})}
-    setLang(lang);
-    document.getElementById('langToggle').addEventListener('click',()=>setLang(lang==='it'?'en':'it'));
-    if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');
-    document.getElementById('themeToggle').addEventListener('click',()=>{const l=document.documentElement.getAttribute('data-theme')==='light';if(l){document.documentElement.removeAttribute('data-theme');localStorage.setItem('theme','dark')}else{document.documentElement.setAttribute('data-theme','light');localStorage.setItem('theme','light')}});
-    window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;const p=h>0?(window.scrollY/h)*100:0;document.getElementById('scrollProgress').style.width=p+'%';document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>30)});
-    const ham=document.getElementById('hamburger'),smenu=document.getElementById('slideMenu'),sov=document.getElementById('menuOverlay');function tog(){ham.classList.toggle('open');smenu.classList.toggle('open');sov.classList.toggle('open')}ham.addEventListener('click',tog);sov.addEventListener('click',tog);
-    document.getElementById('npClose').addEventListener('click',function(e){e.preventDefault();e.stopPropagation();document.getElementById('nowPlayingWrapper').classList.add('hidden')});
-    (function(){const el=document.getElementById('typingTitle');const text='Luca Carabelli / reverxe';const sepIdx=text.indexOf('/');let i=0;el.innerHTML='<span class="cursor"></span>';function type(){if(i<=text.length){let html='';const typed=text.slice(0,i);if(i<=sepIdx){html=typed+'<span class="cursor"></span>'}else{html=text.slice(0,sepIdx)+typed.slice(sepIdx)+'<span class="cursor"></span>'}html=html.replace(' / ','<span class="sep"> / </span>');el.innerHTML=html;i++;setTimeout(type,i===sepIdx+1?300:70)}else{setTimeout(()=>{const c=el.querySelector('.cursor');if(c)c.remove();document.getElementById('heroDesc').classList.add('visible');document.getElementById('wipBanner').classList.add('visible')},600)}}setTimeout(type,500)})();
-    const obs=new IntersectionObserver(e=>e.forEach((en,i)=>{if(en.isIntersecting){setTimeout(()=>en.target.classList.add('visible'),i*100);obs.unobserve(en.target)}}),{threshold:.1});document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));document.querySelectorAll('.bento-card').forEach((c,i)=>c.style.transitionDelay=`${i*.1}s`);
+    const i18n = {
+      it: {
+        nav_home:'Home', nav_about:'Chi sono', nav_projects:'Progetti', nav_blog:'Blog', nav_social:'Social',
+        hero_bio:'Developer in formazione, aspirante <strong>3D artist</strong> e <strong>game designer</strong>. Appassionato di anime e manga psicologici, streamer e autore di storie originali tra manga e light novel.',
+        wip:'<div class="wip-dot"></div> Sito in costruzione — alcune pagine potrebbero non funzionare',
+        card_about_label:'Chi sono', card_about_title:'Il mio percorso',
+        card_about_desc:'Competenze tecniche, lingue, formazione e la timeline del mio percorso tra sviluppo, 3D e game design.',
+        stat_formation:'Formazione', stat_langs:'Lingue',
+        card_cta_discover:'Scopri di più →',
+        card_projects_label:'Progetti', card_projects_title:'Portfolio creativo e tecnico',
+        card_projects_desc:'Dai character design originali ai progetti di sviluppo. Manga, modelli 3D e codice.',
+        card_cta_all:'Vedi tutto →',
+        card_blog_label:'Blog', card_blog_title:'Recensioni e storie',
+        card_blog_desc:'Recensioni anime, pensieri sulle serie che guardo e capitoli del mio romanzo in corso.',
+        card_cta_read:'Leggi ora →',
+        footer_contacts:'Contatti',
+        typing_lines:['Ciao, sono Luca.','Aka reverxe.','Developer. Creator. Storyteller.'],
+      },
+      en: {
+        nav_home:'Home', nav_about:'About me', nav_projects:'Projects', nav_blog:'Blog', nav_social:'Social',
+        hero_bio:'Developer in training, aspiring <strong>3D artist</strong> and <strong>game designer</strong>. Passionate about psychological anime and manga, streamer and author of original stories across manga and light novels.',
+        wip:'<div class="wip-dot"></div> Site under construction — some pages may not work',
+        card_about_label:'About me', card_about_title:'My journey',
+        card_about_desc:'Technical skills, languages, education and the timeline of my path through development, 3D and game design.',
+        stat_formation:'Education', stat_langs:'Languages',
+        card_cta_discover:'Discover more →',
+        card_projects_label:'Projects', card_projects_title:'Creative & technical portfolio',
+        card_projects_desc:'From original character designs to development projects. Manga, 3D models and code.',
+        card_cta_all:'See all →',
+        card_blog_label:'Blog', card_blog_title:'Reviews & stories',
+        card_blog_desc:'Anime reviews, thoughts on shows I watch and chapters of my ongoing novel.',
+        card_cta_read:'Read now →',
+        footer_contacts:'Contacts',
+        typing_lines:["Hi, I'm Luca.",'Aka reverxe.','Developer. Creator. Storyteller.'],
+      }
+    };
 
-    const SPOTIFY_CLIENT_ID='87445dfb688d44c7bcff6f1ea54d6752';const SPOTIFY_REDIRECT=window.location.origin+window.location.pathname;const SPOTIFY_SCOPES='user-read-currently-playing user-read-playback-state user-read-recently-played';
-    const demoPlaylist=[{track:'Gira Gira',artist:'Ado'},{track:'Vivarium',artist:'Ado'},{track:'Angelseek',artist:'Ado'},{track:'soldier game',artist:'Ado'},{track:'Backlight',artist:'Ado'},{track:'MATORYOSHKA',artist:'Ado, Rib'},{track:'Episode X',artist:'Ado'},{track:'Eien No Akuruhi',artist:'Ado'},{track:'Shikabanese',artist:'jon-YAKITORY, Ado'},{track:'Readymade',artist:'Ado'},{track:'Usseewa',artist:'Ado'},{track:'unravel',artist:'Ado'}];let demoIdx=0;
+    let currentLang = localStorage.getItem('lang') || 'it';
+    let currentTheme = localStorage.getItem('theme') || 'dark';
+
+    function applyLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (i18n[lang][key]) {
+          if (key === 'hero_bio' || key === 'wip') el.innerHTML = i18n[lang][key];
+          else el.textContent = i18n[lang][key];
+        }
+      });
+      document.getElementById('langIT').className = lang === 'it' ? 'active-opt' : '';
+      document.getElementById('langEN').className = lang === 'en' ? 'active-opt' : '';
+      startTyping();
+    }
+
+    function applyTheme(theme) {
+      currentTheme = theme;
+      localStorage.setItem('theme', theme);
+      document.documentElement.setAttribute('data-theme', theme);
+      document.getElementById('themeIcon').textContent = theme === 'dark' ? '☾' : '☀';
+    }
+
+    let typingTimeout;
+    function startTyping() {
+      clearTimeout(typingTimeout);
+      const lines = i18n[currentLang].typing_lines;
+      const el = document.getElementById('heroTitle');
+      let lineIdx = 0, charIdx = 0, isDeleting = false;
+      function tick() {
+        const line = lines[lineIdx];
+        if (!isDeleting) {
+          el.innerHTML = line.substring(0, charIdx + 1) + '<span class="cursor"></span>';
+          charIdx++;
+          if (charIdx === line.length) {
+            if (lineIdx === lines.length - 1) return;
+            typingTimeout = setTimeout(() => { isDeleting = true; tick(); }, 1800);
+            return;
+          }
+          typingTimeout = setTimeout(tick, 65);
+        } else {
+          el.innerHTML = line.substring(0, charIdx) + '<span class="cursor"></span>';
+          charIdx--;
+          if (charIdx === 0) {
+            isDeleting = false; lineIdx++;
+            typingTimeout = setTimeout(tick, 400);
+            return;
+          }
+          typingTimeout = setTimeout(tick, 35);
+        }
+      }
+      el.innerHTML = '<span class="cursor"></span>';
+      typingTimeout = setTimeout(tick, 600);
+    }
+
+    applyTheme(currentTheme);
+    applyLang(currentLang);
+
+    document.getElementById('themeToggle').addEventListener('click', () => applyTheme(currentTheme === 'dark' ? 'light' : 'dark'));
+    document.getElementById('langToggle').addEventListener('click', () => applyLang(currentLang === 'it' ? 'en' : 'it'));
+
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const p = h > 0 ? (window.scrollY / h) * 100 : 0;
+      document.getElementById('scrollProgress').style.width = p + '%';
+    });
+
+    document.getElementById('npClose').addEventListener('click', function(e) {
+      e.preventDefault(); e.stopPropagation();
+      document.getElementById('nowPlayingWrapper').classList.add('hidden');
+    });
+
+    /* === SPOTIFY NOW PLAYING (PKCE) === */
+    const SPOTIFY_CLIENT_ID='87445dfb688d44c7bcff6f1ea54d6752';
+    const SPOTIFY_REDIRECT=window.location.origin+window.location.pathname;
+    const SPOTIFY_SCOPES='user-read-currently-playing user-read-playback-state user-read-recently-played';
+    const demoPlaylist=[{track:'Gira Gira',artist:'Ado'},{track:'Vivarium',artist:'Ado'},{track:'Angelseek',artist:'Ado'},{track:'soldier game',artist:'Ado'},{track:'Backlight',artist:'Ado'},{track:'MATORYOSHKA',artist:'Ado, Rib'},{track:'Episode X',artist:'Ado'},{track:'Eien No Akuruhi',artist:'Ado'},{track:'Shikabanese',artist:'jon-YAKITORY, Ado'},{track:'Readymade',artist:'Ado'},{track:'Usseewa',artist:'Ado'},{track:'unravel',artist:'Ado'}];
+    let demoIdx=0;
     function updateNP(track,artist,imgUrl,spotifyUrl,isPlaying){document.getElementById('npTrack').textContent=track;document.getElementById('npArtist').textContent=artist;const art=document.getElementById('npArt');const np=document.getElementById('nowPlaying');const label=document.getElementById('npLabel');if(imgUrl){art.innerHTML='<img src="'+imgUrl+'" alt="Album art">'}else{art.innerHTML='<div class="np-bars"><span></span><span></span><span></span><span></span></div>'}if(spotifyUrl)np.href=spotifyUrl;else np.removeAttribute('href');label.textContent=isPlaying?'Now playing':'Last played';art.querySelectorAll('.np-bars span').forEach(s=>{s.style.animationPlayState=isPlaying?'running':'paused'})}
     function generateRandom(len){const arr=new Uint8Array(len);crypto.getRandomValues(arr);return Array.from(arr,b=>b.toString(16).padStart(2,'0')).join('')}
     async function sha256(p){return await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p))}
