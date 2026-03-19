@@ -391,29 +391,65 @@
       }
     }
 
-    async function fetchPage(page){
-      const res=await fetch(`${API_BASE}/users/${MAL_USER}/animelist?status=completed&order_by=score&sort=desc&page=${page}`);
-      if(!res.ok)throw new Error('API error');
-      return res.json();
+    async function fetchPage(page, retries=3){
+      for(let i=0;i<retries;i++){
+        try{
+          const res=await fetch(`${API_BASE}/users/${MAL_USER}/animelist?status=completed&order_by=score&sort=desc&page=${page}`);
+          if(res.status===429){
+            console.warn('Rate limited, waiting 2s...');
+            await new Promise(r=>setTimeout(r,2000));
+            continue;
+          }
+          if(res.status===404){
+            throw new Error('USER_NOT_FOUND');
+          }
+          if(!res.ok)throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        }catch(e){
+          if(e.message==='USER_NOT_FOUND')throw e;
+          if(i<retries-1){
+            console.warn(`Retry ${i+1}/${retries}...`);
+            await new Promise(r=>setTimeout(r,1500));
+          }else throw e;
+        }
+      }
     }
 
     async function loadAnimeList(){
+      const loadingEl=document.getElementById('animeLoading');
       try{
+        // First test if user exists
+        const testRes=await fetch(`${API_BASE}/users/${MAL_USER}`);
+        if(testRes.status===404){
+          throw new Error('USER_NOT_FOUND');
+        }
+        if(!testRes.ok && testRes.status!==200){
+          await new Promise(r=>setTimeout(r,1500));
+        }
+
+        await new Promise(r=>setTimeout(r,1000)); // respect rate limit
+
         let page=1,hasNext=true;
         while(hasNext){
           const data=await fetchPage(page);
           if(data.data)allAnime.push(...data.data);
           hasNext=data.pagination?.has_next_page||false;
           page++;
-          if(hasNext)await new Promise(r=>setTimeout(r,1000));
+          if(hasNext)await new Promise(r=>setTimeout(r,1200));
         }
         allAnime.sort((a,b)=>(b.score||0)-(a.score||0));
         updateStats(allAnime);
         renderAnime(allAnime);
       }catch(e){
-        console.error(e);
+        console.error('MAL load error:',e);
+        let msg=T[lang]['anime.error'];
+        if(e.message==='USER_NOT_FOUND'){
+          msg=lang==='it'
+            ?'Utente MAL "reverxe" non trovato. Controlla che il profilo sia pubblico.'
+            :'MAL user "reverxe" not found. Check that the profile is public.';
+        }
         document.getElementById('animeList').innerHTML=
-          '<div class="anime-loading"><span>'+(T[lang]['anime.error'])+'</span></div>';
+          '<div class="anime-loading"><span>'+msg+'</span></div>';
       }
     }
 
