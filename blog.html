@@ -320,9 +320,8 @@
     function tog(){ham.classList.toggle('open');menu.classList.toggle('open');ov.classList.toggle('open')}
     ham.addEventListener('click',tog);ov.addEventListener('click',tog);
 
-    // === MAL OFFICIAL API ===
-    const MAL_USER='reverxe';
-    const MAL_CLIENT_ID='a69155427636e5a0bb70c87a6e07729e';
+    // === ANIME DATA ===
+    const JIKAN_BASE='https://api.jikan.moe/v4';
     let allAnime=[];
 
     function scoreClass(s){
@@ -343,32 +342,27 @@
       }
       const grid=document.createElement('div');
       grid.className='anime-grid';
-      list.forEach((item,i)=>{
-        const node=item.node||item;
-        const score=item.list_status?.score||0;
-        const title=node.title||'';
-        const img=node.main_picture?.large||node.main_picture?.medium||'';
-        const malId=node.id||0;
-        const url=`https://myanimelist.net/anime/${malId}`;
-        const episodes=node.num_episodes||'?';
-        const type=node.media_type||'';
-        const genres=(node.genres||[]).slice(0,3);
-        const year=node.start_season?.year||'';
-
-        const typeLabel={'tv':'TV','movie':'Movie','ova':'OVA','ona':'ONA','special':'Special','music':'Music','tv_special':'TV Special'}[type]||type;
+      list.forEach(item=>{
+        const score=item.score||0;
+        const title=item.title||'';
+        const img=item.image||'';
+        const url=`https://myanimelist.net/anime/${item.mal_id}`;
+        const episodes=item.episodes||'?';
+        const type=item.type||'';
+        const review=item.review||'';
 
         const card=document.createElement('div');
         card.className='anime-card';
+        card.setAttribute('data-mal-id',item.mal_id);
         card.innerHTML=`
-          <div class="anime-cover"><img src="${img}" alt="${title}" loading="lazy"></div>
+          <div class="anime-cover">${img?'<img src="'+img+'" alt="'+title+'" loading="lazy">':'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);color:var(--text-dim);font-size:10px">Loading...</div>'}</div>
           <div class="anime-info">
             <div class="anime-name"><a href="${url}" target="_blank">${title}</a></div>
             <div class="anime-meta">
-              ${typeLabel?'<span>'+typeLabel+'</span>':''}
-              ${episodes!=='?'&&episodes>0?'<span>'+episodes+' ep</span>':''}
-              ${year?'<span>'+year+'</span>':''}
+              ${type?'<span>'+type+'</span>':''}
+              ${episodes&&episodes!=='?'&&episodes>0?'<span>'+episodes+' ep</span>':''}
             </div>
-            ${genres.length?'<div class="anime-genres">'+genres.map(g=>'<span class="anime-genre">'+g.name+'</span>').join('')+'</div>':''}
+            ${review?'<div style="font-size:12px;color:var(--text-muted);margin-top:6px;line-height:1.5">'+review+'</div>':''}
           </div>
           <div class="anime-score">
             <div>
@@ -383,68 +377,68 @@
     }
 
     function updateStats(list){
-      const scored=list.filter(i=>(i.list_status?.score||0)>0);
+      const scored=list.filter(i=>i.score>0);
       document.getElementById('statTotal').textContent=list.length;
       if(scored.length){
-        const avg=(scored.reduce((s,i)=>s+i.list_status.score,0)/scored.length).toFixed(1);
-        const top=Math.max(...scored.map(i=>i.list_status.score));
+        const avg=(scored.reduce((s,i)=>s+i.score,0)/scored.length).toFixed(1);
+        const top=Math.max(...scored.map(i=>i.score));
         document.getElementById('statAvg').textContent=avg;
         document.getElementById('statTop').textContent=top;
       }
     }
 
-    async function fetchMAL(url, retries=3){
-      for(let i=0;i<retries;i++){
+    async function loadCovers(){
+      // Load covers from Jikan in batches
+      for(let i=0;i<allAnime.length;i++){
+        const anime=allAnime[i];
+        if(anime.image)continue; // already has image
         try{
-          const res=await fetch(url,{headers:{'X-MAL-CLIENT-ID':MAL_CLIENT_ID}});
-          if(res.status===429){
-            console.warn('Rate limited, waiting 2s...');
-            await new Promise(r=>setTimeout(r,2000));
-            continue;
+          const res=await fetch(`${JIKAN_BASE}/anime/${anime.mal_id}`);
+          if(res.ok){
+            const data=(await res.json()).data;
+            anime.image=data.images?.jpg?.large_image_url||data.images?.jpg?.image_url||'';
+            anime.genres=(data.genres||[]).map(g=>g.name);
+            anime.year=data.year||data.aired?.prop?.from?.year||'';
+            // Update the card in DOM
+            const card=document.querySelector(`[data-mal-id="${anime.mal_id}"] .anime-cover`);
+            if(card&&anime.image)card.innerHTML=`<img src="${anime.image}" alt="${anime.title}" loading="lazy">`;
           }
-          if(!res.ok)throw new Error(`HTTP ${res.status}`);
-          return res.json();
-        }catch(e){
-          if(i<retries-1){
-            console.warn(`Retry ${i+1}/${retries}...`);
-            await new Promise(r=>setTimeout(r,1500));
-          }else throw e;
-        }
+        }catch(e){console.warn(`Cover ${anime.mal_id}:`,e)}
+        // Rate limit: 3 req/sec for Jikan
+        await new Promise(r=>setTimeout(r,350));
       }
     }
 
     async function loadAnimeList(){
       try{
-        const fields='list_status,num_episodes,media_type,genres,main_picture,start_season';
-        let url=`https://api.myanimelist.net/v2/users/${MAL_USER}/animelist?status=completed&sort=list_score&fields=${fields}&limit=100`;
+        // Try loading MAL XML export directly
+        const xmlRes=await fetch('animelist.xml');
+        if(!xmlRes.ok)throw new Error('Cannot load animelist.xml');
+        const xmlText=await xmlRes.text();
+        const parser=new DOMParser();
+        const xml=parser.parseFromString(xmlText,'text/xml');
+        const animeNodes=xml.querySelectorAll('anime');
 
-        while(url){
-          const data=await fetchMAL(url);
-          if(data.data&&data.data.length>0){
-            allAnime.push(...data.data);
+        animeNodes.forEach(node=>{
+          const status=node.querySelector('my_status')?.textContent||'';
+          const score=parseInt(node.querySelector('my_score')?.textContent||'0');
+          const malId=parseInt(node.querySelector('series_animedb_id')?.textContent||'0');
+          const title=node.querySelector('series_title')?.textContent||'';
+          const type=node.querySelector('series_type')?.textContent||'';
+          const episodes=parseInt(node.querySelector('series_episodes')?.textContent||'0');
+
+          if(status==='Completed'&&score>0){
+            allAnime.push({mal_id:malId,title,type,episodes,score,review:'',image:''});
           }
-          url=data.paging?.next||null;
-          if(url)await new Promise(r=>setTimeout(r,500));
-        }
+        });
 
-        // If no completed anime, try all statuses
-        if(allAnime.length===0){
-          url=`https://api.myanimelist.net/v2/users/${MAL_USER}/animelist?sort=list_score&fields=${fields}&limit=100`;
-          while(url){
-            const data=await fetchMAL(url);
-            if(data.data&&data.data.length>0){
-              allAnime.push(...data.data);
-            }
-            url=data.paging?.next||null;
-            if(url)await new Promise(r=>setTimeout(r,500));
-          }
-        }
-
-        allAnime.sort((a,b)=>(b.list_status?.score||0)-(a.list_status?.score||0));
+        allAnime.sort((a,b)=>b.score-a.score||a.title.localeCompare(b.title));
         updateStats(allAnime);
         renderAnime(allAnime);
+        // Load covers in background
+        loadCovers();
       }catch(e){
-        console.error('MAL load error:',e);
+        console.error('Load error:',e);
         document.getElementById('animeList').innerHTML=
           '<div class="anime-loading"><span>'+T[lang]['anime.error']+'</span></div>';
       }
@@ -458,7 +452,7 @@
       btn.classList.add('active');
       const f=btn.dataset.filter;
       if(f==='all')renderAnime(allAnime);
-      else{const min=parseInt(f);renderAnime(allAnime.filter(a=>(a.list_status?.score||0)>=min));}
+      else{const min=parseInt(f);renderAnime(allAnime.filter(a=>a.score>=min));}
     });
 
     loadAnimeList();
