@@ -969,30 +969,30 @@
     }
 
     /* ==================================================
-       5. TAB SYSTEM
-       2 tab: "Profilo & Top 20" e "Lista MAL".
-       La lista MAL viene caricata solo al primo click
-       (lazy loading) per non sprecare chiamate API.
+       5. TAB SYSTEM — 3 tab
+       "Il mio sguardo & Top 20" | "Lista MAL" | "Romanzo"
+       La lista MAL viene pre-fetchata al page load.
+       Al click sulla tab, se i dati sono pronti li renderizza.
        ================================================== */
     var tabButtons = document.querySelectorAll('.tab-btn');
     var tabContents = document.querySelectorAll('.tab-content');
-    var malLoaded = false; // Flag per evitare ricaricamenti
+    var malLoaded = false;
+    var malRendered = false; // Evita ri-render multipli
 
     tabButtons.forEach(function(btn) {
       btn.addEventListener('click', function() {
-        // Rimuovi active da tutti
         tabButtons.forEach(function(b) { b.classList.remove('active'); });
         tabContents.forEach(function(c) { c.classList.remove('active'); });
 
-        // Attiva tab cliccata
         btn.classList.add('active');
         var targetTab = document.getElementById('tab-' + btn.dataset.tab);
         if (targetTab) targetTab.classList.add('active');
 
-        // Lazy load MAL list solo al primo accesso
-        if (btn.dataset.tab === 'mal' && !malLoaded) {
-          malLoaded = true;
-          loadAnimeList();
+        // Quando apri la tab MAL, renderizza se i dati sono pronti
+        if (btn.dataset.tab === 'mal' && malLoaded && !malRendered) {
+          malRendered = true;
+          updateStats(allAnime);
+          renderAnime(allAnime);
         }
       });
     });
@@ -1057,21 +1057,44 @@
     renderTop20();
 
     /* ==================================================
-       7. LISTA MAL — Parsing XML + Jikan API
-       - Carica animelist.xml (export locale da MAL)
-       - Filtra solo "Completed" con score > 0
-       - Ordina per score decrescente
-       - Carica le cover in background da Jikan API
-         con rate limiting (1 req/sec, retry su 429)
+       7. LISTA MAL — Parsing XML + Jikan API (OTTIMIZZATO)
+       
+       Ottimizzazioni:
+       a) Pre-fetch: il parsing XML parte subito al page load
+          (non aspetta il click sulla tab MAL)
+       b) Cache localStorage: le cover già scaricate vengono
+          salvate e riusate nelle visite successive
+       c) Batch parallelo: 2 richieste Jikan in parallelo
+          con 700ms di pausa tra i batch (~3 req/sec)
        ================================================== */
     var JIKAN_BASE = 'https://api.jikan.moe/v4';
     var allAnime = [];
+    var CACHE_KEY = 'reverxe_mal_covers';
+    var CACHE_EXPIRY = 7 * 24 * 60 * 60 * 1000; // 7 giorni
 
-    /**
-     * Restituisce la classe CSS per il cerchio score.
-     * @param {number} score - Voto 1-10
-     * @returns {string} Nome classe CSS
-     */
+    /** Legge la cache cover da localStorage */
+    function loadCoverCache() {
+      try {
+        var raw = localStorage.getItem(CACHE_KEY);
+        if (!raw) return {};
+        var cache = JSON.parse(raw);
+        if (Date.now() - (cache.timestamp || 0) > CACHE_EXPIRY) {
+          localStorage.removeItem(CACHE_KEY);
+          return {};
+        }
+        return cache.data || {};
+      } catch (e) { return {}; }
+    }
+
+    /** Salva la cache cover in localStorage */
+    function saveCoverCache(data) {
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          timestamp: Date.now(), data: data
+        }));
+      } catch (e) { /* localStorage pieno o non disponibile */ }
+    }
+
     function scoreClass(score) {
       if (score >= 10) return 'score-10';
       if (score >= 9)  return 'score-9';
@@ -1082,40 +1105,43 @@
       return 'score-low';
     }
 
-    /**
-     * Renderizza la lista anime nel DOM.
-     * Costruisce le card con cover, titolo, meta e score.
-     * @param {Array} list - Array di oggetti anime
-     */
+    /** Sanitizza titolo per attributi HTML */
+    function safeTitle(title) {
+      return title.replace(/[<>"'&]/g, function(c) {
+        return { '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;', '&':'&amp;' }[c];
+      });
+    }
+
+    /** Aggiorna la cover di un anime nel DOM */
+    function updateCoverInDOM(anime) {
+      var coverEl = document.querySelector('[data-mal-id="' + anime.mal_id + '"] .anime-cover');
+      if (coverEl && anime.image) {
+        coverEl.innerHTML = '<img src="' + anime.image + '" alt="' + safeTitle(anime.title) + '" loading="lazy">';
+      }
+    }
+
     function renderAnime(list) {
       var container = document.getElementById('animeList');
+      if (!container) return;
       if (!list.length) {
         container.innerHTML = '<div class="anime-loading"><span>' +
           (lang === 'it' ? 'Nessun anime trovato' : 'No anime found') + '</span></div>';
         return;
       }
-
       var grid = document.createElement('div');
       grid.className = 'anime-grid';
-
       list.forEach(function(item) {
         var card = document.createElement('div');
         card.className = 'anime-card';
         card.setAttribute('data-mal-id', item.mal_id);
-
-        // Sanitizza il titolo per l'attributo alt (previene XSS)
-        var safeTitle = item.title.replace(/[<>"'&]/g, function(c) {
-          return { '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;', '&':'&amp;' }[c];
-        });
-
+        var safe = safeTitle(item.title);
         var coverHTML = item.image
-          ? '<img src="' + item.image + '" alt="' + safeTitle + '" loading="lazy">'
+          ? '<img src="' + item.image + '" alt="' + safe + '" loading="lazy">'
           : '<div style="width:100%;height:100%;background:var(--bg-secondary)"></div>';
-
         card.innerHTML =
           '<div class="anime-cover">' + coverHTML + '</div>' +
           '<div class="anime-info">' +
-            '<div class="anime-name"><a href="https://myanimelist.net/anime/' + item.mal_id + '" target="_blank" rel="noopener">' + safeTitle + '</a></div>' +
+            '<div class="anime-name"><a href="https://myanimelist.net/anime/' + item.mal_id + '" target="_blank" rel="noopener">' + safe + '</a></div>' +
             '<div class="anime-meta">' +
               (item.type ? '<span>' + item.type + '</span>' : '') +
               (item.episodes && item.episodes > 0 ? '<span>' + item.episodes + ' ep</span>' : '') +
@@ -1124,18 +1150,12 @@
           '<div class="anime-score">' +
             '<div class="score-circle ' + scoreClass(item.score) + '">' + (item.score || '—') + '</div>' +
           '</div>';
-
         grid.appendChild(card);
       });
-
       container.innerHTML = '';
       container.appendChild(grid);
     }
 
-    /**
-     * Aggiorna le statistiche (totale, media, max).
-     * @param {Array} list - Array anime con score
-     */
     function updateStats(list) {
       var scored = list.filter(function(i) { return i.score > 0; });
       var elTotal = document.getElementById('statTotal');
@@ -1149,108 +1169,112 @@
       }
     }
 
-    /**
-     * Carica le cover da Jikan API in background.
-     * Rate limit: 1 richiesta al secondo.
-     * Retry fino a 3 volte su errore 429 (rate limited).
-     */
-    async function loadCovers() {
-      for (var i = 0; i < allAnime.length; i++) {
-        var anime = allAnime[i];
-        if (anime.image) continue;
-
-        for (var attempt = 0; attempt < 3; attempt++) {
-          try {
-            var res = await fetch(JIKAN_BASE + '/anime/' + anime.mal_id);
-
-            // Rate limited — aspetta di più ad ogni tentativo
-            if (res.status === 429) {
-              await new Promise(function(r) { setTimeout(r, 2000 + attempt * 1000); });
-              continue;
-            }
-
-            if (res.ok) {
-              var data = (await res.json()).data;
-              anime.image = (data.images && data.images.jpg)
-                ? (data.images.jpg.large_image_url || data.images.jpg.image_url || '')
-                : '';
-              anime.episodes = data.episodes || anime.episodes;
-
-              // Aggiorna la cover nel DOM se già renderizzata
-              var coverEl = document.querySelector('[data-mal-id="' + anime.mal_id + '"] .anime-cover');
-              if (coverEl && anime.image) {
-                var safeAlt = anime.title.replace(/[<>"'&]/g, function(c) {
-                  return { '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;', '&':'&amp;' }[c];
-                });
-                coverEl.innerHTML = '<img src="' + anime.image + '" alt="' + safeAlt + '" loading="lazy">';
-              }
-              break; // Successo, esci dal retry loop
-            }
-          } catch (e) {
-            // Network error — il retry gestirà il prossimo tentativo
+    /** Fetcha una singola cover da Jikan con retry su 429 */
+    async function fetchSingleCover(malId) {
+      for (var attempt = 0; attempt < 3; attempt++) {
+        try {
+          var res = await fetch(JIKAN_BASE + '/anime/' + malId);
+          if (res.status === 429) {
+            await new Promise(function(r) { setTimeout(r, 1500 + attempt * 1000); });
+            continue;
           }
-        }
-
-        // Pausa 1 secondo tra le richieste per rispettare il rate limit Jikan
-        await new Promise(function(r) { setTimeout(r, 1000); });
+          if (res.ok) {
+            var d = (await res.json()).data;
+            return {
+              image: (d.images && d.images.jpg) ? (d.images.jpg.large_image_url || d.images.jpg.image_url || '') : '',
+              episodes: d.episodes || 0
+            };
+          }
+        } catch (e) { /* retry */ }
       }
+      return null;
     }
 
     /**
-     * Carica la anime list dal file XML locale.
-     * 1. Fetcha animelist.xml
-     * 2. Parsa il DOM XML
-     * 3. Filtra: solo Completed con score > 0
-     * 4. Ordina per score desc, poi titolo asc
-     * 5. Renderizza + avvia il caricamento cover in background
+     * Carica le cover: prima dalla cache, poi batch paralleli da Jikan.
+     * 2 richieste in parallelo, 700ms pausa tra batch.
+     */
+    async function loadCovers() {
+      var cache = loadCoverCache();
+      var needsFetch = [];
+
+      // Step 1: applica cover dalla cache
+      allAnime.forEach(function(anime) {
+        var cached = cache[anime.mal_id];
+        if (cached && cached.image) {
+          anime.image = cached.image;
+          anime.episodes = cached.episodes || anime.episodes;
+          updateCoverInDOM(anime);
+        } else {
+          needsFetch.push(anime);
+        }
+      });
+
+      // Step 2: batch fetch (2 paralleli, 700ms pausa)
+      var BATCH = 2, DELAY = 700, updated = false;
+      for (var i = 0; i < needsFetch.length; i += BATCH) {
+        var results = await Promise.all(
+          needsFetch.slice(i, i + BATCH).map(function(anime) {
+            return fetchSingleCover(anime.mal_id).then(function(r) { return { anime: anime, result: r }; });
+          })
+        );
+        results.forEach(function(r) {
+          if (r.result && r.result.image) {
+            r.anime.image = r.result.image;
+            r.anime.episodes = r.result.episodes || r.anime.episodes;
+            cache[r.anime.mal_id] = { image: r.result.image, episodes: r.anime.episodes };
+            updated = true;
+            updateCoverInDOM(r.anime);
+          }
+        });
+        if (updated && i % 10 === 0) saveCoverCache(cache);
+        if (i + BATCH < needsFetch.length) {
+          await new Promise(function(r) { setTimeout(r, DELAY); });
+        }
+      }
+      if (updated) saveCoverCache(cache);
+    }
+
+    /**
+     * Pre-fetch: parte al PAGE LOAD, non al click della tab.
+     * Quando l'utente apre la tab MAL i dati sono già pronti.
      */
     async function loadAnimeList() {
       try {
         var xmlRes = await fetch('animelist.xml');
         if (!xmlRes.ok) throw new Error('Cannot load animelist.xml');
-
-        var xmlText = await xmlRes.text();
-        var xml = new DOMParser().parseFromString(xmlText, 'text/xml');
-
+        var xml = new DOMParser().parseFromString(await xmlRes.text(), 'text/xml');
         xml.querySelectorAll('anime').forEach(function(node) {
           var status = node.querySelector('my_status');
           if (!status || status.textContent !== 'Completed') return;
-
-          var scoreEl = node.querySelector('my_score');
-          var score = parseInt(scoreEl ? scoreEl.textContent : '0', 10);
+          var score = parseInt((node.querySelector('my_score') || {}).textContent || '0', 10);
           if (score <= 0) return;
-
-          var malIdEl   = node.querySelector('series_animedb_id');
-          var titleEl   = node.querySelector('series_title');
-          var typeEl    = node.querySelector('series_type');
-          var epEl      = node.querySelector('series_episodes');
-
           allAnime.push({
-            mal_id:   parseInt(malIdEl ? malIdEl.textContent : '0', 10),
-            title:    titleEl ? titleEl.textContent : '',
-            type:     typeEl ? typeEl.textContent : '',
-            episodes: parseInt(epEl ? epEl.textContent : '0', 10),
-            score:    score,
-            image:    ''
+            mal_id:   parseInt((node.querySelector('series_animedb_id') || {}).textContent || '0', 10),
+            title:    (node.querySelector('series_title') || {}).textContent || '',
+            type:     (node.querySelector('series_type') || {}).textContent || '',
+            episodes: parseInt((node.querySelector('series_episodes') || {}).textContent || '0', 10),
+            score: score, image: ''
           });
         });
-
-        // Ordina: score decrescente, poi titolo alfabetico
-        allAnime.sort(function(a, b) {
-          return b.score - a.score || a.title.localeCompare(b.title);
-        });
-
-        updateStats(allAnime);
-        renderAnime(allAnime);
-
-        // Carica le cover in background (non bloccante)
+        allAnime.sort(function(a, b) { return b.score - a.score || a.title.localeCompare(b.title); });
+        malLoaded = true;
+        // Se la tab MAL è già visibile, renderizza subito
+        var malTab = document.getElementById('tab-mal');
+        if (malTab && malTab.classList.contains('active')) {
+          updateStats(allAnime);
+          renderAnime(allAnime);
+        }
         loadCovers();
       } catch (e) {
         console.error('MAL list load error:', e);
-        document.getElementById('animeList').innerHTML =
-          '<div class="anime-loading"><span>' + T[lang]['mal.error'] + '</span></div>';
+        var el = document.getElementById('animeList');
+        if (el) el.innerHTML = '<div class="anime-loading"><span>' + T[lang]['mal.error'] + '</span></div>';
       }
     }
+
+    // PRE-FETCH: avvia subito al page load
+    loadAnimeList();
 
     /* ==================================================
        8. SCORE FILTERS — Filtri per voto
