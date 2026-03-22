@@ -112,6 +112,25 @@
     .app-title{font-size:22px;font-weight:700;color:#E8E8E8;letter-spacing:-.01em;line-height:1.2;position:relative;z-index:1}
     [data-theme="light"] .card-app .card-header{background:linear-gradient(135deg,#0F1E36 0%,#132540 50%,#0F1A2E 100%)}
 
+    /* CHARACTER SHEET CARD — Schede personaggio manga */
+    .card-chara .card-header{background:linear-gradient(135deg,#0A0A1A 0%,#10081A 50%,#0D0A1A 100%);padding:32px 28px 24px;position:relative;overflow:hidden;min-height:160px;display:flex;flex-direction:column;justify-content:flex-end}
+    .card-chara .card-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top right,rgba(140,80,200,.15) 0%,transparent 60%)}
+    .card-chara .card-header::after{content:'人';position:absolute;top:8px;right:24px;font-size:80px;color:rgba(140,80,200,.1);font-family:serif;line-height:1;pointer-events:none}
+    .chara-type{font-family:var(--mono);font-size:10px;color:#A97CDB;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;opacity:.8}
+    .chara-title{font-size:22px;font-weight:700;color:#E8E8E8;letter-spacing:-.01em;line-height:1.2;position:relative;z-index:1}
+    [data-theme="light"] .card-chara .card-header{background:linear-gradient(135deg,#14102A 0%,#1A1230 50%,#14102A 100%)}
+    .badge-chara{background:rgba(140,80,200,.12);color:#A97CDB;border:1px solid rgba(140,80,200,.25)}
+
+    /* Link alle schede personaggio */
+    .chara-links{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+    .card-btn-chara{color:#A97CDB;border-color:rgba(140,80,200,.3);background:rgba(140,80,200,.08)}
+    .card-btn-chara:hover{color:#C49EEB;border-color:rgba(140,80,200,.5);background:rgba(140,80,200,.14)}
+
+    /* Link schede personaggio */
+    .chara-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .card-btn-chara{color:#A97CDB;border-color:rgba(140,80,200,.3);background:rgba(140,80,200,.08)}
+    .card-btn-chara:hover{color:#C4A0E8;border-color:rgba(140,80,200,.5);background:rgba(140,80,200,.14)}
+
     /* CARD BODY */
     .card-body{padding:24px 28px;display:flex;flex-direction:column;flex:1;gap:16px}
     .card-desc-text{font-size:13px;color:var(--text-muted);line-height:1.7}
@@ -266,6 +285,42 @@
           </div>
         </div>
 
+        <!-- CHARACTER SHEETS — Schede personaggio Battle Royale -->
+        <div class="project-card card-chara">
+          <div class="card-header">
+            <div class="chara-type" data-i18n="chara.type">Character Design — Manga</div>
+            <div class="chara-title" data-i18n="chara.title">Schede Personaggio: Battle Royale</div>
+          </div>
+          <div class="card-body">
+            <div class="badge-row">
+              <span class="badge badge-chara" data-i18n="badge.chardesign">Character Design</span>
+              <span class="badge badge-psych" data-i18n="badge.manga">Manga</span>
+              <span class="badge badge-wip" data-i18n="badge.collab">Collaborazione</span>
+            </div>
+            <p class="card-desc-text" data-i18n="chara.desc">Schede personaggio dettagliate create per il manga battle royale di un amico. Design visivo, background narrativo, abilità e personalità di ogni personaggio — tra cui <strong>Ruka Kurusu</strong> e <strong>Setsu Mizukuro</strong>.</p>
+            <div class="tech-stack">
+              <span class="tech-tag">HTML/CSS</span>
+              <span class="tech-tag">Character Design</span>
+              <span class="tech-tag">Lore Writing</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-status">
+                <span class="status-dot status-dot--active"></span>
+                <span data-i18n="status.active">In corso</span>
+              </div>
+            </div>
+            <!-- Link alle schede personaggio -->
+            <div class="chara-links">
+              <a href="ruka_kurusu_manga.html" class="card-btn card-btn-chara" data-i18n="chara.ruka">
+                ⟶ Ruka Kurusu
+              </a>
+              <a href="setsu_mizukuro_manga.html" class="card-btn card-btn-chara" data-i18n="chara.setsu">
+                ⟶ Setsu Mizukuro
+              </a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -297,7 +352,12 @@
         'badge.psych':'Psicologico','badge.ongoing':'In corso','badge.alpha':'Alpha Version','badge.wip':'Work in Progress',
         'app.type':'App — Android / Web',
         'app.desc':'Un\'applicazione dedicata alla gestione e alla presa di appunti sugli anime visti. Permette di catalogare, votare e annotare le proprie impressioni in modo rapido e intuitivo.',
-        'status.writing':'Scrittura attiva','status.wip':'Sviluppo iniziale','btn.github':'Visualizza su GitHub'
+        'status.writing':'Scrittura attiva','status.wip':'Sviluppo iniziale','btn.github':'Visualizza su GitHub',
+        'chara.type':'Character Design — Manga','chara.title':'Schede Personaggio: Battle Royale',
+        'chara.desc':'Schede personaggio dettagliate create per il manga battle royale di un amico. Design visivo, background narrativo, abilità e personalità di ogni personaggio — tra cui <strong>Ruka Kurusu</strong> e <strong>Setsu Mizukuro</strong>.',
+        'badge.chardesign':'Character Design','badge.manga':'Manga','badge.collab':'Collaborazione','status.active':'In corso',
+        'chara.ruka':'⟶ Ruka Kurusu','chara.setsu':'⟶ Setsu Mizukuro',
+        'chara.ruka':'⟶ Ruka Kurusu','chara.setsu':'⟶ Setsu Mizukuro'
       },
       en: {
         'nav.home':'Home','nav.about':'About','nav.projects':'Projects','footer.contact':'Contact',
@@ -309,7 +369,12 @@
         'badge.psych':'Psychological','badge.ongoing':'Ongoing','badge.alpha':'Alpha Version','badge.wip':'Work in Progress',
         'app.type':'App — Android / Web',
         'app.desc':'An application dedicated to managing and taking notes on anime watched. Allows cataloguing, rating and annotating impressions quickly and intuitively.',
-        'status.writing':'Active writing','status.wip':'Early development','btn.github':'View on GitHub'
+        'status.writing':'Active writing','status.wip':'Early development','btn.github':'View on GitHub',
+        'chara.type':'Character Design — Manga','chara.title':'Character Sheets: Battle Royale',
+        'chara.desc':'Detailed character sheets created for a friend\'s battle royale manga. Visual design, narrative background, abilities and personality of each character — including <strong>Ruka Kurusu</strong> and <strong>Setsu Mizukuro</strong>.',
+        'badge.chardesign':'Character Design','badge.manga':'Manga','badge.collab':'Collaboration','status.active':'Ongoing',
+        'chara.ruka':'⟶ Ruka Kurusu','chara.setsu':'⟶ Setsu Mizukuro',
+        'chara.ruka':'⟶ Ruka Kurusu','chara.setsu':'⟶ Setsu Mizukuro'
       }
     };
 

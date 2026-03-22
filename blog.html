@@ -406,6 +406,21 @@
       font-family: var(--font-mono); margin-top: 2px;
     }
 
+    /* Recensione — appare sotto il nome quando il campo review è compilato */
+    .top20-review {
+      font-size: 12.5px; color: var(--text-muted);
+      line-height: 1.7; margin-top: 8px;
+      white-space: normal;
+      border-top: 1px solid var(--border);
+      padding-top: 8px;
+    }
+    .top20-item.has-review {
+      flex-wrap: wrap; padding: 18px;
+    }
+    .top20-item.has-review .top20-rank {
+      align-self: flex-start; margin-top: 2px;
+    }
+
     /* ============================================================
        TAB 2: LISTA MAL — Feed automatico da animelist.xml
        ============================================================ */
@@ -643,42 +658,34 @@
         <!-- Card unica: Cosa cerco in un anime -->
         <div class="profile-header">
           <div class="profile-badge" data-i18n="profile.badge">Profilo Spettatore</div>
-          <h1 class="profile-title">Il mio <span class="accent">sguardo</span></h1>
+          <h1 class="profile-title" data-i18n="profile.title">Il mio <span class="accent">sguardo</span></h1>
         </div>
 
         <div class="content-card">
-          <p class="content-card-text">Non sono uno spettatore che cerca visioni leggere per "spegnere il cervello". Quando inizio un anime, cerco una sfida intellettuale: voglio che l'opera metta alla prova la mia logica, che mi faccia dubitare della morale dei personaggi e che sia capace di lasciarmi un vuoto nello stomaco alla fine della visione.</p>
+          <p class="content-card-text" data-i18n="vision.intro">Non sono uno spettatore che cerca visioni leggere per "spegnere il cervello". Quando inizio un anime, cerco una sfida intellettuale: voglio che l'opera metta alla prova la mia logica, che mi faccia dubitare della morale dei personaggi e che sia capace di lasciarmi un vuoto nello stomaco alla fine della visione.</p>
 
           <div class="content-card-section">
             <div class="content-card-section-header">
               <div class="content-card-accent-bar"></div>
-              <h3 class="content-card-section-title">L'ossessione per la strategia e i giochi mentali</h3>
+              <h3 class="content-card-section-title" data-i18n="vision.s1title">L'ossessione per la strategia e i giochi mentali</h3>
             </div>
-            <p class="content-card-text">C'è qualcosa di magnetico nei protagonisti che giocano a scacchi con la vita degli altri. Che sia il genio di Lelouch in <a href="https://myanimelist.net/anime/1575" target="_blank" rel="noopener">Code Geass</a>, il nichilismo di Light Yagami in <a href="https://myanimelist.net/anime/1535" target="_blank" rel="noopener">Death Note</a> o la freddezza calcolatrice di Ayanokouji in <a href="https://myanimelist.net/anime/35507" target="_blank" rel="noopener">Classroom of the Elite</a>, vivo per quei momenti in cui un piano complesso viene svelato. Spesso mi ritrovo a cercare di prevedere il finale o l'evoluzione della trama, analizzando ogni indizio. Gli anime che mi colpiscono di più sono proprio quelli in cui arrivo vicino a capire cosa stia per accadere, ma che poi esplodono in qualcosa di magnifico e imprevedibile, pur mantenendo una coerenza ferrea con le regole del proprio mondo.</p>
+            <p class="content-card-text" data-i18n="vision.s1body">C'è qualcosa di magnetico nei protagonisti che giocano a scacchi con la vita degli altri. Che sia il genio di Lelouch in <a href="https://myanimelist.net/anime/1575" target="_blank" rel="noopener">Code Geass</a>, il nichilismo di Light Yagami in <a href="https://myanimelist.net/anime/1535" target="_blank" rel="noopener">Death Note</a> o la freddezza calcolatrice di Ayanokouji in <a href="https://myanimelist.net/anime/35507" target="_blank" rel="noopener">Classroom of the Elite</a>, vivo per quei momenti in cui un piano complesso viene svelato. Spesso mi ritrovo a cercare di prevedere il finale o l'evoluzione della trama, analizzando ogni indizio. Gli anime che mi colpiscono di più sono proprio quelli in cui arrivo vicino a capire cosa stia per accadere, ma che poi esplodono in qualcosa di magnifico e imprevedibile, pur mantenendo una coerenza ferrea con le regole del proprio mondo.</p>
           </div>
 
           <div class="content-card-section">
             <div class="content-card-section-header">
               <div class="content-card-accent-bar"></div>
-              <h3 class="content-card-section-title">Il trauma come certificato di autenticità</h3>
+              <h3 class="content-card-section-title" data-i18n="vision.s2title">Il trauma come certificato di autenticità</h3>
             </div>
-            <p class="content-card-text">Non mi interessano gli eroi invincibili o le storie senza macchia. Io voglio vedere il fango. Per me la sofferenza non è mai gratuita, ma è il motore che rende vera la crescita di un personaggio. Voglio vedere Subaru morire mille volte per un briciolo di progresso in <a href="https://myanimelist.net/anime/31240" target="_blank" rel="noopener">Re:Zero</a>, o Shinji crollare sotto il peso di un destino non scelto in <a href="https://myanimelist.net/anime/30" target="_blank" rel="noopener">Evangelion</a>. Se un'opera non riesce a trasmettermi quel senso di precarietà e resilienza, come hanno fatto <a href="https://myanimelist.net/anime/41457" target="_blank" rel="noopener">86</a> o <a href="https://myanimelist.net/anime/27775" target="_blank" rel="noopener">Plastic Memories</a>, sento che manca un elemento fondamentale.</p>
+            <p class="content-card-text" data-i18n="vision.s2body">Non mi interessano gli eroi invincibili o le storie senza macchia. Io voglio vedere il fango. Per me la sofferenza non è mai gratuita, ma è il motore che rende vera la crescita di un personaggio. Voglio vedere Subaru morire mille volte per un briciolo di progresso in <a href="https://myanimelist.net/anime/31240" target="_blank" rel="noopener">Re:Zero</a>, o Shinji crollare sotto il peso di un destino non scelto in <a href="https://myanimelist.net/anime/30" target="_blank" rel="noopener">Evangelion</a>. Se un'opera non riesce a trasmettermi quel senso di precarietà e resilienza, come hanno fatto <a href="https://myanimelist.net/anime/41457" target="_blank" rel="noopener">86</a> o <a href="https://myanimelist.net/anime/27775" target="_blank" rel="noopener">Plastic Memories</a>, sento che manca un elemento fondamentale.</p>
           </div>
 
           <div class="content-card-section">
             <div class="content-card-section-header">
               <div class="content-card-accent-bar"></div>
-              <h3 class="content-card-section-title">Intuizione e coerenza del mondo</h3>
+              <h3 class="content-card-section-title" data-i18n="vision.s3title">Intuizione e coerenza del mondo</h3>
             </div>
-            <p class="content-card-text">Più che la semplice esposizione delle regole, amo la sfida di decifrarle. Mi considero un osservatore attivo: mi piace usare la mia forza logica per intuire eventi o sviluppi della trama anche quando non sono esplicitamente dichiarati. Cerco un world-building solido e coerente, perché solo in un mondo ben costruito le mie deduzioni possono avere valore. Se l'anime non riesce a dare profondità a questo universo, passo volentieri al manga per cercare una visione più cruda e completa, come nel caso di <a href="https://myanimelist.net/manga/116778" target="_blank" rel="noopener">Chainsaw Man</a>.</p>
-          </div>
-
-          <div class="content-card-section">
-            <div class="content-card-section-header">
-              <div class="content-card-accent-bar"></div>
-              <h3 class="content-card-section-title">L'equilibrio tra abisso e catarsi</h3>
-            </div>
-            <p class="content-card-text">Nonostante la mia predilezione per il dark e il cervellotico, so apprezzare le "oasi" di bellezza. Ogni tanto ho bisogno di staccare attraverso l'impatto emotivo puro o l'assurdità totale di una commedia. Anche chi analizza costantemente l'abisso e i complessi intrecci del destino ha bisogno di un momento di pura catarsi o di una risata liberatoria.</p>
+            <p class="content-card-text" data-i18n="vision.s3body">Più che la semplice esposizione delle regole, amo la sfida di decifrarle. Mi considero un osservatore attivo: mi piace usare la mia forza logica per intuire eventi o sviluppi della trama anche quando non sono esplicitamente dichiarati. Cerco un world-building solido e coerente, perché solo in un mondo ben costruito le mie deduzioni possono avere valore. Se l'anime non riesce a dare profondità a questo universo, passo volentieri al manga per cercare una visione più cruda e completa, come nel caso di <a href="https://myanimelist.net/manga/116778" target="_blank" rel="noopener">Chainsaw Man</a>.</p>
           </div>
         </div>
 
@@ -804,6 +811,14 @@
         'tab.mal': 'Lista MAL',
         'tab.novel': 'Romanzo',
         'profile.badge': 'Profilo Spettatore',
+        'profile.title': 'Il mio <span class="accent">sguardo</span>',
+        'vision.intro': 'Non sono uno spettatore che cerca visioni leggere per "spegnere il cervello". Quando inizio un anime, cerco una sfida intellettuale: voglio che l\'opera metta alla prova la mia logica, che mi faccia dubitare della morale dei personaggi e che sia capace di lasciarmi un vuoto nello stomaco alla fine della visione.',
+        'vision.s1title': 'L\'ossessione per la strategia e i giochi mentali',
+        'vision.s1body': 'C\'è qualcosa di magnetico nei protagonisti che giocano a scacchi con la vita degli altri. Che sia il genio di Lelouch in <a href="https://myanimelist.net/anime/1575" target="_blank" rel="noopener">Code Geass</a>, il nichilismo di Light Yagami in <a href="https://myanimelist.net/anime/1535" target="_blank" rel="noopener">Death Note</a> o la freddezza calcolatrice di Ayanokouji in <a href="https://myanimelist.net/anime/35507" target="_blank" rel="noopener">Classroom of the Elite</a>, vivo per quei momenti in cui un piano complesso viene svelato. Spesso mi ritrovo a cercare di prevedere il finale o l\'evoluzione della trama, analizzando ogni indizio. Gli anime che mi colpiscono di più sono proprio quelli in cui arrivo vicino a capire cosa stia per accadere, ma che poi esplodono in qualcosa di magnifico e imprevedibile, pur mantenendo una coerenza ferrea con le regole del proprio mondo.',
+        'vision.s2title': 'Il trauma come certificato di autenticità',
+        'vision.s2body': 'Non mi interessano gli eroi invincibili o le storie senza macchia. Io voglio vedere il fango. Per me la sofferenza non è mai gratuita, ma è il motore che rende vera la crescita di un personaggio. Voglio vedere Subaru morire mille volte per un briciolo di progresso in <a href="https://myanimelist.net/anime/31240" target="_blank" rel="noopener">Re:Zero</a>, o Shinji crollare sotto il peso di un destino non scelto in <a href="https://myanimelist.net/anime/30" target="_blank" rel="noopener">Evangelion</a>. Se un\'opera non riesce a trasmettermi quel senso di precarietà e resilienza, come hanno fatto <a href="https://myanimelist.net/anime/41457" target="_blank" rel="noopener">86</a> o <a href="https://myanimelist.net/anime/27775" target="_blank" rel="noopener">Plastic Memories</a>, sento che manca un elemento fondamentale.',
+        'vision.s3title': 'Intuizione e coerenza del mondo',
+        'vision.s3body': 'Più che la semplice esposizione delle regole, amo la sfida di decifrarle. Mi considero un osservatore attivo: mi piace usare la mia forza logica per intuire eventi o sviluppi della trama anche quando non sono esplicitamente dichiarati. Cerco un world-building solido e coerente, perché solo in un mondo ben costruito le mie deduzioni possono avere valore. Se l\'anime non riesce a dare profondità a questo universo, passo volentieri al manga per cercare una visione più cruda e completa, come nel caso di <a href="https://myanimelist.net/manga/116778" target="_blank" rel="noopener">Chainsaw Man</a>.',
         'divider.ranking': 'Classifica',
         'divider.writing': 'Scrittura',
         'top20.desc': 'I 20 anime che hanno definito i miei standard. Ordinati per impatto complessivo: scrittura, regia, personaggi e capacità di sorprendere.',
@@ -834,6 +849,14 @@
         'tab.mal': 'MAL List',
         'tab.novel': 'Novel',
         'profile.badge': 'Viewer Profile',
+        'profile.title': 'My <span class="accent">perspective</span>',
+        'vision.intro': 'I\'m not a viewer looking for light entertainment to "switch off my brain." When I start an anime, I seek an intellectual challenge: I want the work to test my logic, make me question the characters\' morality, and leave me with a pit in my stomach by the end.',
+        'vision.s1title': 'The obsession with strategy and mind games',
+        'vision.s1body': 'There\'s something magnetic about protagonists who play chess with other people\'s lives. Whether it\'s Lelouch\'s genius in <a href="https://myanimelist.net/anime/1575" target="_blank" rel="noopener">Code Geass</a>, Light Yagami\'s nihilism in <a href="https://myanimelist.net/anime/1535" target="_blank" rel="noopener">Death Note</a>, or Ayanokouji\'s cold calculation in <a href="https://myanimelist.net/anime/35507" target="_blank" rel="noopener">Classroom of the Elite</a>, I live for those moments when a complex plan is unveiled. I often find myself trying to predict the ending or the plot\'s evolution, analyzing every clue. The anime that hit me hardest are those where I get close to figuring out what\'s about to happen, only to then explode into something magnificent and unpredictable while maintaining an iron consistency with their own world\'s rules.',
+        'vision.s2title': 'Trauma as a certificate of authenticity',
+        'vision.s2body': 'I have no interest in invincible heroes or spotless stories. I want to see the mud. For me, suffering is never gratuitous — it\'s the engine that makes a character\'s growth real. I want to see Subaru die a thousand times for a sliver of progress in <a href="https://myanimelist.net/anime/31240" target="_blank" rel="noopener">Re:Zero</a>, or Shinji crumble under the weight of an unchosen destiny in <a href="https://myanimelist.net/anime/30" target="_blank" rel="noopener">Evangelion</a>. If a work can\'t convey that sense of precariousness and resilience, as <a href="https://myanimelist.net/anime/41457" target="_blank" rel="noopener">86</a> and <a href="https://myanimelist.net/anime/27775" target="_blank" rel="noopener">Plastic Memories</a> did, I feel a fundamental element is missing.',
+        'vision.s3title': 'Intuition and world consistency',
+        'vision.s3body': 'More than the mere exposition of rules, I love the challenge of deciphering them. I consider myself an active observer: I enjoy using my logical thinking to intuit events or plot developments even when they aren\'t explicitly stated. I seek solid and consistent world-building, because only in a well-constructed world can my deductions have value. If the anime can\'t give depth to its universe, I gladly move to the manga for a rawer and more complete vision, as with <a href="https://myanimelist.net/manga/116778" target="_blank" rel="noopener">Chainsaw Man</a>.',
         'divider.ranking': 'Ranking',
         'divider.writing': 'Writing',
         'top20.desc': 'The 20 anime that defined my standards. Ranked by overall impact: writing, direction, characters, and ability to surprise.',
@@ -998,33 +1021,36 @@
     });
 
     /* ==================================================
-       6. TOP 20 — Dati statici e rendering
-       Array dei 20 anime preferiti con tier system:
-       - goat: rank 1-5 (icona cerchio crimson)
-       - elite: rank 6-10
-       - great: rank 11-20
+       6. TOP 20 — Dati e rendering
+
+       PER AGGIUNGERE UNA RECENSIONE:
+       Trova l'anime nell'array qui sotto e aggiungi il campo 'review'.
+       Esempio:
+         { rank: 1, name: 'Code Geass', ..., mal: 1575, review: 'La tua recensione qui.' },
+       La recensione appare sotto il nome nella card.
+       Se non c'è il campo review (o è vuoto), non viene mostrato nulla.
        ================================================== */
     var TOP20 = [
-      { rank: 1,  name: 'Code Geass',                     type: 'TV',    year: 2006, mal: 1575  },
-      { rank: 2,  name: 'Steins;Gate',                     type: 'TV',    year: 2011, mal: 9253  },
-      { rank: 3,  name: 'Re:Zero',                         type: 'TV',    year: 2016, mal: 31240 },
-      { rank: 4,  name: 'Cyberpunk: Edgerunners',          type: 'ONA',   year: 2022, mal: 42310 },
-      { rank: 5,  name: 'To Be Hero X',                    type: 'TV',    year: 2024, mal: 56923 },
-      { rank: 6,  name: 'Fullmetal Alchemist: Brotherhood', type: 'TV',   year: 2009, mal: 5114  },
-      { rank: 7,  name: 'Evangelion',                      type: 'TV',    year: 1995, mal: 30    },
-      { rank: 8,  name: 'Death Note',                      type: 'TV',    year: 2006, mal: 1535  },
-      { rank: 9,  name: 'Tokyo Ghoul',                     type: 'TV',    year: 2014, mal: 22319 },
-      { rank: 10, name: 'Oshi no Ko',                      type: 'TV',    year: 2023, mal: 52034 },
-      { rank: 11, name: '86 — Eighty Six',                 type: 'TV',    year: 2021, mal: 41457 },
-      { rank: 12, name: 'Chainsaw Man',                    type: 'Manga', year: 2018, mal: 116778 },
-      { rank: 13, name: 'Akame ga Kill',                   type: 'TV',    year: 2014, mal: 22199 },
-      { rank: 14, name: 'Erased',                          type: 'TV',    year: 2016, mal: 31043 },
-      { rank: 15, name: 'Classroom of the Elite',          type: 'TV',    year: 2017, mal: 35507 },
-      { rank: 16, name: 'Summertime Rendering',            type: 'TV',    year: 2022, mal: 47917 },
-      { rank: 17, name: 'Tomodachi Game',                  type: 'TV',    year: 2022, mal: 50273 },
-      { rank: 18, name: 'The Promised Neverland',          type: 'TV',    year: 2019, mal: 37779 },
-      { rank: 19, name: 'The Eminence in Shadow',          type: 'TV',    year: 2022, mal: 48316 },
-      { rank: 20, name: 'Plastic Memories',                type: 'TV',    year: 2015, mal: 27775 }
+      { rank: 1,  name: 'Code Geass',                     type: 'TV',    year: 2006, mal: 1575,   review: '' },
+      { rank: 2,  name: 'Steins;Gate',                     type: 'TV',    year: 2011, mal: 9253,   review: '' },
+      { rank: 3,  name: 'Re:Zero',                         type: 'TV',    year: 2016, mal: 31240,  review: '' },
+      { rank: 4,  name: 'Cyberpunk: Edgerunners',          type: 'ONA',   year: 2022, mal: 42310,  review: '' },
+      { rank: 5,  name: 'To Be Hero X',                    type: 'TV',    year: 2024, mal: 53447,  review: '' },
+      { rank: 6,  name: 'Fullmetal Alchemist: Brotherhood', type: 'TV',   year: 2009, mal: 5114,   review: '' },
+      { rank: 7,  name: 'Evangelion',                      type: 'TV',    year: 1995, mal: 30,     review: '' },
+      { rank: 8,  name: 'Death Note',                      type: 'TV',    year: 2006, mal: 1535,   review: '' },
+      { rank: 9,  name: 'Tokyo Ghoul',                     type: 'TV',    year: 2014, mal: 22319,  review: '' },
+      { rank: 10, name: 'Oshi no Ko',                      type: 'TV',    year: 2023, mal: 52034,  review: '' },
+      { rank: 11, name: '86 Eighty Six',                   type: 'TV',    year: 2021, mal: 41457,  review: '' },
+      { rank: 12, name: 'Chainsaw Man',                    type: 'Manga', year: 2018, mal: 116778, review: '' },
+      { rank: 13, name: 'Akame ga Kill',                   type: 'TV',    year: 2014, mal: 22199,  review: '' },
+      { rank: 14, name: 'Erased',                          type: 'TV',    year: 2016, mal: 31043,  review: '' },
+      { rank: 15, name: 'Classroom of the Elite',          type: 'TV',    year: 2017, mal: 35507,  review: '' },
+      { rank: 16, name: 'Summertime Rendering',            type: 'TV',    year: 2022, mal: 47194,  review: '' },
+      { rank: 17, name: 'Tomodachi Game',                  type: 'TV',    year: 2022, mal: 50273,  review: '' },
+      { rank: 18, name: 'The Promised Neverland',          type: 'TV',    year: 2019, mal: 37779,  review: '' },
+      { rank: 19, name: 'The Eminence in Shadow',          type: 'TV',    year: 2022, mal: 48316,  review: '' },
+      { rank: 20, name: 'Plastic Memories',                type: 'TV',    year: 2015, mal: 27775,  review: '' }
     ];
 
     function renderTop20() {
@@ -1034,10 +1060,10 @@
 
       TOP20.forEach(function(anime) {
         var item = document.createElement('div');
-        // Top 5 mantiene lo stile rank cerchio crimson
         item.className = 'top20-item' + (anime.rank <= 5 ? ' goat' : '');
+        // Se ha una recensione, la card si espande
+        if (anime.review) item.classList.add('has-review');
 
-        // URL MAL: manga per Chainsaw Man, anime per tutti gli altri
         var malUrl = anime.type === 'Manga'
           ? 'https://myanimelist.net/manga/' + anime.mal
           : 'https://myanimelist.net/anime/' + anime.mal;
@@ -1047,6 +1073,7 @@
           '<div class="top20-meta">' +
             '<a href="' + malUrl + '" target="_blank" rel="noopener" class="top20-name">' + anime.name + '</a>' +
             '<div class="top20-submeta">' + anime.type + ' · ' + anime.year + '</div>' +
+            (anime.review ? '<p class="top20-review">' + anime.review + '</p>' : '') +
           '</div>';
 
         list.appendChild(item);
