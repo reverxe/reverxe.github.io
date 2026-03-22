@@ -3,182 +3,569 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anime Reviews — reverxe</title>
-  <meta name="description" content="Le recensioni anime di Luca Carabelli (reverxe). Voti e opinioni sincronizzati da MyAnimeList.">
+  <title>Anime — reverxe</title>
+  <meta name="description" content="Il mio profilo da spettatore anime, la mia Top 20 definitiva e la lista completa da MyAnimeList.">
   <meta name="author" content="Luca Carabelli">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://reverxe.github.io/blog.html">
-  <meta property="og:title" content="Anime Reviews — reverxe">
-  <meta property="og:description" content="Le mie recensioni anime, sincronizzate da MyAnimeList.">
+  <meta property="og:title" content="Anime — reverxe">
+  <meta property="og:description" content="Profilo critico, Top 20 definitiva e lista MAL di reverxe.">
   <meta property="og:url" content="https://reverxe.github.io/blog.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:site_name" content="reverxe">
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.min.css" rel="stylesheet">
+
+  <!-- Anti-FOUC: apply theme/lang before first paint -->
+  <script>
+    (function(){
+      if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');
+      var l=localStorage.getItem('lang');if(l)document.documentElement.lang=l;
+    })();
+  </script>
+
   <style>
-    :root{
-      --bg-primary:#111111;--bg-secondary:#1A1A1A;--bg-card:#1A1A1A;
-      --crimson:#C0152A;--crimson-light:#E8203B;--crimson-mid:#991B28;--crimson-dark:#7A1220;--crimson-deep:#450A0A;
-      --crimson-berry:#E8334A;--crimson-rose:#F05068;
-      --crimson-glow:rgba(192,21,42,.13);--crimson-glow-strong:rgba(192,21,42,.28);
-      --text-primary:#E5E5E5;--text-muted:#888888;--text-dim:#555555;
-      --border:#252525;--border-hover:#333333;
-      --navbar-bg:rgba(17,17,17,.88);--mobile-nav-bg:rgba(17,17,17,.96);
-      --font-display:'Geist Sans','Space Mono',system-ui,sans-serif;--font-mono:'Geist Mono','Space Mono','Courier New',monospace;
-      --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
-      --page-pad:clamp(14px,2.7vw,40px);
+    /* ============================================================
+       CSS VARIABLES — Design tokens condivisi con tutto il sito.
+       Dark theme (default) e light theme override.
+       ============================================================ */
+    :root {
+      /* Backgrounds */
+      --bg-primary: #111111;
+      --bg-secondary: #1A1A1A;
+      --bg-card: #1A1A1A;
+
+      /* Crimson palette */
+      --crimson: #C0152A;
+      --crimson-light: #E8203B;
+      --crimson-mid: #991B28;
+      --crimson-dark: #7A1220;
+      --crimson-deep: #450A0A;
+      --crimson-berry: #E8334A;
+      --crimson-rose: #F05068;
+      --crimson-glow: rgba(192, 21, 42, .13);
+      --crimson-glow-strong: rgba(192, 21, 42, .28);
+
+      /* Text */
+      --text-primary: #E5E5E5;
+      --text-muted: #888888;
+      --text-dim: #555555;
+
+      /* Borders */
+      --border: #252525;
+      --border-hover: #333333;
+
+      /* Navbar */
+      --navbar-bg: rgba(17, 17, 17, .88);
+      --mobile-nav-bg: rgba(17, 17, 17, .96);
+
+      /* Typography */
+      --font-display: 'Geist Sans', system-ui, sans-serif;
+      --font-mono: 'Geist Mono', 'Courier New', monospace;
+
+      /* Spacing & Radius */
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --page-pad: clamp(14px, 2.7vw, 40px);
     }
-    [data-theme="light"]{
-      --bg-primary:#F6F1EC;--bg-secondary:#EDE8E2;--bg-card:#FDFAF7;
-      --crimson:#8B0E1E;--crimson-light:#A81224;--crimson-mid:#6B0A16;--crimson-dark:#4E0810;--crimson-deep:#330510;
-      --crimson-berry:#A81224;--crimson-rose:#C0182C;
-      --crimson-glow:rgba(139,14,30,.09);--crimson-glow-strong:rgba(139,14,30,.22);
-      --text-primary:#1A1A1A;--text-muted:#4A4A4A;--text-dim:#808080;
-      --border:#D5CCC4;--border-hover:#B8AEA4;
-      --navbar-bg:rgba(246,241,236,.92);--mobile-nav-bg:rgba(246,241,236,.97);
+
+    /* --- Light theme overrides --- */
+    [data-theme="light"] {
+      --bg-primary: #F6F1EC;
+      --bg-secondary: #EDE8E2;
+      --bg-card: #FDFAF7;
+      --crimson: #8B0E1E;
+      --crimson-light: #A81224;
+      --crimson-mid: #6B0A16;
+      --crimson-dark: #4E0810;
+      --crimson-deep: #330510;
+      --crimson-berry: #A81224;
+      --crimson-rose: #C0182C;
+      --crimson-glow: rgba(139, 14, 30, .09);
+      --crimson-glow-strong: rgba(139, 14, 30, .22);
+      --text-primary: #1A1A1A;
+      --text-muted: #4A4A4A;
+      --text-dim: #808080;
+      --border: #D5CCC4;
+      --border-hover: #B8AEA4;
+      --navbar-bg: rgba(246, 241, 236, .92);
+      --mobile-nav-bg: rgba(246, 241, 236, .97);
     }
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{font-family:var(--font-display);background:var(--bg-primary);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s;min-height:100vh;display:flex;flex-direction:column}
-    a{color:inherit;text-decoration:none}
 
-
-    .glow{position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:pulse 8s ease-in-out infinite}
-    .glow--1{width:600px;height:600px;background:radial-gradient(circle,var(--crimson-glow) 0%,transparent 70%);top:-200px;right:-200px}
-    .glow--2{width:400px;height:400px;background:radial-gradient(circle,rgba(185,28,28,.06) 0%,transparent 70%);bottom:-100px;left:-100px;animation-duration:12s;animation-direction:reverse}
-    @keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
-
-    .scroll-progress{position:fixed;top:0;left:0;width:0;height:2px;background:var(--crimson);z-index:10001;transition:width .05s linear}
-
-    /* === NAVBAR — stile V1 === */
-    .navbar{position:fixed;top:0;left:0;right:0;z-index:10000;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:var(--navbar-bg);border-bottom:1px solid var(--border)}
-    .navbar-inner{max-width:1100px;margin:0 auto;padding:0 var(--page-pad);height:56px;display:flex;align-items:center;justify-content:space-between}
-    .nav-socials{display:flex;align-items:center;gap:12px}
-    .nav-socials a{display:flex;align-items:center;color:var(--text-muted);transition:color .2s}
-    .nav-socials a:hover{color:var(--crimson-berry,var(--crimson-light))}
-    .nav-socials svg{width:18px;height:18px;fill:currentColor}
-    .nav-links{display:flex;gap:28px;font-size:13px;font-weight:500;letter-spacing:.02em}
-    .nav-links a{color:var(--text-muted);transition:color .2s;position:relative}
-    .nav-links a:hover,.nav-links a.active{color:var(--text-primary)}
-    .nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--crimson-berry,var(--crimson-light));border-radius:1px}
-    .nav-controls{display:flex;align-items:center;gap:8px}
-    .toggle-btn{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:5px 10px;font-family:var(--font-mono);font-size:11px;color:var(--text-muted);cursor:pointer;transition:border-color .2s,color .2s;display:flex;align-items:center;gap:4px}
-    .toggle-btn:hover{border-color:var(--border-hover);color:var(--text-primary)}
-    .toggle-btn .active-opt{color:var(--crimson-berry,var(--crimson-light));font-weight:700}
-    .toggle-btn .sep{color:var(--text-dim);margin:0 2px}
-    .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px}
-    .hamburger span{display:block;width:20px;height:2px;background:var(--text-primary);border-radius:2px;transition:transform .3s,opacity .3s}
-    .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-    .hamburger.open span:nth-child(2){opacity:0}
-    .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
-    .mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--mobile-nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:28px;font-size:17px;font-weight:500}
-    .mobile-menu.open{display:flex}
-    .mobile-menu a{color:var(--text-muted);transition:color .2s}
-    .mobile-menu a:hover,.mobile-menu a.active{color:var(--text-primary)}
-    .page-transition{animation:pageIn .5s ease forwards}
-    @keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-
-    /* === ANIME PAGE === */
-    .anime-page{padding:120px var(--page-pad) 60px;position:relative;z-index:1}
-    .anime-inner{max-width:1100px;margin:0 auto}
-    .anime-header{text-align:center;margin-bottom:40px;animation:fadeUp .8s ease forwards;opacity:0}
-    .anime-title{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-1px;margin-bottom:8px}
-    .anime-sub{font-size:14px;color:var(--text-muted)}
-    .anime-sub a{color:var(--crimson);font-weight:500;transition:color .3s}
-    .anime-sub a:hover{color:var(--crimson-light)}
-
-    .anime-stats{display:flex;justify-content:center;gap:32px;margin-bottom:40px;animation:fadeUp .8s ease .15s forwards;opacity:0}
-    .anime-stat{text-align:center}
-    .anime-stat-num{font-size:24px;font-weight:700;color:var(--crimson);font-family:var(--font-mono)}
-    .anime-stat-label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
-
-    .anime-filters{display:flex;justify-content:center;gap:8px;margin-bottom:32px;flex-wrap:wrap;animation:fadeUp .8s ease .25s forwards;opacity:0}
-    .filter-btn{padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-muted);font-size:12px;font-family:var(--font-display);cursor:pointer;transition:all .3s}
-    .filter-btn:hover{border-color:var(--crimson);color:var(--crimson)}
-    .filter-btn.active{background:var(--crimson);border-color:var(--crimson);color:#fff}
-
-    .anime-loading{text-align:center;padding:60px 0;color:var(--text-dim);font-size:14px}
-    .anime-loading .spinner{width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--crimson);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    .anime-grid{display:flex;flex-direction:column;gap:12px;animation:fadeUp .8s ease .35s forwards;opacity:0}
-
-    .anime-card{display:flex;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;transition:border-color .3s,transform .2s,box-shadow .3s}
-    .anime-card:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
-    [data-theme="light"] .anime-card{box-shadow:0 1px 3px rgba(0,0,0,.04)}
-    [data-theme="light"] .anime-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.08)}
-
-    .anime-cover{width:100px;min-height:140px;flex-shrink:0;overflow:hidden;position:relative}
-    .anime-cover img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
-    .anime-card:hover .anime-cover img{transform:scale(1.05)}
-
-    .anime-info{padding:16px 20px;display:flex;flex-direction:column;justify-content:center;flex:1;min-width:0}
-    .anime-name{font-size:15px;font-weight:600;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .anime-name a{transition:color .3s}
-    .anime-name a:hover{color:var(--crimson)}
-    .anime-meta{font-size:11px;color:var(--text-dim);font-family:var(--font-mono);margin-bottom:8px;display:flex;gap:12px;flex-wrap:wrap}
-    .anime-genres{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
-    .anime-genre{font-size:10px;padding:2px 8px;border-radius:10px;background:var(--crimson-glow);color:var(--crimson);border:1px solid rgba(220,20,60,.15);font-family:var(--font-mono)}
-
-    .anime-score{display:flex;align-items:center;gap:8px;margin-left:auto;padding:16px 20px;flex-shrink:0}
-    .score-circle{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;font-family:var(--font-mono);position:relative}
-    .score-circle::before{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid var(--border)}
-    .score-10{background:var(--crimson-glow);color:var(--crimson)}.score-10::before{border-color:var(--crimson)}
-    .score-9{background:rgba(255,107,129,.1);color:#FF6B81}.score-9::before{border-color:#FF6B81}
-    .score-8{background:rgba(76,175,80,.1);color:#4CAF50}.score-8::before{border-color:#4CAF50}
-    .score-7{background:rgba(129,199,132,.1);color:#81C784}.score-7::before{border-color:#81C784}
-    .score-6{background:rgba(255,193,7,.1);color:#FFC107}.score-6::before{border-color:#FFC107}
-    .score-5{background:rgba(255,152,0,.1);color:#FF9800}.score-5::before{border-color:#FF9800}
-    .score-low{background:rgba(244,67,54,.1);color:#F44336}.score-low::before{border-color:#F44336}
-    .score-label{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;font-family:var(--font-mono)}
-
-    /* === FOOTER === */
-    .footer{padding:24px var(--page-pad);border-top:1px solid var(--border);position:relative;z-index:1;margin-top:auto}
-    .footer-inner{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
-    .footer-top{display:flex;justify-content:space-between;align-items:flex-start}
-    .footer-contact{display:flex;flex-direction:column;gap:4px}
-    .footer-contact-label{font-size:10px;color:var(--crimson);text-transform:uppercase;letter-spacing:1px;font-family:var(--font-mono);margin-bottom:2px}
-    .footer-email{font-size:12px;color:var(--text-muted);transition:color .3s;display:inline-flex;align-items:center;gap:6px}
-    .footer-email:hover{color:var(--crimson)}
-    .footer-email-tag{font-size:9px;color:var(--text-dim);background:var(--bg-card);border:1px solid var(--border);padding:1px 6px;border-radius:4px;font-family:var(--font-mono)}
-    .footer-bottom{display:flex;justify-content:center}
-    .footer-text{font-size:11px;color:var(--text-dim)}
-    .footer-text span{color:var(--crimson)}
-
-    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-
-    ::-webkit-scrollbar{width:5px}
-    ::-webkit-scrollbar-track{background:var(--bg-primary)}
-    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-    ::-webkit-scrollbar-thumb:hover{background:var(--crimson)}
-
-    @media(max-width:768px){
-      .nav-links,.nav-socials{display:none}
-      .hamburger{display:flex}
+    /* ============================================================
+       RESET & BASE STYLES
+       ============================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-display);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      transition: background .4s, color .4s;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-    @media(max-width:900px){
-      .footer-top{flex-direction:column;align-items:center;gap:16px}
-      .footer-contact{align-items:center}
-      .anime-card{flex-direction:column}
-      .anime-cover{width:100%;min-height:180px}
-      .anime-score{justify-content:flex-start;padding:0 16px 16px}
-      .anime-stats{gap:20px}
+    a { color: inherit; text-decoration: none; }
+
+    /* ============================================================
+       BACKGROUND GLOW — Radiali animati decorativi
+       ============================================================ */
+    .glow {
+      position: fixed; border-radius: 50%;
+      pointer-events: none; z-index: 0;
+      animation: pulse 8s ease-in-out infinite;
+    }
+    .glow--1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--crimson-glow) 0%, transparent 70%);
+      top: -200px; right: -200px;
+    }
+    .glow--2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(185, 28, 28, .06) 0%, transparent 70%);
+      bottom: -100px; left: -100px;
+      animation-duration: 12s; animation-direction: reverse;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: .6; transform: scale(1); }
+      50%      { opacity: 1;  transform: scale(1.1); }
+    }
+
+    /* ============================================================
+       SCROLL PROGRESS BAR — Barra crimson fissa in alto
+       ============================================================ */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--crimson);
+      z-index: 10001;
+      transition: width .05s linear;
+    }
+
+    /* ============================================================
+       NAVBAR — Layout: socials sx | links centro | controls dx
+       ============================================================ */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 10000;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: var(--navbar-bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .navbar-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 var(--page-pad); height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* Socials — sinistra */
+    .nav-socials { display: flex; align-items: center; gap: 12px; }
+    .nav-socials a {
+      display: flex; align-items: center;
+      color: var(--text-muted); transition: color .2s;
+    }
+    .nav-socials a:hover { color: var(--crimson-berry); }
+    .nav-socials svg { width: 18px; height: 18px; fill: currentColor; }
+
+    /* Links — centro */
+    .nav-links { display: flex; gap: 28px; font-size: 13px; font-weight: 500; letter-spacing: .02em; }
+    .nav-links a { color: var(--text-muted); transition: color .2s; position: relative; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+    .nav-links a.active::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 2px; background: var(--crimson-berry); border-radius: 1px;
+    }
+
+    /* Controls — destra (lang toggle, theme toggle, hamburger) */
+    .nav-controls { display: flex; align-items: center; gap: 8px; }
+    .toggle-btn {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 5px 10px;
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--text-muted); cursor: pointer;
+      transition: border-color .2s, color .2s;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .toggle-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+    .toggle-btn .active-opt { color: var(--crimson-berry); font-weight: 700; }
+    .toggle-btn .sep { color: var(--text-dim); margin: 0 2px; }
+
+    /* Hamburger — visibile solo su mobile */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 6px;
+    }
+    .hamburger span {
+      display: block; width: 20px; height: 2px;
+      background: var(--text-primary); border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* Mobile menu overlay */
+    .mobile-menu {
+      display: none; position: fixed;
+      top: 56px; left: 0; right: 0; bottom: 0;
+      background: var(--mobile-nav-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 9999;
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 28px; font-size: 17px; font-weight: 500;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--text-muted); transition: color .2s; }
+    .mobile-menu a:hover, .mobile-menu a.active { color: var(--text-primary); }
+
+    /* Page entry animation */
+    .page-transition { animation: pageIn .5s ease forwards; }
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================================
+       PAGE LAYOUT
+       ============================================================ */
+    .anime-page {
+      padding: 88px var(--page-pad) 60px;
+      position: relative; z-index: 1; flex: 1;
+    }
+    .anime-inner { max-width: 780px; margin: 0 auto; }
+
+    /* ============================================================
+       TAB NAVIGATION — 2 tab: "Profilo & Top 20" | "Lista MAL"
+       ============================================================ */
+    .tab-nav {
+      display: flex; justify-content: center; gap: 8px;
+      margin-bottom: 44px;
+      animation: fadeUp .6s ease forwards; opacity: 0;
+    }
+    .tab-btn {
+      padding: 8px 22px; border-radius: 20px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-muted); font-size: 13px; font-weight: 500;
+      font-family: var(--font-display); cursor: pointer;
+      transition: all .25s; letter-spacing: .01em;
+    }
+    .tab-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+    .tab-btn.active {
+      background: var(--crimson); border-color: var(--crimson);
+      color: #fff; box-shadow: 0 0 16px var(--crimson-glow-strong);
+    }
+    .tab-content { display: none; animation: fadeUp .4s ease forwards; }
+    .tab-content.active { display: block; }
+
+    /* ============================================================
+       TAB 1: PROFILO & TOP 20
+       Contiene la sezione identità + le profile cards + la top 20
+       ============================================================ */
+
+    /* -- Profile header -- */
+    .profile-header { text-align: center; margin-bottom: 40px; }
+    .profile-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border: 1px solid var(--crimson-mid);
+      border-radius: 20px; font-size: 10px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--crimson); font-family: var(--font-mono);
+      margin-bottom: 20px;
+    }
+    .profile-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--crimson); animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: .3; }
+    }
+    .profile-title {
+      font-size: clamp(28px, 5vw, 44px); font-weight: 700;
+      letter-spacing: -.02em; line-height: 1.15; margin-bottom: 16px;
+    }
+    .profile-title .accent { color: var(--crimson); }
+    .profile-desc {
+      font-size: 14px; color: var(--text-muted);
+      line-height: 1.75; max-width: 560px; margin: 0 auto;
+    }
+
+    /* -- Profile cards (2x2 grid) -- */
+    .profile-cards {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; margin: 36px 0;
+    }
+    .profile-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 22px 20px;
+      transition: border-color .3s, transform .2s;
+    }
+    .profile-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .profile-card-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    }
+    .profile-card-icon { font-size: 18px; line-height: 1; }
+    .profile-card-title { font-size: 13px; font-weight: 600; letter-spacing: .01em; }
+    .profile-card-border {
+      width: 3px; height: 16px; background: var(--crimson);
+      border-radius: 2px; flex-shrink: 0;
+    }
+    .profile-card-body { font-size: 12.5px; color: var(--text-muted); line-height: 1.7; }
+
+    /* -- Divider between profile and top 20 -- */
+    .section-divider {
+      display: flex; align-items: center; gap: 16px;
+      margin: 48px 0 36px;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .section-divider-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--crimson);
+      font-family: var(--font-mono); white-space: nowrap;
+    }
+
+    /* -- Top 20 header -- */
+    .top20-header { text-align: center; margin-bottom: 36px; }
+    .top20-title {
+      font-size: clamp(26px, 4vw, 38px); font-weight: 700;
+      letter-spacing: -.02em; margin-bottom: 12px;
+    }
+    .top20-title .accent { color: var(--crimson); }
+    .top20-desc {
+      font-size: 13.5px; color: var(--text-muted);
+      line-height: 1.7; max-width: 520px; margin: 0 auto;
+    }
+
+    /* -- Top 20 list items -- */
+    .top20-list { display: flex; flex-direction: column; gap: 8px; }
+    .top20-item {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 14px 18px;
+      transition: border-color .25s, transform .2s; cursor: default;
+    }
+    .top20-item:hover { border-color: var(--border-hover); transform: translateX(4px); }
+    .top20-rank {
+      font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+      min-width: 24px; text-align: center;
+    }
+    /* Rank #1-5 (goat tier) — cerchio crimson */
+    .top20-item.goat .top20-rank {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--crimson); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; min-width: 32px;
+      box-shadow: 0 0 12px var(--crimson-glow-strong);
+    }
+    .top20-item:not(.goat) .top20-rank { color: var(--text-dim); }
+    .top20-meta { flex: 1; min-width: 0; }
+    .top20-name {
+      font-size: 14px; font-weight: 600;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      color: var(--text-primary); transition: color .2s;
+    }
+    a.top20-name:hover { color: var(--crimson); }
+    .top20-submeta {
+      font-size: 10px; color: var(--text-dim);
+      font-family: var(--font-mono); margin-top: 2px;
+    }
+
+    /* ============================================================
+       TAB 2: LISTA MAL — Feed automatico da animelist.xml
+       ============================================================ */
+    .mal-header { text-align: center; margin-bottom: 32px; }
+    .mal-title {
+      font-size: clamp(22px, 3.5vw, 32px); font-weight: 700;
+      letter-spacing: -.02em; margin-bottom: 8px;
+    }
+    .mal-sub { font-size: 13px; color: var(--text-muted); }
+    .mal-sub a { color: var(--crimson); font-weight: 500; transition: color .2s; }
+    .mal-sub a:hover { color: var(--crimson-light); }
+
+    .anime-stats { display: flex; justify-content: center; gap: 32px; margin-bottom: 28px; }
+    .anime-stat { text-align: center; }
+    .anime-stat-num { font-size: 22px; font-weight: 700; color: var(--crimson); font-family: var(--font-mono); }
+    .anime-stat-label {
+      font-size: 10px; color: var(--text-dim); text-transform: uppercase;
+      letter-spacing: .5px; margin-top: 2px;
+    }
+
+    .anime-filters { display: flex; justify-content: center; gap: 6px; margin-bottom: 28px; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 5px 14px; border-radius: 20px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-muted); font-size: 11px;
+      font-family: var(--font-display); cursor: pointer;
+      transition: all .25s;
+    }
+    .filter-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+    .filter-btn.active { background: var(--crimson); border-color: var(--crimson); color: #fff; }
+
+    /* Loading spinner */
+    .anime-loading { text-align: center; padding: 48px 0; color: var(--text-dim); font-size: 13px; }
+    .anime-loading .spinner {
+      width: 22px; height: 22px;
+      border: 2px solid var(--border); border-top-color: var(--crimson);
+      border-radius: 50%; animation: spin .8s linear infinite;
+      margin: 0 auto 10px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Anime card list */
+    .anime-grid { display: flex; flex-direction: column; gap: 10px; }
+    .anime-card {
+      display: flex; background: var(--bg-card);
+      border: 1px solid var(--border); border-radius: var(--radius-md);
+      overflow: hidden; transition: border-color .25s, transform .2s, box-shadow .25s;
+    }
+    .anime-card:hover {
+      border-color: var(--border-hover); transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .15);
+    }
+    .anime-cover { width: 72px; min-height: 104px; flex-shrink: 0; overflow: hidden; }
+    .anime-cover img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .4s;
+    }
+    .anime-card:hover .anime-cover img { transform: scale(1.06); }
+    .anime-info {
+      padding: 12px 16px; display: flex; flex-direction: column;
+      justify-content: center; flex: 1; min-width: 0;
+    }
+    .anime-name {
+      font-size: 13.5px; font-weight: 600; margin-bottom: 3px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .anime-name a:hover { color: var(--crimson); }
+    .anime-meta {
+      font-size: 10px; color: var(--text-dim);
+      font-family: var(--font-mono); display: flex; gap: 10px;
+    }
+    .anime-score { display: flex; align-items: center; padding: 12px 16px; flex-shrink: 0; }
+    .score-circle {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700;
+      font-family: var(--font-mono); border: 2px solid var(--border);
+    }
+    .score-10 { background: var(--crimson-glow); color: var(--crimson); border-color: var(--crimson); }
+    .score-9  { background: rgba(255, 107, 129, .08); color: #FF6B81; border-color: #FF6B81; }
+    .score-8  { background: rgba(76, 175, 80, .08);   color: #4CAF50; border-color: #4CAF50; }
+    .score-7  { background: rgba(129, 199, 132, .08);  color: #81C784; border-color: #81C784; }
+    .score-6  { background: rgba(255, 193, 7, .08);    color: #FFC107; border-color: #FFC107; }
+    .score-5  { background: rgba(255, 152, 0, .08);    color: #FF9800; border-color: #FF9800; }
+    .score-low { background: rgba(244, 67, 54, .08);   color: #F44336; border-color: #F44336; }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer {
+      padding: 24px var(--page-pad); border-top: 1px solid var(--border);
+      position: relative; z-index: 1; margin-top: auto;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .footer-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .footer-contact { display: flex; flex-direction: column; gap: 4px; }
+    .footer-contact-label {
+      font-size: 10px; color: var(--crimson); text-transform: uppercase;
+      letter-spacing: 1px; font-family: var(--font-mono); margin-bottom: 2px;
+    }
+    .footer-email {
+      font-size: 12px; color: var(--text-muted); transition: color .3s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .footer-email:hover { color: var(--crimson); }
+    .footer-email-tag {
+      font-size: 9px; color: var(--text-dim); background: var(--bg-card);
+      border: 1px solid var(--border); padding: 1px 6px;
+      border-radius: 4px; font-family: var(--font-mono);
+    }
+    .footer-bottom { display: flex; justify-content: center; }
+    .footer-text { font-size: 11px; color: var(--text-dim); }
+    .footer-text span { color: var(--crimson); }
+
+    /* ============================================================
+       UTILITY ANIMATIONS
+       ============================================================ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--crimson); }
+
+    /* ============================================================
+       RESPONSIVE — Mobile breakpoints
+       ============================================================ */
+    @media (max-width: 768px) {
+      .nav-links, .nav-socials { display: none; }
+      .hamburger { display: flex; }
+    }
+    @media (max-width: 640px) {
+      .profile-cards { grid-template-columns: 1fr; }
+      .anime-stats { gap: 20px; }
+      .footer-top { flex-direction: column; align-items: center; gap: 16px; }
+      .footer-contact { align-items: center; }
+      .anime-card { flex-direction: column; }
+      .anime-cover { width: 100%; min-height: 140px; }
+      .anime-score { justify-content: flex-start; padding: 0 16px 14px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Background glow effects -->
   <div class="glow glow--1"></div>
   <div class="glow glow--2"></div>
+
+  <!-- Scroll progress bar -->
   <div class="scroll-progress" id="scrollProgress"></div>
 
+  <!-- ============================================================
+       NAVBAR
+       ============================================================ -->
   <nav class="navbar" id="navbar">
     <div class="navbar-inner">
+      <!-- Social icons — sinistra -->
       <div class="nav-socials">
-        <a href="https://github.com/reverxe" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg></a>
-        <a href="https://www.twitch.tv/reverxe__" target="_blank" rel="noopener" aria-label="Twitch"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 2L3.429 4.714v14.572h4.285V22l2.572-2.714h2.143L19.714 12V2zm12 9.143l-2.571 2.571h-2.572l-2.285 2.286v-2.286H7.714V3.714H18z"/></svg></a>
-        <a href="https://www.instagram.com/luca.carabelli/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
-        <a href="https://steamcommunity.com/id/reverxe/" target="_blank" rel="noopener" aria-label="Steam"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658a3.387 3.387 0 011.912-.587c.064 0 .128.002.191.006l2.861-4.142V8.91a4.528 4.528 0 014.524-4.524c2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396a3.406 3.406 0 01-3.324-2.751l-4.612-1.906C2.614 20.7 6.906 24 11.979 24 18.627 24 24 18.627 24 11.979S18.627 0 11.979 0zM7.54 18.21l-1.473-.61a2.541 2.541 0 004.578.456 2.542 2.542 0 00-1.376-3.322 2.546 2.546 0 00-1.87-.04l1.523.63a1.874 1.874 0 01-1.382 3.487v-.001zm8.402-5.684a3.016 3.016 0 003.015-3.015 3.018 3.018 0 00-3.015-3.016 3.018 3.018 0 00-3.015 3.016 3.016 3.016 0 003.015 3.015zm-.004-4.533a1.52 1.52 0 011.518 1.518 1.52 1.52 0 01-1.518 1.518 1.52 1.52 0 01-1.517-1.518 1.52 1.52 0 011.517-1.518z"/></svg></a>
-        <a href="https://www.tiktok.com/@reverxe" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
+        <a href="https://github.com/reverxe" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+        </a>
+        <a href="https://www.twitch.tv/reverxe__" target="_blank" rel="noopener" aria-label="Twitch">
+          <svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 2L3.429 4.714v14.572h4.285V22l2.572-2.714h2.143L19.714 12V2zm12 9.143l-2.571 2.571h-2.572l-2.285 2.286v-2.286H7.714V3.714H18z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/luca.carabelli/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://steamcommunity.com/id/reverxe/" target="_blank" rel="noopener" aria-label="Steam">
+          <svg viewBox="0 0 24 24"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658a3.387 3.387 0 011.912-.587c.064 0 .128.002.191.006l2.861-4.142V8.91a4.528 4.528 0 014.524-4.524c2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396a3.406 3.406 0 01-3.324-2.751l-4.612-1.906C2.614 20.7 6.906 24 11.979 24 18.627 24 24 18.627 24 11.979S18.627 0 11.979 0zM7.54 18.21l-1.473-.61a2.541 2.541 0 004.578.456 2.542 2.542 0 00-1.376-3.322 2.546 2.546 0 00-1.87-.04l1.523.63a1.874 1.874 0 01-1.382 3.487v-.001zm8.402-5.684a3.016 3.016 0 003.015-3.015 3.018 3.018 0 00-3.015-3.016 3.018 3.018 0 00-3.015 3.016 3.016 3.016 0 003.015 3.015zm-.004-4.533a1.52 1.52 0 011.518 1.518 1.52 1.52 0 01-1.518 1.518 1.52 1.52 0 01-1.517-1.518 1.52 1.52 0 011.517-1.518z"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@reverxe" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+        </a>
       </div>
+
+      <!-- Nav links — centro -->
       <div class="nav-links">
         <a href="index.html" data-i18n="nav.home">Home</a>
         <a href="about.html" data-i18n="nav.about">Chi sono</a>
@@ -186,17 +573,25 @@
         <a href="blog.html" class="active">Blog</a>
         <a href="social.html">Social</a>
       </div>
+
+      <!-- Controls — destra -->
       <div class="nav-controls">
         <button class="toggle-btn" id="langToggle" aria-label="Cambia lingua">
-          <span class="active-opt" id="langIT">IT</span><span class="sep">|</span><span id="langEN">EN</span>
+          <span class="active-opt" id="langIT">IT</span>
+          <span class="sep">|</span>
+          <span id="langEN">EN</span>
         </button>
         <button class="toggle-btn" id="themeToggle" aria-label="Cambia tema">
           <span id="themeIcon">☾</span>
         </button>
-        <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
   </nav>
+
+  <!-- Mobile menu overlay -->
   <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Home</a>
     <a href="about.html">Chi sono</a>
@@ -205,46 +600,135 @@
     <a href="social.html">Social</a>
   </div>
 
-  <!-- ANIME REVIEWS -->
+  <!-- ============================================================
+       PAGE CONTENT
+       ============================================================ -->
   <section class="anime-page page-transition">
     <div class="anime-inner">
-      <div class="anime-header">
-        <h1 class="anime-title" data-i18n="anime.title">Le mie recensioni anime</h1>
-        <p class="anime-sub" data-i18n="anime.sub">Sincronizzato da <a href="https://myanimelist.net/profile/reverxe" target="_blank">MyAnimeList</a> — voti e lista aggiornati automaticamente</p>
+
+      <!-- Tab navigation: 2 tabs -->
+      <div class="tab-nav" id="tabNav">
+        <button class="tab-btn active" data-tab="profile" data-i18n="tab.profile">Profilo &amp; Top 20</button>
+        <button class="tab-btn" data-tab="mal" data-i18n="tab.mal">Lista MAL</button>
       </div>
 
-      <div class="anime-stats" id="animeStats">
-        <div class="anime-stat"><div class="anime-stat-num" id="statTotal">—</div><div class="anime-stat-label" data-i18n="anime.total">Completati</div></div>
-        <div class="anime-stat"><div class="anime-stat-num" id="statAvg">—</div><div class="anime-stat-label" data-i18n="anime.avg">Media voto</div></div>
-        <div class="anime-stat"><div class="anime-stat-num" id="statTop">—</div><div class="anime-stat-label" data-i18n="anime.top">Voto massimo</div></div>
+      <!-- ========================================
+           TAB 1: PROFILO & TOP 20
+           ======================================== -->
+      <div class="tab-content active" id="tab-profile">
+
+        <!-- Profile identity -->
+        <div class="profile-header">
+          <div class="profile-badge" data-i18n="profile.badge">Profilo Spettatore</div>
+          <h1 class="profile-title">Il <span class="accent">Verdetto</span> Finale</h1>
+          <p class="profile-desc" data-i18n="profile.intro">Non guardo anime per passare il tempo. Ogni serie è un caso da analizzare: scompongo la struttura narrativa, testo la coerenza del worldbuilding e valuto quanto ogni scelta autoriale regga sotto pressione.</p>
+        </div>
+
+        <!-- 4 profile cards -->
+        <div class="profile-cards">
+          <div class="profile-card">
+            <div class="profile-card-header">
+              <div class="profile-card-border"></div>
+              <span class="profile-card-icon">♟</span>
+              <span class="profile-card-title" data-i18n="profile.c1title">Pensiero Strategico</span>
+            </div>
+            <p class="profile-card-body" data-i18n="profile.c1body">Una buona storia è una partita a scacchi. Costruisco ipotesi su ogni sviluppo e le migliori serie sono quelle che riescono a sorprendermi restando coerenti con le proprie regole.</p>
+          </div>
+          <div class="profile-card">
+            <div class="profile-card-header">
+              <div class="profile-card-border"></div>
+              <span class="profile-card-icon">🩸</span>
+              <span class="profile-card-title" data-i18n="profile.c2title">Profondità Psicologica</span>
+            </div>
+            <p class="profile-card-body" data-i18n="profile.c2body">Cerco personaggi che si spezzano e si ricostruiscono. Il conflitto interiore, il trauma e la crescita autentica sono ciò che rende un protagonista memorabile.</p>
+          </div>
+          <div class="profile-card">
+            <div class="profile-card-header">
+              <div class="profile-card-border"></div>
+              <span class="profile-card-icon">🏗</span>
+              <span class="profile-card-title" data-i18n="profile.c3title">Architettura Narrativa</span>
+            </div>
+            <p class="profile-card-body" data-i18n="profile.c3body">Pretendo un worldbuilding solido. Se le fondamenta reggono, l'opera funziona. Quando l'adattamento anime non basta, passo alla fonte originale.</p>
+          </div>
+          <div class="profile-card">
+            <div class="profile-card-header">
+              <div class="profile-card-border"></div>
+              <span class="profile-card-icon">⚖️</span>
+              <span class="profile-card-title" data-i18n="profile.c4title">Equilibrio Emotivo</span>
+            </div>
+            <p class="profile-card-body" data-i18n="profile.c4body">Alterno viaggi psicologici intensi a momenti di tregua. La catarsi e la comicità assurda sono il contrappeso necessario.</p>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="section-divider">
+          <span class="section-divider-label" data-i18n="divider.ranking">Classifica</span>
+        </div>
+
+        <!-- Top 20 -->
+        <div class="top20-header">
+          <h2 class="top20-title">La mia <span class="accent">Top 20</span></h2>
+          <p class="top20-desc" data-i18n="top20.desc">I 20 anime che hanno definito i miei standard. Ordinati per impatto complessivo: scrittura, regia, personaggi e capacità di sorprendere.</p>
+        </div>
+        <div class="top20-list" id="top20List"></div>
       </div>
 
-      <div class="anime-filters" id="animeFilters">
-        <button class="filter-btn active" data-filter="all" data-i18n="anime.all">Tutti</button>
-        <button class="filter-btn" data-filter="10" data-i18n="anime.f10">Capolavori 10</button>
-        <button class="filter-btn" data-filter="9" data-i18n="anime.f9">Eccellenti 9</button>
-        <button class="filter-btn" data-filter="8" data-i18n="anime.f8">Ottimi 8</button>
-        <button class="filter-btn" data-filter="7" data-i18n="anime.f7">Gradevoli 7</button>
-        <button class="filter-btn" data-filter="6" data-i18n="anime.f6">Discreti 6</button>
-        <button class="filter-btn" data-filter="low" data-i18n="anime.flow">Deludenti ≤5</button>
-      </div>
-
-      <div id="animeList">
-        <div class="anime-loading" id="animeLoading">
-          <div class="spinner"></div>
-          <span data-i18n="anime.loading">Caricamento dalla lista MAL...</span>
+      <!-- ========================================
+           TAB 2: LISTA MAL (caricata on-demand)
+           ======================================== -->
+      <div class="tab-content" id="tab-mal">
+        <div class="mal-header">
+          <h2 class="mal-title" data-i18n="mal.title">Lista completa</h2>
+          <p class="mal-sub" data-i18n="mal.sub">Sincronizzato da <a href="https://myanimelist.net/profile/reverxe" target="_blank" rel="noopener">MyAnimeList</a> — voti e lista aggiornati automaticamente</p>
+        </div>
+        <div class="anime-stats" id="animeStats">
+          <div class="anime-stat">
+            <div class="anime-stat-num" id="statTotal">—</div>
+            <div class="anime-stat-label" data-i18n="mal.completed">Completati</div>
+          </div>
+          <div class="anime-stat">
+            <div class="anime-stat-num" id="statAvg">—</div>
+            <div class="anime-stat-label" data-i18n="mal.avg">Media voto</div>
+          </div>
+          <div class="anime-stat">
+            <div class="anime-stat-num" id="statTop">—</div>
+            <div class="anime-stat-label" data-i18n="mal.top">Voto massimo</div>
+          </div>
+        </div>
+        <div class="anime-filters" id="animeFilters">
+          <button class="filter-btn active" data-filter="all" data-i18n="mal.all">Tutti</button>
+          <button class="filter-btn" data-filter="10" data-i18n="mal.f10">Capolavori 10</button>
+          <button class="filter-btn" data-filter="9" data-i18n="mal.f9">Eccellenti 9</button>
+          <button class="filter-btn" data-filter="8" data-i18n="mal.f8">Ottimi 8</button>
+          <button class="filter-btn" data-filter="7" data-i18n="mal.f7">Gradevoli 7</button>
+          <button class="filter-btn" data-filter="6" data-i18n="mal.f6">Discreti 6</button>
+          <button class="filter-btn" data-filter="low" data-i18n="mal.flow">Deludenti ≤5</button>
+        </div>
+        <div id="animeList">
+          <div class="anime-loading" id="animeLoading">
+            <div class="spinner"></div>
+            <span data-i18n="mal.loading">Caricamento dalla lista MAL...</span>
+          </div>
         </div>
       </div>
+
     </div>
   </section>
 
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-top">
         <div class="footer-contact">
           <div class="footer-contact-label" data-i18n="footer.contact">Contatti</div>
-          <a href="mailto:luca.carabelli@outlook.it" class="footer-email">luca.carabelli@outlook.it <span class="footer-email-tag">main</span></a>
-          <a href="mailto:rev3yt@gmail.com" class="footer-email">rev3yt@gmail.com <span class="footer-email-tag">creative</span></a>
+          <a href="mailto:luca.carabelli@outlook.it" class="footer-email">
+            luca.carabelli@outlook.it <span class="footer-email-tag">main</span>
+          </a>
+          <a href="mailto:rev3yt@gmail.com" class="footer-email">
+            rev3yt@gmail.com <span class="footer-email-tag">creative</span>
+          </a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -253,188 +737,527 @@
     </div>
   </footer>
 
+  <!-- ============================================================
+       JAVASCRIPT
+       Sezioni:
+       1. I18N — Traduzioni IT/EN
+       2. Lingua e tema — Toggle e persistenza via localStorage
+       3. Scroll progress — Barra percentuale in alto
+       4. Hamburger menu — Mobile nav toggle
+       5. Tab system — Switch tra Profilo & Top 20 / Lista MAL
+       6. Top 20 data — Render statico della classifica
+       7. MAL list — Parsing XML + Jikan API per le cover
+       8. Score filters — Filtri per voto nella tab MAL
+       ============================================================ -->
   <script>
-    // === I18N ===
-    const T={
-      it:{'nav.home':'Home','nav.about':'Chi sono','nav.projects':'Progetti','footer.contact':'Contatti',
-        'anime.title':'Le mie recensioni anime','anime.sub':'Sincronizzato da <a href="https://myanimelist.net/profile/reverxe" target="_blank">MyAnimeList</a> — voti e lista aggiornati automaticamente',
-        'anime.total':'Completati','anime.avg':'Media voto','anime.top':'Voto massimo',
-        'anime.all':'Tutti','anime.f10':'Capolavori 10','anime.f9':'Eccellenti 9','anime.f8':'Ottimi 8','anime.f7':'Gradevoli 7','anime.f6':'Discreti 6','anime.flow':'Deludenti ≤5',
-        'anime.loading':'Caricamento dalla lista MAL...',
-        'anime.error':'Errore nel caricamento. <a href="https://myanimelist.net/animelist/reverxe" target="_blank">Vedi su MAL →</a>'},
-      en:{'nav.home':'Home','nav.about':'About','nav.projects':'Projects','footer.contact':'Contact',
-        'anime.title':'My anime reviews','anime.sub':'Synced from <a href="https://myanimelist.net/profile/reverxe" target="_blank">MyAnimeList</a> — ratings and list updated automatically',
-        'anime.total':'Completed','anime.avg':'Avg score','anime.top':'Top score',
-        'anime.all':'All','anime.f10':'Masterpieces 10','anime.f9':'Excellent 9','anime.f8':'Great 8','anime.f7':'Enjoyable 7','anime.f6':'Decent 6','anime.flow':'Disappointing ≤5',
-        'anime.loading':'Loading from MAL list...',
-        'anime.error':'Loading error. <a href="https://myanimelist.net/animelist/reverxe" target="_blank">View on MAL →</a>'}
+    /* ==================================================
+       1. I18N — Dizionario traduzioni IT/EN
+       Ogni chiave corrisponde a un attributo data-i18n
+       nel DOM. setLang() aggiorna tutti gli elementi.
+       ================================================== */
+    const T = {
+      it: {
+        'nav.home': 'Home',
+        'nav.about': 'Chi sono',
+        'nav.projects': 'Progetti',
+        'footer.contact': 'Contatti',
+        'tab.profile': 'Profilo & Top 20',
+        'tab.mal': 'Lista MAL',
+        'profile.badge': 'Profilo Spettatore',
+        'profile.intro': 'Non guardo anime per passare il tempo. Ogni serie è un caso da analizzare: scompongo la struttura narrativa, testo la coerenza del worldbuilding e valuto quanto ogni scelta autoriale regga sotto pressione.',
+        'profile.c1title': 'Pensiero Strategico',
+        'profile.c1body': 'Una buona storia è una partita a scacchi. Costruisco ipotesi su ogni sviluppo e le migliori serie sono quelle che riescono a sorprendermi restando coerenti con le proprie regole.',
+        'profile.c2title': 'Profondità Psicologica',
+        'profile.c2body': 'Cerco personaggi che si spezzano e si ricostruiscono. Il conflitto interiore, il trauma e la crescita autentica sono ciò che rende un protagonista memorabile.',
+        'profile.c3title': 'Architettura Narrativa',
+        'profile.c3body': 'Pretendo un worldbuilding solido. Se le fondamenta reggono, l\'opera funziona. Quando l\'adattamento anime non basta, passo alla fonte originale.',
+        'profile.c4title': 'Equilibrio Emotivo',
+        'profile.c4body': 'Alterno viaggi psicologici intensi a momenti di tregua. La catarsi e la comicità assurda sono il contrappeso necessario.',
+        'divider.ranking': 'Classifica',
+        'top20.desc': 'I 20 anime che hanno definito i miei standard. Ordinati per impatto complessivo: scrittura, regia, personaggi e capacità di sorprendere.',
+        'mal.title': 'Lista completa',
+        'mal.sub': 'Sincronizzato da <a href="https://myanimelist.net/profile/reverxe" target="_blank" rel="noopener">MyAnimeList</a> — voti e lista aggiornati automaticamente',
+        'mal.completed': 'Completati',
+        'mal.avg': 'Media voto',
+        'mal.top': 'Voto massimo',
+        'mal.all': 'Tutti',
+        'mal.f10': 'Capolavori 10',
+        'mal.f9': 'Eccellenti 9',
+        'mal.f8': 'Ottimi 8',
+        'mal.f7': 'Gradevoli 7',
+        'mal.f6': 'Discreti 6',
+        'mal.flow': 'Deludenti ≤5',
+        'mal.loading': 'Caricamento dalla lista MAL...',
+        'mal.error': 'Errore nel caricamento. <a href="https://myanimelist.net/animelist/reverxe" target="_blank">Vedi su MAL →</a>'
+      },
+      en: {
+        'nav.home': 'Home',
+        'nav.about': 'About',
+        'nav.projects': 'Projects',
+        'footer.contact': 'Contact',
+        'tab.profile': 'Profile & Top 20',
+        'tab.mal': 'MAL List',
+        'profile.badge': 'Viewer Profile',
+        'profile.intro': 'I don\'t watch anime to kill time. Every series is a case to analyze: I deconstruct the narrative structure, test worldbuilding consistency, and evaluate how every authorial choice holds under pressure.',
+        'profile.c1title': 'Strategic Thinking',
+        'profile.c1body': 'A good story is a chess match. I build hypotheses on every development, and the best series are those that manage to surprise me while staying consistent with their own rules.',
+        'profile.c2title': 'Psychological Depth',
+        'profile.c2body': 'I look for characters that break and rebuild themselves. Inner conflict, trauma, and authentic growth are what make a protagonist memorable.',
+        'profile.c3title': 'Narrative Architecture',
+        'profile.c3body': 'I demand solid worldbuilding. If the foundations hold, the work functions. When the anime adaptation falls short, I go to the original source.',
+        'profile.c4title': 'Emotional Balance',
+        'profile.c4body': 'I alternate intense psychological journeys with moments of relief. Catharsis and absurd comedy are the necessary counterweight.',
+        'divider.ranking': 'Ranking',
+        'top20.desc': 'The 20 anime that defined my standards. Ranked by overall impact: writing, direction, characters, and ability to surprise.',
+        'mal.title': 'Full list',
+        'mal.sub': 'Synced from <a href="https://myanimelist.net/profile/reverxe" target="_blank" rel="noopener">MyAnimeList</a> — ratings and list updated automatically',
+        'mal.completed': 'Completed',
+        'mal.avg': 'Avg score',
+        'mal.top': 'Top score',
+        'mal.all': 'All',
+        'mal.f10': 'Masterpieces 10',
+        'mal.f9': 'Excellent 9',
+        'mal.f8': 'Great 8',
+        'mal.f7': 'Enjoyable 7',
+        'mal.f6': 'Decent 6',
+        'mal.flow': 'Disappointing ≤5',
+        'mal.loading': 'Loading from MAL list...',
+        'mal.error': 'Loading error. <a href="https://myanimelist.net/animelist/reverxe" target="_blank">View on MAL →</a>'
+      }
     };
-    let lang=localStorage.getItem('lang')||'it';
-    function setLang(l){lang=l;document.documentElement.lang=l;localStorage.setItem('lang',l);document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(T[l]&&T[l][k])el.innerHTML=T[l][k]});const it=document.getElementById('langIT'),en=document.getElementById('langEN');if(it&&en){it.classList.toggle('active-opt',l==='it');en.classList.toggle('active-opt',l==='en')}}
+
+    /* ==================================================
+       2. LINGUA & TEMA
+       - Legge preferenze da localStorage
+       - setLang() aggiorna tutti i [data-i18n]
+       - Theme toggle: dark ↔ light via data-theme su <html>
+       ================================================== */
+    let lang = localStorage.getItem('lang') || 'it';
+
+    function setLang(newLang) {
+      lang = newLang;
+      document.documentElement.lang = lang;
+      localStorage.setItem('lang', lang);
+
+      // Aggiorna tutti gli elementi con data-i18n
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        if (T[lang] && T[lang][key]) {
+          el.innerHTML = T[lang][key];
+        }
+      });
+
+      // Aggiorna stile toggle lingua
+      var langIT = document.getElementById('langIT');
+      var langEN = document.getElementById('langEN');
+      if (langIT && langEN) {
+        langIT.classList.toggle('active-opt', lang === 'it');
+        langEN.classList.toggle('active-opt', lang === 'en');
+      }
+
+      // Ri-renderizza Top 20 (solo se i dati sono già caricati)
+      if (typeof TOP20 !== 'undefined') {
+        renderTop20();
+      }
+    }
+
+    // Init lingua
     setLang(lang);
-    document.getElementById('langToggle').addEventListener('click',()=>setLang(lang==='it'?'en':'it'));
-    if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');
-    document.getElementById('themeToggle').addEventListener('click',()=>{const l=document.documentElement.getAttribute('data-theme')==='light';if(l){document.documentElement.removeAttribute('data-theme');localStorage.setItem('theme','dark')}else{document.documentElement.setAttribute('data-theme','light');localStorage.setItem('theme','light')};const icon=document.getElementById('themeIcon');if(icon)icon.textContent=document.documentElement.getAttribute('data-theme')==='light'?'☀':'☾'});
-    if(localStorage.getItem('theme')==='light'){const icon=document.getElementById('themeIcon');if(icon)icon.textContent='☀'}
-    window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;const p=h>0?(window.scrollY/h)*100:0;document.getElementById('scrollProgress').style.width=p+'%'});
-    const ham=document.getElementById('hamburger'),mm=document.getElementById('mobileMenu');if(ham&&mm){ham.addEventListener('click',()=>{ham.classList.toggle('open');mm.classList.toggle('open');document.body.style.overflow=mm.classList.contains('open')?'hidden':''});mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');mm.classList.remove('open');document.body.style.overflow=''}))}
 
-        // === ANIME DATA ===
-    const JIKAN_BASE='https://api.jikan.moe/v4';
-    let allAnime=[];
+    // Click handler lingua
+    var langToggleBtn = document.getElementById('langToggle');
+    if (langToggleBtn) {
+      langToggleBtn.addEventListener('click', function() {
+        setLang(lang === 'it' ? 'en' : 'it');
+      });
+    }
 
-    function scoreClass(s){
-      if(s>=10)return 'score-10';
-      if(s>=9)return 'score-9';
-      if(s>=8)return 'score-8';
-      if(s>=7)return 'score-7';
-      if(s>=6)return 'score-6';
-      if(s>=5)return 'score-5';
+    // Init tema da localStorage
+    if (localStorage.getItem('theme') === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+
+    // Click handler tema
+    var themeToggleBtn = document.getElementById('themeToggle');
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', function() {
+        var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        if (isLight) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+          localStorage.setItem('theme', 'light');
+        }
+        var icon = document.getElementById('themeIcon');
+        if (icon) {
+          icon.textContent = document.documentElement.getAttribute('data-theme') === 'light' ? '☀' : '☾';
+        }
+      });
+    }
+
+    // Sincronizza icona tema al caricamento
+    if (localStorage.getItem('theme') === 'light') {
+      var themeIcon = document.getElementById('themeIcon');
+      if (themeIcon) themeIcon.textContent = '☀';
+    }
+
+    /* ==================================================
+       3. SCROLL PROGRESS BAR
+       Aggiorna la larghezza della barra al scroll.
+       ================================================== */
+    window.addEventListener('scroll', function() {
+      var scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      var percentage = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+      var bar = document.getElementById('scrollProgress');
+      if (bar) bar.style.width = percentage + '%';
+    });
+
+    /* ==================================================
+       4. HAMBURGER MENU (mobile)
+       Toggle apertura/chiusura + blocco scroll body.
+       ================================================== */
+    var hamburger = document.getElementById('hamburger');
+    var mobileMenu = document.getElementById('mobileMenu');
+
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', function() {
+        hamburger.classList.toggle('open');
+        mobileMenu.classList.toggle('open');
+        document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+      });
+
+      // Chiudi menu quando si clicca un link
+      mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          hamburger.classList.remove('open');
+          mobileMenu.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      });
+    }
+
+    /* ==================================================
+       5. TAB SYSTEM
+       2 tab: "Profilo & Top 20" e "Lista MAL".
+       La lista MAL viene caricata solo al primo click
+       (lazy loading) per non sprecare chiamate API.
+       ================================================== */
+    var tabButtons = document.querySelectorAll('.tab-btn');
+    var tabContents = document.querySelectorAll('.tab-content');
+    var malLoaded = false; // Flag per evitare ricaricamenti
+
+    tabButtons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        // Rimuovi active da tutti
+        tabButtons.forEach(function(b) { b.classList.remove('active'); });
+        tabContents.forEach(function(c) { c.classList.remove('active'); });
+
+        // Attiva tab cliccata
+        btn.classList.add('active');
+        var targetTab = document.getElementById('tab-' + btn.dataset.tab);
+        if (targetTab) targetTab.classList.add('active');
+
+        // Lazy load MAL list solo al primo accesso
+        if (btn.dataset.tab === 'mal' && !malLoaded) {
+          malLoaded = true;
+          loadAnimeList();
+        }
+      });
+    });
+
+    /* ==================================================
+       6. TOP 20 — Dati statici e rendering
+       Array dei 20 anime preferiti con tier system:
+       - goat: rank 1-5 (icona cerchio crimson)
+       - elite: rank 6-10
+       - great: rank 11-20
+       ================================================== */
+    var TOP20 = [
+      { rank: 1,  name: 'Code Geass',                     type: 'TV',    year: 2006, mal: 1575  },
+      { rank: 2,  name: 'Steins;Gate',                     type: 'TV',    year: 2011, mal: 9253  },
+      { rank: 3,  name: 'Re:Zero',                         type: 'TV',    year: 2016, mal: 31240 },
+      { rank: 4,  name: 'Cyberpunk: Edgerunners',          type: 'ONA',   year: 2022, mal: 42310 },
+      { rank: 5,  name: 'To Be Hero X',                    type: 'TV',    year: 2024, mal: 56923 },
+      { rank: 6,  name: 'Fullmetal Alchemist: Brotherhood', type: 'TV',   year: 2009, mal: 5114  },
+      { rank: 7,  name: 'Evangelion',                      type: 'TV',    year: 1995, mal: 30    },
+      { rank: 8,  name: 'Death Note',                      type: 'TV',    year: 2006, mal: 1535  },
+      { rank: 9,  name: 'Tokyo Ghoul',                     type: 'TV',    year: 2014, mal: 22319 },
+      { rank: 10, name: 'Oshi no Ko',                      type: 'TV',    year: 2023, mal: 52034 },
+      { rank: 11, name: '86 — Eighty Six',                 type: 'TV',    year: 2021, mal: 41457 },
+      { rank: 12, name: 'Chainsaw Man',                    type: 'Manga', year: 2018, mal: 44511 },
+      { rank: 13, name: 'Akame ga Kill',                   type: 'TV',    year: 2014, mal: 22199 },
+      { rank: 14, name: 'Erased',                          type: 'TV',    year: 2016, mal: 31043 },
+      { rank: 15, name: 'Classroom of the Elite',          type: 'TV',    year: 2017, mal: 35507 },
+      { rank: 16, name: 'Summertime Rendering',            type: 'TV',    year: 2022, mal: 47917 },
+      { rank: 17, name: 'Tomodachi Game',                  type: 'TV',    year: 2022, mal: 50273 },
+      { rank: 18, name: 'The Promised Neverland',          type: 'TV',    year: 2019, mal: 37779 },
+      { rank: 19, name: 'The Eminence in Shadow',          type: 'TV',    year: 2022, mal: 48316 },
+      { rank: 20, name: 'Plastic Memories',                type: 'TV',    year: 2015, mal: 27775 }
+    ];
+
+    function renderTop20() {
+      var list = document.getElementById('top20List');
+      if (!list) return;
+      list.innerHTML = '';
+
+      TOP20.forEach(function(anime) {
+        var item = document.createElement('div');
+        // Top 5 mantiene lo stile rank cerchio crimson
+        item.className = 'top20-item' + (anime.rank <= 5 ? ' goat' : '');
+
+        // URL MAL: manga per Chainsaw Man, anime per tutti gli altri
+        var malUrl = anime.type === 'Manga'
+          ? 'https://myanimelist.net/manga/' + anime.mal
+          : 'https://myanimelist.net/anime/' + anime.mal;
+
+        item.innerHTML =
+          '<div class="top20-rank">' + anime.rank + '</div>' +
+          '<div class="top20-meta">' +
+            '<a href="' + malUrl + '" target="_blank" rel="noopener" class="top20-name">' + anime.name + '</a>' +
+            '<div class="top20-submeta">' + anime.type + ' · ' + anime.year + '</div>' +
+          '</div>';
+
+        list.appendChild(item);
+      });
+    }
+
+    // Render iniziale
+    renderTop20();
+
+    /* ==================================================
+       7. LISTA MAL — Parsing XML + Jikan API
+       - Carica animelist.xml (export locale da MAL)
+       - Filtra solo "Completed" con score > 0
+       - Ordina per score decrescente
+       - Carica le cover in background da Jikan API
+         con rate limiting (1 req/sec, retry su 429)
+       ================================================== */
+    var JIKAN_BASE = 'https://api.jikan.moe/v4';
+    var allAnime = [];
+
+    /**
+     * Restituisce la classe CSS per il cerchio score.
+     * @param {number} score - Voto 1-10
+     * @returns {string} Nome classe CSS
+     */
+    function scoreClass(score) {
+      if (score >= 10) return 'score-10';
+      if (score >= 9)  return 'score-9';
+      if (score >= 8)  return 'score-8';
+      if (score >= 7)  return 'score-7';
+      if (score >= 6)  return 'score-6';
+      if (score >= 5)  return 'score-5';
       return 'score-low';
     }
 
-    function renderAnime(list){
-      const container=document.getElementById('animeList');
-      if(!list.length){
-        container.innerHTML='<div class="anime-loading"><span>'+(lang==='it'?'Nessun anime trovato':'No anime found')+'</span></div>';
+    /**
+     * Renderizza la lista anime nel DOM.
+     * Costruisce le card con cover, titolo, meta e score.
+     * @param {Array} list - Array di oggetti anime
+     */
+    function renderAnime(list) {
+      var container = document.getElementById('animeList');
+      if (!list.length) {
+        container.innerHTML = '<div class="anime-loading"><span>' +
+          (lang === 'it' ? 'Nessun anime trovato' : 'No anime found') + '</span></div>';
         return;
       }
-      const grid=document.createElement('div');
-      grid.className='anime-grid';
-      list.forEach(item=>{
-        const score=item.score||0;
-        const title=item.title||'';
-        const img=item.image||'';
-        const url=`https://myanimelist.net/anime/${item.mal_id}`;
-        const episodes=item.episodes||'?';
-        const type=item.type||'';
-        const review=item.review||'';
 
-        const card=document.createElement('div');
-        card.className='anime-card';
-        card.setAttribute('data-mal-id',item.mal_id);
-        card.innerHTML=`
-          <div class="anime-cover">${img?'<img src="'+img+'" alt="'+title+'" loading="lazy">':'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);color:var(--text-dim);font-size:10px">Loading...</div>'}</div>
-          <div class="anime-info">
-            <div class="anime-name"><a href="${url}" target="_blank">${title}</a></div>
-            <div class="anime-meta">
-              ${type?'<span>'+type+'</span>':''}
-              ${episodes&&episodes!=='?'&&episodes>0?'<span>'+episodes+' ep</span>':''}
-            </div>
-            ${review?'<div style="font-size:12px;color:var(--text-muted);margin-top:6px;line-height:1.5">'+review+'</div>':''}
-          </div>
-          <div class="anime-score">
-            <div>
-              <div class="score-circle ${scoreClass(score)}">${score||'—'}</div>
-              <div class="score-label">${score?'/10':''}</div>
-            </div>
-          </div>`;
+      var grid = document.createElement('div');
+      grid.className = 'anime-grid';
+
+      list.forEach(function(item) {
+        var card = document.createElement('div');
+        card.className = 'anime-card';
+        card.setAttribute('data-mal-id', item.mal_id);
+
+        // Sanitizza il titolo per l'attributo alt (previene XSS)
+        var safeTitle = item.title.replace(/[<>"'&]/g, function(c) {
+          return { '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;', '&':'&amp;' }[c];
+        });
+
+        var coverHTML = item.image
+          ? '<img src="' + item.image + '" alt="' + safeTitle + '" loading="lazy">'
+          : '<div style="width:100%;height:100%;background:var(--bg-secondary)"></div>';
+
+        card.innerHTML =
+          '<div class="anime-cover">' + coverHTML + '</div>' +
+          '<div class="anime-info">' +
+            '<div class="anime-name"><a href="https://myanimelist.net/anime/' + item.mal_id + '" target="_blank" rel="noopener">' + safeTitle + '</a></div>' +
+            '<div class="anime-meta">' +
+              (item.type ? '<span>' + item.type + '</span>' : '') +
+              (item.episodes && item.episodes > 0 ? '<span>' + item.episodes + ' ep</span>' : '') +
+            '</div>' +
+          '</div>' +
+          '<div class="anime-score">' +
+            '<div class="score-circle ' + scoreClass(item.score) + '">' + (item.score || '—') + '</div>' +
+          '</div>';
+
         grid.appendChild(card);
       });
-      container.innerHTML='';
+
+      container.innerHTML = '';
       container.appendChild(grid);
     }
 
-    function updateStats(list){
-      const scored=list.filter(i=>i.score>0);
-      document.getElementById('statTotal').textContent=list.length;
-      if(scored.length){
-        const avg=(scored.reduce((s,i)=>s+i.score,0)/scored.length).toFixed(1);
-        const top=Math.max(...scored.map(i=>i.score));
-        document.getElementById('statAvg').textContent=avg;
-        document.getElementById('statTop').textContent=top;
+    /**
+     * Aggiorna le statistiche (totale, media, max).
+     * @param {Array} list - Array anime con score
+     */
+    function updateStats(list) {
+      var scored = list.filter(function(i) { return i.score > 0; });
+      var elTotal = document.getElementById('statTotal');
+      var elAvg = document.getElementById('statAvg');
+      var elTop = document.getElementById('statTop');
+      if (elTotal) elTotal.textContent = list.length;
+      if (scored.length) {
+        var sum = scored.reduce(function(acc, i) { return acc + i.score; }, 0);
+        if (elAvg) elAvg.textContent = (sum / scored.length).toFixed(1);
+        if (elTop) elTop.textContent = Math.max.apply(null, scored.map(function(i) { return i.score; }));
       }
     }
 
-    async function loadCovers(){
-      for(let i=0;i<allAnime.length;i++){
-        const anime=allAnime[i];
-        if(anime.image)continue;
-        let success=false;
-        for(let attempt=0;attempt<3&&!success;attempt++){
-          try{
-            const res=await fetch(`${JIKAN_BASE}/anime/${anime.mal_id}`);
-            if(res.status===429){
-              // Rate limited — wait longer and retry
-              await new Promise(r=>setTimeout(r,2000+(attempt*1000)));
+    /**
+     * Carica le cover da Jikan API in background.
+     * Rate limit: 1 richiesta al secondo.
+     * Retry fino a 3 volte su errore 429 (rate limited).
+     */
+    async function loadCovers() {
+      for (var i = 0; i < allAnime.length; i++) {
+        var anime = allAnime[i];
+        if (anime.image) continue;
+
+        for (var attempt = 0; attempt < 3; attempt++) {
+          try {
+            var res = await fetch(JIKAN_BASE + '/anime/' + anime.mal_id);
+
+            // Rate limited — aspetta di più ad ogni tentativo
+            if (res.status === 429) {
+              await new Promise(function(r) { setTimeout(r, 2000 + attempt * 1000); });
               continue;
             }
-            if(res.ok){
-              const data=(await res.json()).data;
-              anime.image=data.images?.jpg?.large_image_url||data.images?.jpg?.image_url||'';
-              anime.genres=(data.genres||[]).map(g=>g.name);
-              anime.year=data.year||data.aired?.prop?.from?.year||'';
-              const card=document.querySelector(`[data-mal-id="${anime.mal_id}"] .anime-cover`);
-              if(card&&anime.image)card.innerHTML=`<img src="${anime.image}" alt="${anime.title}" loading="lazy">`;
-              success=true;
+
+            if (res.ok) {
+              var data = (await res.json()).data;
+              anime.image = (data.images && data.images.jpg)
+                ? (data.images.jpg.large_image_url || data.images.jpg.image_url || '')
+                : '';
+              anime.episodes = data.episodes || anime.episodes;
+
+              // Aggiorna la cover nel DOM se già renderizzata
+              var coverEl = document.querySelector('[data-mal-id="' + anime.mal_id + '"] .anime-cover');
+              if (coverEl && anime.image) {
+                var safeAlt = anime.title.replace(/[<>"'&]/g, function(c) {
+                  return { '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;', '&':'&amp;' }[c];
+                });
+                coverEl.innerHTML = '<img src="' + anime.image + '" alt="' + safeAlt + '" loading="lazy">';
+              }
+              break; // Successo, esci dal retry loop
             }
-          }catch(e){console.warn(`Cover ${anime.mal_id}:`,e)}
+          } catch (e) {
+            // Network error — il retry gestirà il prossimo tentativo
+          }
         }
-        // 1 second between requests to stay under Jikan's rate limit
-        await new Promise(r=>setTimeout(r,1000));
+
+        // Pausa 1 secondo tra le richieste per rispettare il rate limit Jikan
+        await new Promise(function(r) { setTimeout(r, 1000); });
       }
     }
 
-    async function loadAnimeList(){
-      try{
-        // Try loading MAL XML export directly
-        const xmlRes=await fetch('animelist.xml');
-        if(!xmlRes.ok)throw new Error('Cannot load animelist.xml');
-        const xmlText=await xmlRes.text();
-        const parser=new DOMParser();
-        const xml=parser.parseFromString(xmlText,'text/xml');
-        const animeNodes=xml.querySelectorAll('anime');
+    /**
+     * Carica la anime list dal file XML locale.
+     * 1. Fetcha animelist.xml
+     * 2. Parsa il DOM XML
+     * 3. Filtra: solo Completed con score > 0
+     * 4. Ordina per score desc, poi titolo asc
+     * 5. Renderizza + avvia il caricamento cover in background
+     */
+    async function loadAnimeList() {
+      try {
+        var xmlRes = await fetch('animelist.xml');
+        if (!xmlRes.ok) throw new Error('Cannot load animelist.xml');
 
-        animeNodes.forEach(node=>{
-          const status=node.querySelector('my_status')?.textContent||'';
-          const score=parseInt(node.querySelector('my_score')?.textContent||'0');
-          const malId=parseInt(node.querySelector('series_animedb_id')?.textContent||'0');
-          const title=node.querySelector('series_title')?.textContent||'';
-          const type=node.querySelector('series_type')?.textContent||'';
-          const episodes=parseInt(node.querySelector('series_episodes')?.textContent||'0');
+        var xmlText = await xmlRes.text();
+        var xml = new DOMParser().parseFromString(xmlText, 'text/xml');
 
-          if(status==='Completed'&&score>0){
-            allAnime.push({mal_id:malId,title,type,episodes,score,review:'',image:''});
-          }
+        xml.querySelectorAll('anime').forEach(function(node) {
+          var status = node.querySelector('my_status');
+          if (!status || status.textContent !== 'Completed') return;
+
+          var scoreEl = node.querySelector('my_score');
+          var score = parseInt(scoreEl ? scoreEl.textContent : '0', 10);
+          if (score <= 0) return;
+
+          var malIdEl   = node.querySelector('series_animedb_id');
+          var titleEl   = node.querySelector('series_title');
+          var typeEl    = node.querySelector('series_type');
+          var epEl      = node.querySelector('series_episodes');
+
+          allAnime.push({
+            mal_id:   parseInt(malIdEl ? malIdEl.textContent : '0', 10),
+            title:    titleEl ? titleEl.textContent : '',
+            type:     typeEl ? typeEl.textContent : '',
+            episodes: parseInt(epEl ? epEl.textContent : '0', 10),
+            score:    score,
+            image:    ''
+          });
         });
 
-        allAnime.sort((a,b)=>b.score-a.score||a.title.localeCompare(b.title));
+        // Ordina: score decrescente, poi titolo alfabetico
+        allAnime.sort(function(a, b) {
+          return b.score - a.score || a.title.localeCompare(b.title);
+        });
+
         updateStats(allAnime);
         renderAnime(allAnime);
-        // Load covers in background
+
+        // Carica le cover in background (non bloccante)
         loadCovers();
-      }catch(e){
-        console.error('Load error:',e);
-        document.getElementById('animeList').innerHTML=
-          '<div class="anime-loading"><span>'+T[lang]['anime.error']+'</span></div>';
+      } catch (e) {
+        console.error('MAL list load error:', e);
+        document.getElementById('animeList').innerHTML =
+          '<div class="anime-loading"><span>' + T[lang]['mal.error'] + '</span></div>';
       }
     }
 
-    // === FILTERS ===
-    let currentFilter='all';
-    document.getElementById('animeFilters').addEventListener('click',e=>{
-      const btn=e.target.closest('.filter-btn');
-      if(!btn)return;
-      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      currentFilter=btn.dataset.filter;
-      applyFilter();
-    });
+    /* ==================================================
+       8. SCORE FILTERS — Filtri per voto
+       Click sui bottoni filtro nella tab MAL.
+       "all" mostra tutto, "low" = score ≤ 5,
+       altrimenti filtra per score esatto.
+       ================================================== */
+    var currentFilter = 'all';
 
-    function applyFilter(){
-      let filtered;
-      if(currentFilter==='all'){
-        filtered=allAnime;
-      }else if(currentFilter==='low'){
-        filtered=allAnime.filter(a=>a.score<=5);
-      }else{
-        const exact=parseInt(currentFilter);
-        filtered=allAnime.filter(a=>a.score===exact);
+    var filtersEl = document.getElementById('animeFilters');
+    if (filtersEl) {
+      filtersEl.addEventListener('click', function(e) {
+        var btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+
+        // Toggle active state sui bottoni
+        document.querySelectorAll('.filter-btn').forEach(function(b) {
+          b.classList.remove('active');
+        });
+        btn.classList.add('active');
+
+        currentFilter = btn.dataset.filter;
+        applyFilter();
+      });
+    }
+
+    function applyFilter() {
+      var filtered;
+      if (currentFilter === 'all') {
+        filtered = allAnime;
+      } else if (currentFilter === 'low') {
+        filtered = allAnime.filter(function(a) { return a.score <= 5; });
+      } else {
+        var exact = parseInt(currentFilter, 10);
+        filtered = allAnime.filter(function(a) { return a.score === exact; });
       }
       renderAnime(filtered);
     }
-
-    loadAnimeList();
   </script>
 </body>
 </html>

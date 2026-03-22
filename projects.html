@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progetti — reverxe</title>
+  <meta name="description" content="I progetti di Luca Carabelli (reverxe). Narrativa psicologica, sviluppo software e molto altro.">
+  <meta name="author" content="Luca Carabelli">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://reverxe.github.io/projects.html">
+  <meta property="og:title" content="Progetti — reverxe">
+  <meta property="og:description" content="Romanzo psicologico, app per anime e altri progetti creativi e tecnici.">
+  <meta property="og:url" content="https://reverxe.github.io/projects.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:site_name" content="reverxe">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.min.css" rel="stylesheet">
+  <script>(function(){if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');var l=localStorage.getItem('lang');if(l)document.documentElement.lang=l;})()</script>
+  <style>
+    :root{
+      --bg:#111111;--bg-card:#1A1A1A;--bg-elevated:#222222;
+      --red:#C0152A;--red-light:#E8203B;--red-mid:#991B28;--red-dark:#7A1220;--red-deep:#450A0A;
+      --red-berry:#E8334A;--red-rose:#F05068;
+      --red-glow:rgba(192,21,42,.13);--red-glow-strong:rgba(192,21,42,.28);
+      --text:#E5E5E5;--text-muted:#888888;--text-dim:#555555;
+      --border:#252525;--border-hover:#333333;
+      --navbar-bg:rgba(17,17,17,.88);--mobile-nav-bg:rgba(17,17,17,.96);
+      --font:'Geist Sans',system-ui,sans-serif;
+      --mono:'Geist Mono','Courier New',monospace;
+      --pad:clamp(14px,2.7vw,40px);--max-w:1100px;--radius:12px;--radius-sm:8px
+    }
+    [data-theme="light"]{
+      --bg:#F6F1EC;--bg-card:#FDFAF7;--bg-elevated:#EDE8E2;
+      --red:#8B0E1E;--red-light:#A81224;--red-mid:#6B0A16;--red-berry:#A81224;--red-rose:#C0182C;
+      --red-glow:rgba(139,14,30,.09);--red-glow-strong:rgba(139,14,30,.22);
+      --text:#1A1A1A;--text-muted:#4A4A4A;--text-dim:#808080;
+      --border:#D5CCC4;--border-hover:#B8AEA4;
+      --navbar-bg:rgba(246,241,236,.92);--mobile-nav-bg:rgba(246,241,236,.97)
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .35s,color .35s;min-height:100vh;display:flex;flex-direction:column;line-height:1.6}
+    a{color:inherit;text-decoration:none}
+
+    .glow{position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:gp 8s ease-in-out infinite}
+    .glow--1{width:600px;height:600px;background:radial-gradient(circle,var(--red-glow) 0%,transparent 70%);top:-200px;right:-200px}
+    .glow--2{width:400px;height:400px;background:radial-gradient(circle,rgba(185,28,28,.06) 0%,transparent 70%);bottom:-100px;left:-100px;animation-duration:12s;animation-direction:reverse}
+    @keyframes gp{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+    .scroll-progress{position:fixed;top:0;left:0;width:0;height:2px;background:var(--red);z-index:10001;transition:width .05s linear}
+
+    /* NAVBAR */
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:10000;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:var(--navbar-bg);border-bottom:1px solid var(--border)}
+    .navbar-inner{max-width:var(--max-w);margin:0 auto;padding:0 var(--pad);height:56px;display:flex;align-items:center;justify-content:space-between}
+    .nav-socials{display:flex;align-items:center;gap:12px}
+    .nav-socials a{display:flex;align-items:center;color:var(--text-muted);transition:color .2s}
+    .nav-socials a:hover{color:var(--red-berry)}
+    .nav-socials svg{width:18px;height:18px;fill:currentColor}
+    .nav-links{display:flex;gap:28px;font-size:13px;font-weight:500;letter-spacing:.02em}
+    .nav-links a{color:var(--text-muted);transition:color .2s;position:relative}
+    .nav-links a:hover,.nav-links a.active{color:var(--text)}
+    .nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--red-berry);border-radius:1px}
+    .nav-controls{display:flex;align-items:center;gap:8px}
+    .toggle-btn{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:5px 10px;font-family:var(--mono);font-size:11px;color:var(--text-muted);cursor:pointer;transition:border-color .2s,color .2s;display:flex;align-items:center;gap:4px}
+    .toggle-btn:hover{border-color:var(--border-hover);color:var(--text)}
+    .toggle-btn .active-opt{color:var(--red-berry);font-weight:700}
+    .toggle-btn .sep{color:var(--text-dim);margin:0 2px}
+    .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px}
+    .hamburger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;transition:transform .3s,opacity .3s}
+    .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+    .hamburger.open span:nth-child(2){opacity:0}
+    .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+    .mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--mobile-nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:28px;font-size:17px;font-weight:500}
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{color:var(--text-muted);transition:color .2s}
+    .mobile-menu a:hover,.mobile-menu a.active{color:var(--text)}
+    @media(max-width:768px){.nav-links,.nav-socials{display:none}.hamburger{display:flex}}
+    .page-transition{animation:pageIn .5s ease forwards}
+    @keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+    /* PAGE */
+    .projects-page{padding:100px var(--pad) 64px;position:relative;z-index:1;flex:1}
+    .projects-inner{max-width:var(--max-w);margin:0 auto}
+    .page-header{margin-bottom:48px}
+    .page-label{font-family:var(--mono);font-size:11px;color:var(--red-berry);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+    .page-title{font-size:clamp(28px,4vw,42px);font-weight:700;letter-spacing:-.02em;line-height:1.15;margin-bottom:10px}
+    .page-desc{font-size:14px;color:var(--text-muted);max-width:540px;line-height:1.7}
+    .projects-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+    /* CARD BASE */
+    .project-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:border-color .25s,transform .2s,box-shadow .25s;position:relative}
+    .project-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transform:scaleX(0);transform-origin:left;transition:transform .3s}
+    .project-card:hover::before{transform:scaleX(1)}
+    .project-card:hover{border-color:var(--border-hover);transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.25)}
+    [data-theme="light"] .project-card{box-shadow:0 1px 3px rgba(0,0,0,.05)}
+    [data-theme="light"] .project-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.1)}
+
+    /* NOVEL CARD */
+    .card-novel::before{background:linear-gradient(90deg,#2A0A0A,var(--red-dark),var(--red-berry))}
+    .card-novel .card-header{background:linear-gradient(135deg,#1A0505 0%,#0D0D0D 50%,#1A0A0A 100%);padding:32px 28px 24px;position:relative;overflow:hidden;min-height:160px;display:flex;flex-direction:column;justify-content:flex-end}
+    .card-novel .card-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top right,rgba(192,21,42,.18) 0%,transparent 60%)}
+    .card-novel .card-header::after{content:'"';position:absolute;top:-10px;right:20px;font-size:140px;color:rgba(192,21,42,.08);font-family:Georgia,serif;line-height:1;pointer-events:none}
+    .novel-genre{font-family:var(--mono);font-size:10px;color:var(--red-berry);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;opacity:.8}
+    .novel-title{font-size:22px;font-weight:700;color:#E8E8E8;letter-spacing:-.01em;line-height:1.2;position:relative;z-index:1;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+    [data-theme="light"] .card-novel .card-header{background:linear-gradient(135deg,#2A0808 0%,#1C0404 50%,#220808 100%)}
+
+    /* APP CARD */
+    .card-app::before{background:linear-gradient(90deg,#0A1A2A,#1A3A5A,#2A6B9A)}
+    .card-app .card-header{background:linear-gradient(135deg,#0A0F1A 0%,#0D1520 50%,#0A1228 100%);padding:32px 28px 24px;position:relative;overflow:hidden;min-height:160px;display:flex;flex-direction:column;justify-content:flex-end}
+    .card-app .card-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba(42,107,154,.15) 0%,transparent 60%)}
+    .card-app .card-header::after{content:'{}';position:absolute;top:12px;right:24px;font-size:72px;color:rgba(42,107,154,.12);font-family:var(--mono);line-height:1;pointer-events:none;letter-spacing:-.05em}
+    .app-type{font-family:var(--mono);font-size:10px;color:#4A9ECC;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;opacity:.8}
+    .app-title{font-size:22px;font-weight:700;color:#E8E8E8;letter-spacing:-.01em;line-height:1.2;position:relative;z-index:1}
+    [data-theme="light"] .card-app .card-header{background:linear-gradient(135deg,#0F1E36 0%,#132540 50%,#0F1A2E 100%)}
+
+    /* CARD BODY */
+    .card-body{padding:24px 28px;display:flex;flex-direction:column;flex:1;gap:16px}
+    .card-desc-text{font-size:13px;color:var(--text-muted);line-height:1.7}
+    .card-desc-text strong{color:var(--text);font-weight:500}
+
+    /* BADGES */
+    .badge-row{display:flex;flex-wrap:wrap;gap:6px}
+    .badge{font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:20px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+    .badge-psych{background:rgba(192,21,42,.12);color:var(--red-berry);border:1px solid rgba(192,21,42,.2)}
+    .badge-thriller{background:rgba(120,0,0,.15);color:#CC4444;border:1px solid rgba(120,0,0,.25)}
+    .badge-wip{background:rgba(255,165,0,.1);color:#FFA500;border:1px solid rgba(255,165,0,.2)}
+    .badge-alpha{background:rgba(42,107,154,.15);color:#4A9ECC;border:1px solid rgba(42,107,154,.25)}
+    .badge-tech{background:rgba(42,107,154,.1);color:#5AAAD4;border:1px solid rgba(42,107,154,.2)}
+
+    /* CARD FOOTER */
+    .card-footer{margin-top:auto;padding-top:16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .card-status{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:.04em;text-transform:uppercase}
+    .status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+    .status-dot--active{background:var(--red-berry);animation:pulse-dot 2s ease-in-out infinite}
+    .status-dot--wip{background:#FFA500;animation:pulse-dot 2s ease-in-out infinite}
+    @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+    .card-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:7px 16px;border-radius:var(--radius-sm);border:1px solid;cursor:pointer;transition:all .2s;text-decoration:none;font-family:var(--font)}
+    .card-btn-github{color:#4A9ECC;border-color:rgba(42,107,154,.3);background:rgba(42,107,154,.08)}
+    .card-btn-github:hover{color:#6BB8E0;border-color:rgba(42,107,154,.5);background:rgba(42,107,154,.14)}
+    .card-btn svg{width:14px;height:14px;fill:currentColor;flex-shrink:0}
+
+    /* QUOTE */
+    .novel-quote{font-size:12px;font-style:italic;color:var(--text-dim);border-left:2px solid var(--red-dark);padding-left:12px;line-height:1.6}
+
+    /* TECH STACK */
+    .tech-stack{display:flex;flex-wrap:wrap;gap:6px}
+    .tech-tag{font-family:var(--mono);font-size:10px;padding:3px 9px;border-radius:4px;background:rgba(42,107,154,.08);color:#4A9ECC;border:1px solid rgba(42,107,154,.15)}
+
+    /* FOOTER */
+    .footer{padding:24px var(--pad);border-top:1px solid var(--border);position:relative;z-index:1;margin-top:auto}
+    .footer-inner{max-width:var(--max-w);margin:0 auto;display:flex;flex-direction:column;gap:16px}
+    .footer-top{display:flex;justify-content:space-between;align-items:flex-start}
+    .footer-contact{display:flex;flex-direction:column;gap:4px}
+    .footer-contact-label{font-size:10px;color:var(--red-berry);text-transform:uppercase;letter-spacing:1px;font-family:var(--mono);margin-bottom:2px}
+    .footer-email{font-size:12px;color:var(--text-muted);transition:color .2s;display:inline-flex;align-items:center;gap:6px}
+    .footer-email:hover{color:var(--red-berry)}
+    .footer-email-tag{font-size:9px;color:var(--text-dim);background:var(--bg-card);border:1px solid var(--border);padding:1px 6px;border-radius:4px;font-family:var(--mono)}
+    .footer-bottom{display:flex;justify-content:center}
+    .footer-text{font-size:11px;color:var(--text-dim);text-align:center}
+    .footer-text span{color:var(--red-berry)}
+
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--red-berry)}
+    @media(max-width:768px){.projects-grid{grid-template-columns:1fr}}
+    @media(max-width:900px){.footer-top{flex-direction:column;align-items:center;gap:16px}.footer-contact{align-items:center}}
+  </style>
+</head>
+<body>
+  <div class="glow glow--1"></div>
+  <div class="glow glow--2"></div>
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <div class="nav-socials">
+        <a href="https://github.com/reverxe" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg></a>
+        <a href="https://www.twitch.tv/reverxe__" target="_blank" rel="noopener" aria-label="Twitch"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 2L3.429 4.714v14.572h4.285V22l2.572-2.714h2.143L19.714 12V2zm12 9.143l-2.571 2.571h-2.572l-2.285 2.286v-2.286H7.714V3.714H18z"/></svg></a>
+        <a href="https://www.instagram.com/luca.carabelli/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+        <a href="https://steamcommunity.com/id/reverxe/" target="_blank" rel="noopener" aria-label="Steam"><svg viewBox="0 0 24 24"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658a3.387 3.387 0 011.912-.587c.064 0 .128.002.191.006l2.861-4.142V8.91a4.528 4.528 0 014.524-4.524c2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396a3.406 3.406 0 01-3.324-2.751l-4.612-1.906C2.614 20.7 6.906 24 11.979 24 18.627 24 24 18.627 24 11.979S18.627 0 11.979 0z"/></svg></a>
+        <a href="https://www.tiktok.com/@reverxe" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" data-i18n="nav.home">Home</a>
+        <a href="about.html" data-i18n="nav.about">Chi sono</a>
+        <a href="projects.html" class="active" data-i18n="nav.projects">Progetti</a>
+        <a href="blog.html">Blog</a>
+        <a href="social.html">Social</a>
+      </div>
+      <div class="nav-controls">
+        <button class="toggle-btn" id="langToggle" aria-label="Cambia lingua">
+          <span class="active-opt" id="langIT">IT</span><span class="sep">|</span><span id="langEN">EN</span>
+        </button>
+        <button class="toggle-btn" id="themeToggle" aria-label="Cambia tema">
+          <span id="themeIcon">☾</span>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="about.html">Chi sono</a>
+    <a href="projects.html" class="active">Progetti</a>
+    <a href="blog.html">Blog</a>
+    <a href="social.html">Social</a>
+  </div>
+
+  <section class="projects-page page-transition">
+    <div class="projects-inner">
+      <div class="page-header">
+        <div class="page-label" data-i18n="projects.label">Portfolio</div>
+        <h1 class="page-title" data-i18n="projects.title">Progetti creativi e tecnici</h1>
+        <p class="page-desc" data-i18n="projects.desc">Dai character design originali ai progetti di sviluppo. Narrativa, modelli 3D e codice.</p>
+      </div>
+      <div class="projects-grid">
+
+        <!-- ROMANZO -->
+        <div class="project-card card-novel">
+          <div class="card-header">
+            <div class="novel-genre" data-i18n="novel.genre">Narrativa — Romanzo</div>
+            <div class="novel-title" data-i18n="novel.title">Progetto Narrativo: Dante</div>
+          </div>
+          <div class="card-body">
+            <div class="badge-row">
+              <span class="badge badge-psych" data-i18n="badge.psych">Psicologico</span>
+              <span class="badge badge-thriller">Thriller</span>
+              <span class="badge badge-wip" data-i18n="badge.ongoing">In corso</span>
+            </div>
+            <p class="card-desc-text" data-i18n="novel.desc"><strong>Dante Ricci</strong>, un ragazzo di Varese, vede la sua vita sconvolta dopo la morte del migliore amico per una fuga di gas a scuola. Da quel momento, la realtà inizia a incrinarsi: Dante vede presenze insolite per la città e stringe legami con persone finora ignorate.</p>
+            <blockquote class="novel-quote" data-i18n="novel.quote">"A volte la verità non è nascosta nell'ombra — è nascosta in piena luce, dove nessuno pensa di guardare."</blockquote>
+            <div class="card-footer">
+              <div class="card-status">
+                <span class="status-dot status-dot--active"></span>
+                <span data-i18n="status.writing">Scrittura attiva</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ANIME NOTE APP -->
+        <div class="project-card card-app">
+          <div class="card-header">
+            <div class="app-type" data-i18n="app.type">App — Android / Web</div>
+            <div class="app-title">Anime Note App</div>
+          </div>
+          <div class="card-body">
+            <div class="badge-row">
+              <span class="badge badge-alpha" data-i18n="badge.alpha">Alpha Version</span>
+              <span class="badge badge-wip" data-i18n="badge.wip">Work in Progress</span>
+              <span class="badge badge-tech">Open Source</span>
+            </div>
+            <p class="card-desc-text" data-i18n="app.desc">Un'applicazione dedicata alla gestione e alla presa di appunti sugli anime visti. Permette di catalogare, votare e annotare le proprie impressioni in modo rapido e intuitivo.</p>
+            <div class="tech-stack">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">SQLite</span>
+              <span class="tech-tag">HTML/CSS</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-status">
+                <span class="status-dot status-dot--wip"></span>
+                <span data-i18n="status.wip">Sviluppo iniziale</span>
+              </div>
+              <a href="https://github.com/reverxe" target="_blank" class="card-btn card-btn-github">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                <span data-i18n="btn.github">Visualizza su GitHub</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-contact">
+          <div class="footer-contact-label" data-i18n="footer.contact">Contatti</div>
+          <a href="mailto:luca.carabelli@outlook.it" class="footer-email">luca.carabelli@outlook.it <span class="footer-email-tag">main</span></a>
+          <a href="mailto:rev3yt@gmail.com" class="footer-email">rev3yt@gmail.com <span class="footer-email-tag">creative</span></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-text">© 2026 Luca Carabelli — built with <span>♥</span>, code, and a little help from Claude AI.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const T = {
+      it: {
+        'nav.home':'Home','nav.about':'Chi sono','nav.projects':'Progetti','footer.contact':'Contatti',
+        'projects.label':'Portfolio','projects.title':'Progetti creativi e tecnici',
+        'projects.desc':'Dai character design originali ai progetti di sviluppo. Narrativa, modelli 3D e codice.',
+        'novel.genre':'Narrativa — Romanzo','novel.title':'Progetto Narrativo: Dante',
+        'novel.desc':'<strong>Dante Ricci</strong>, un ragazzo di Varese, vede la sua vita sconvolta dopo la morte del migliore amico per una fuga di gas a scuola. Da quel momento, la realtà inizia a incrinarsi: Dante vede presenze insolite per la città e stringe legami con persone finora ignorate.',
+        'novel.quote':'"A volte la verità non è nascosta nell\'ombra — è nascosta in piena luce, dove nessuno pensa di guardare."',
+        'badge.psych':'Psicologico','badge.ongoing':'In corso','badge.alpha':'Alpha Version','badge.wip':'Work in Progress',
+        'app.type':'App — Android / Web',
+        'app.desc':'Un\'applicazione dedicata alla gestione e alla presa di appunti sugli anime visti. Permette di catalogare, votare e annotare le proprie impressioni in modo rapido e intuitivo.',
+        'status.writing':'Scrittura attiva','status.wip':'Sviluppo iniziale','btn.github':'Visualizza su GitHub'
+      },
+      en: {
+        'nav.home':'Home','nav.about':'About','nav.projects':'Projects','footer.contact':'Contact',
+        'projects.label':'Portfolio','projects.title':'Creative & technical projects',
+        'projects.desc':'From original character designs to development projects. Storytelling, 3D models and code.',
+        'novel.genre':'Fiction — Novel','novel.title':'Narrative Project: Dante',
+        'novel.desc':'<strong>Dante Ricci</strong>, a teenager from Varese, has his life shattered after his best friend dies in a gas leak at school. From that moment, reality begins to crack: Dante sees strange presences around the city and forges bonds with people he had previously ignored.',
+        'novel.quote':'"Sometimes the truth isn\'t hidden in the shadows — it\'s hidden in plain sight, where no one thinks to look."',
+        'badge.psych':'Psychological','badge.ongoing':'Ongoing','badge.alpha':'Alpha Version','badge.wip':'Work in Progress',
+        'app.type':'App — Android / Web',
+        'app.desc':'An application dedicated to managing and taking notes on anime watched. Allows cataloguing, rating and annotating impressions quickly and intuitively.',
+        'status.writing':'Active writing','status.wip':'Early development','btn.github':'View on GitHub'
+      }
+    };
+
+    let lang = localStorage.getItem('lang') || 'it';
+    function setLang(l) {
+      lang = l;
+      document.documentElement.lang = l;
+      localStorage.setItem('lang', l);
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const k = el.getAttribute('data-i18n');
+        if (T[l] && T[l][k]) el.innerHTML = T[l][k];
+      });
+      const it = document.getElementById('langIT'), en = document.getElementById('langEN');
+      if (it && en) { it.classList.toggle('active-opt', l === 'it'); en.classList.toggle('active-opt', l === 'en'); }
+    }
+    setLang(lang);
+    document.getElementById('langToggle').addEventListener('click', () => setLang(lang === 'it' ? 'en' : 'it'));
+
+    if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('theme', 'dark'); }
+      else { document.documentElement.setAttribute('data-theme', 'light'); localStorage.setItem('theme', 'light'); }
+      const icon = document.getElementById('themeIcon');
+      if (icon) icon.textContent = document.documentElement.getAttribute('data-theme') === 'light' ? '☀' : '☾';
+    });
+    if (localStorage.getItem('theme') === 'light') { const icon = document.getElementById('themeIcon'); if (icon) icon.textContent = '☀'; }
+
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const p = h > 0 ? (window.scrollY / h) * 100 : 0;
+      document.getElementById('scrollProgress').style.width = p + '%';
+    });
+
+    const ham = document.getElementById('hamburger'), mm = document.getElementById('mobileMenu');
+    if (ham && mm) {
+      ham.addEventListener('click', () => { ham.classList.toggle('open'); mm.classList.toggle('open'); document.body.style.overflow = mm.classList.contains('open') ? 'hidden' : ''; });
+      mm.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { ham.classList.remove('open'); mm.classList.remove('open'); document.body.style.overflow = ''; }));
+    }
+  </script>
+</body>
+</html>
