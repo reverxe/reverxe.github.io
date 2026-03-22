@@ -326,8 +326,9 @@
       font-size: 14px; font-weight: 600; letter-spacing: -.01em;
     }
 
-    /* -- Writing placeholder -- */
+    /* -- Writing section header -- */
     .writing-header { text-align: center; margin-bottom: 20px; }
+    .writing-header .profile-badge { margin-bottom: 20px; }
     .writing-placeholder {
       border-left: 3px solid var(--crimson);
       display: flex; align-items: center; justify-content: center;
@@ -627,10 +628,11 @@
   <section class="anime-page page-transition">
     <div class="anime-inner">
 
-      <!-- Tab navigation: 2 tabs -->
+      <!-- Tab navigation: 3 tabs -->
       <div class="tab-nav" id="tabNav">
-        <button class="tab-btn active" data-tab="profile" data-i18n="tab.profile">Profilo &amp; Top 20</button>
+        <button class="tab-btn active" data-tab="profile" data-i18n="tab.profile">Il mio sguardo &amp; Top 20</button>
         <button class="tab-btn" data-tab="mal" data-i18n="tab.mal">Lista MAL</button>
+        <button class="tab-btn" data-tab="novel" data-i18n="tab.novel">Romanzo</button>
       </div>
 
       <!-- ========================================
@@ -641,7 +643,7 @@
         <!-- Card unica: Cosa cerco in un anime -->
         <div class="profile-header">
           <div class="profile-badge" data-i18n="profile.badge">Profilo Spettatore</div>
-          <h1 class="profile-title">Cosa <span class="accent">cerco</span> in un anime</h1>
+          <h1 class="profile-title">Il mio <span class="accent">sguardo</span></h1>
         </div>
 
         <div class="content-card">
@@ -691,23 +693,6 @@
           <p class="top20-desc" data-i18n="top20.desc">I 20 anime che hanno definito i miei standard. Ordinati per impatto complessivo: scrittura, regia, personaggi e capacità di sorprendere.</p>
         </div>
         <div class="top20-list" id="top20List"></div>
-
-        <!-- Divider: Scrittura -->
-        <div class="section-divider">
-          <span class="section-divider-label" data-i18n="divider.writing">Scrittura</span>
-        </div>
-
-        <!-- Sezione romanzo placeholder -->
-        <div class="writing-header">
-          <h2 class="top20-title">Il mio <span class="accent">romanzo</span></h2>
-          <p class="top20-desc" data-i18n="writing.desc">Un progetto di narrativa psicologica e thriller ambientato a Varese. I capitoli verranno pubblicati qui man mano che la scrittura procede.</p>
-        </div>
-        <div class="content-card writing-placeholder">
-          <div class="writing-placeholder-inner">
-            <span class="writing-placeholder-icon">✦</span>
-            <p class="writing-placeholder-text" data-i18n="writing.placeholder">In arrivo — i capitoli verranno pubblicati qui.</p>
-          </div>
-        </div>
       </div>
 
       <!-- ========================================
@@ -745,6 +730,23 @@
           <div class="anime-loading" id="animeLoading">
             <div class="spinner"></div>
             <span data-i18n="mal.loading">Caricamento dalla lista MAL...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================
+           TAB 3: ROMANZO (placeholder per capitoli)
+           ======================================== -->
+      <div class="tab-content" id="tab-novel">
+        <div class="writing-header">
+          <div class="profile-badge" data-i18n="writing.badge">Narrativa Originale</div>
+          <h2 class="top20-title">Il mio <span class="accent">romanzo</span></h2>
+          <p class="top20-desc" data-i18n="writing.desc">Un progetto di narrativa psicologica e thriller ambientato a Varese. I capitoli verranno pubblicati qui man mano che la scrittura procede.</p>
+        </div>
+        <div class="content-card writing-placeholder">
+          <div class="writing-placeholder-inner">
+            <span class="writing-placeholder-icon">✦</span>
+            <p class="writing-placeholder-text" data-i18n="writing.placeholder">In arrivo — i capitoli verranno pubblicati qui.</p>
           </div>
         </div>
       </div>
@@ -798,12 +800,14 @@
         'nav.about': 'Chi sono',
         'nav.projects': 'Progetti',
         'footer.contact': 'Contatti',
-        'tab.profile': 'Profilo & Top 20',
+        'tab.profile': 'Il mio sguardo & Top 20',
         'tab.mal': 'Lista MAL',
+        'tab.novel': 'Romanzo',
         'profile.badge': 'Profilo Spettatore',
         'divider.ranking': 'Classifica',
         'divider.writing': 'Scrittura',
         'top20.desc': 'I 20 anime che hanno definito i miei standard. Ordinati per impatto complessivo: scrittura, regia, personaggi e capacità di sorprendere.',
+        'writing.badge': 'Narrativa Originale',
         'writing.desc': 'Un progetto di narrativa psicologica e thriller ambientato a Varese. I capitoli verranno pubblicati qui man mano che la scrittura procede.',
         'writing.placeholder': 'In arrivo — i capitoli verranno pubblicati qui.',
         'mal.title': 'Lista completa',
@@ -826,12 +830,14 @@
         'nav.about': 'About',
         'nav.projects': 'Projects',
         'footer.contact': 'Contact',
-        'tab.profile': 'Profile & Top 20',
+        'tab.profile': 'My perspective & Top 20',
         'tab.mal': 'MAL List',
+        'tab.novel': 'Novel',
         'profile.badge': 'Viewer Profile',
         'divider.ranking': 'Ranking',
         'divider.writing': 'Writing',
         'top20.desc': 'The 20 anime that defined my standards. Ranked by overall impact: writing, direction, characters, and ability to surprise.',
+        'writing.badge': 'Original Fiction',
         'writing.desc': 'A psychological thriller fiction project set in Varese. Chapters will be published here as writing progresses.',
         'writing.placeholder': 'Coming soon — chapters will be published here.',
         'mal.title': 'Full list',
